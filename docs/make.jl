@@ -4,7 +4,8 @@ makedocs(
     sitename = "9Docs", 
     pages = [
         "Home" => "index.md",
-        "Git 学习笔记" => "git/git-learning.md",
+        "Git 学习笔记" => "git/git_notebook.md",
+        "LeetCode 刷题" => "leetcode/leetcode.md",
     ],
 )
 
