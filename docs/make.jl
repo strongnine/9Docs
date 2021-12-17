@@ -11,4 +11,5 @@ makedocs(
 deploydocs(
     repo = "github.com/strongnine/9Docs.git",
     target = "build",
+    devbranch = "main",
 )
