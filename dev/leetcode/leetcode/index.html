@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>LeetCode 刷题 · 9Docs</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">9Docs</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../git/git_notebook/">Git 学习笔记</a></li><li class="is-active"><a class="tocitem" href>LeetCode 刷题</a><ul class="internal"><li><a class="tocitem" href="#数据结构"><span>数据结构</span></a></li><li><a class="tocitem" href="#算法"><span>算法</span></a></li><li><a class="tocitem" href="#做题记录"><span>做题记录</span></a></li><li><a class="tocitem" href="#/-题解草稿"><span>0/ 题解草稿</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>LeetCode 刷题</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>LeetCode 刷题</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/strongnine/9Docs/blob/master/docs/src/leetcode/leetcode.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><p>LeetCode 刷题会用到的知识点，包括语法、函数等等；</p><p>各种数据类型的范围：</p><ul><li><code>int</code>: <span>$[-2147483648, 2147483647]$</span>，大约等于 <span>$-2\times 10^{9}\sim 2\times 10^{9}$</span>.</li></ul><p>位运算符：</p><table><tr><th style="text-align: right">运算符</th><th style="text-align: right">描述</th><th style="text-align: right">实例</th></tr><tr><td style="text-align: right">&amp;</td><td style="text-align: right">按位「与」运算</td><td style="text-align: right"></td></tr><tr><td style="text-align: right">|</td><td style="text-align: right">按位「或」运算</td><td style="text-align: right"></td></tr><tr><td style="text-align: right">^</td><td style="text-align: right">按位「异或」运算</td><td style="text-align: right"></td></tr><tr><td style="text-align: right">~</td><td style="text-align: right">按位「取反」运算</td><td style="text-align: right"></td></tr><tr><td style="text-align: right">&lt;&lt;</td><td style="text-align: right">二进制左移运算</td><td style="text-align: right"></td></tr><tr><td style="text-align: right">&gt;&gt;</td><td style="text-align: right">二进制右移运算</td><td style="text-align: right"></td></tr></table><h2 id="数据结构"><a class="docs-heading-anchor" href="#数据结构">数据结构</a><a id="数据结构-1"></a><a class="docs-heading-anchor-permalink" href="#数据结构" title="Permalink"></a></h2><h3 id="向量（vector）"><a class="docs-heading-anchor" href="#向量（vector）">向量（vector）</a><a id="向量（vector）-1"></a><a class="docs-heading-anchor-permalink" href="#向量（vector）" title="Permalink"></a></h3><pre><code class="language-cpp hljs">// 给向量 x 分配 size 个 value 值
+x.assign(int size, int value);	
+// 给向量 x 分配从迭代器初始位置到最终位置的值
+x.assign(InputIterator first, InputIterator last);	
+
+// 后面添加元素
+x.push_back();
+// 将最后元素弹出
+x.pop_back();</code></pre><h3 id="栈（stack）"><a class="docs-heading-anchor" href="#栈（stack）">栈（stack）</a><a id="栈（stack）-1"></a><a class="docs-heading-anchor-permalink" href="#栈（stack）" title="Permalink"></a></h3><h3 id="队列（queue）"><a class="docs-heading-anchor" href="#队列（queue）">队列（queue）</a><a id="队列（queue）-1"></a><a class="docs-heading-anchor-permalink" href="#队列（queue）" title="Permalink"></a></h3><pre><code class="language-c hljs">// 生成方式
+std::queue&lt;std::string&gt; q;
+std::queue&lt;std::string&gt; q {arr};
+// 操作
+// 返回第一个元素的引用，如果 q 为空，返回值是未定义的
+q.front();
+// 返回最后一个元素的引用
+q.back();
+// 在尾部添加一个元素的副本
+q.push(const T&amp; obj);
+// 在尾部生成对象
+q.emplace();
+// 删除第一个元素
+q.pop();
+// 返回元素个数
+q.size();
+// 判断是否为空
+q.empty();</code></pre><h3 id="链表（linked-list）"><a class="docs-heading-anchor" href="#链表（linked-list）">链表（linked-list）</a><a id="链表（linked-list）-1"></a><a class="docs-heading-anchor-permalink" href="#链表（linked-list）" title="Permalink"></a></h3><p>在 LeetCode 中链表节点的定义为：</p><pre><code class="language-c hljs">struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};</code></pre><p><strong>哑节点（Dummy node）：</strong>在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。</p><h3 id="常用函数"><a class="docs-heading-anchor" href="#常用函数">常用函数</a><a id="常用函数-1"></a><a class="docs-heading-anchor-permalink" href="#常用函数" title="Permalink"></a></h3><p><code>__builtin_popcount()</code>：返回输入数据，二进制中「1」的个数，只对 <code>int</code> 类型；</p><p>如果想要对 <code>long int</code> 和 <code>long long</code> 类型使用，可以分别用 <code>__builtin_popcountl()</code> 和 <code>__builtin_popcountll</code></p><p><code>lower_bound(ForwardIterator first, ForwardIterator last, const T&amp; val)</code>：返回一个迭代指针，该指针指向在 <code>[first, last)</code> 中不小于 <code>val</code> 的第一个元素。</p><p><code>isalpha(c)</code>：判断 <code>c</code> 是否为一个字母。</p><p><code>tolower(c)</code>：将字母转为小写字母；<code>toupper(c)</code>：将字母转为大写字母；</p><p><code>to_string(c)</code>：将 <code>c</code> 转化为字符；</p><h2 id="算法"><a class="docs-heading-anchor" href="#算法">算法</a><a id="算法-1"></a><a class="docs-heading-anchor-permalink" href="#算法" title="Permalink"></a></h2><h3 id="最高有效位"><a class="docs-heading-anchor" href="#最高有效位">最高有效位</a><a id="最高有效位-1"></a><a class="docs-heading-anchor-permalink" href="#最高有效位" title="Permalink"></a></h3><p>如果正整数 <span>$y$</span> 是 2 的整数次幂，则 <span>$y$</span> 的二进制表示中只有最高位为 1，其余都是 0，因此 <span>$y\&amp; (y-1)=0$</span>. 如果 <span>$y\le x$</span>，则称 <span>$y$</span> 为 <span>$x$</span> 的「最高有效位」。</p><p>题目 <a href="https://leetcode-cn.com/problems/counting-bits/">338. 比特位计数</a> 利用这样的一个方式，动态地维护最高有效位 <code>highBit</code>，然后算出所有小于给定整数 <span>$n$</span> 的整数二进制表示包含 1 的数量。</p><h3 id="最低有效位"><a class="docs-heading-anchor" href="#最低有效位">最低有效位</a><a id="最低有效位-1"></a><a class="docs-heading-anchor-permalink" href="#最低有效位" title="Permalink"></a></h3><p>对于正整数 <span>$x$</span>，将其二进制表示右移一位，得到 $</p><h3 id="Brian-Kernighan-算法"><a class="docs-heading-anchor" href="#Brian-Kernighan-算法">Brian Kernighan 算法</a><a id="Brian-Kernighan-算法-1"></a><a class="docs-heading-anchor-permalink" href="#Brian-Kernighan-算法" title="Permalink"></a></h3><p>记 <span>$f(x)$</span> 表示 <span>$x$</span> 和 <span>$x-1$</span> 进行「与」运算所得的结果（即 <span>$f(x)=x\&amp;(x−1)$</span>），那么 <span>$f(x)$</span> 恰为 <span>$x$</span> 删去其二进制表示中最右侧的 1 的结果。参考 LeetCode 题目 <a href="https://leetcode-cn.com/problems/hamming-distance/">461. 汉明距离</a>。</p><p>例如 <span>$x=10001000$</span>，<span>$x-1=10000111$</span>，那么 <span>$x\&amp;(x-1)=10000000$</span>. </p><p>利用 Brian kernighan 算法计算出一个数的二进制表示有多少个 1 的方法如下。不断让 <span>$s=f(s)$</span>，直到 <span>$s=0$</span>。每循环一次 <span>$s$</span> 都会删除二进制表示中最右侧的 1，最终的循环次数即为 <span>$s$</span> 二进制表示中的 1 的数量。</p><h3 id="广度优先搜索（Breadth-First-Search）"><a class="docs-heading-anchor" href="#广度优先搜索（Breadth-First-Search）">广度优先搜索（Breadth-First Search）</a><a id="广度优先搜索（Breadth-First-Search）-1"></a><a class="docs-heading-anchor-permalink" href="#广度优先搜索（Breadth-First-Search）" title="Permalink"></a></h3><p>广度优先搜索 C++ 模板：</p><pre><code class="language-c hljs">private:
+	static constexpr int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+public:
+	vector&lt;vector&lt;int&gt;&gt; BFS(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        int m = matrix.size(), n = matrix[0].size(0);
+        vector&lt;vector&lt;int&gt;&gt; seen(m, vector&lt;int&gt;(n));
+        queue&lt;pair&lt;int, int&gt;&gt; q;
+
+        // 广度优先搜索
+        while (!q.empty()) {
+            auto [i, j] = q.front();
+            q.pop();
+			for (int d = 0; d &lt; 4; ++d) {
+                int ni = i + dirs[d][0];
+                int nj = j + dirs[d][1];
+                if (ni &gt;= 0 &amp;&amp; ni &lt; m &amp;&amp; nj &gt;= 0 &amp;&amp; nj &lt; n &amp;&amp; !seen[ni][nj]) {
+                    // ...;	// 写某些具体的操作
+                    q.emplace(ni, nj);
+                    seen[ni][nj] = 1;
+                }
+            }
+        }
+        return ...;			// 返回结果
+    }
+</code></pre><p>Python3 模板</p><pre><code class="language-python hljs">def BFS(self, matrix: List[List[int]]) -&gt; ...:
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    m, n = len(matrix), len(matrix[0])
+    q = collections.deque(...);		# 队列
+    seen = set(...)					# 将见过的位置坐标放进集合里面
+    
+    while q:
+        i, j = q.popleft()
+        for d in range(4):
+            ni = i + dirs[d][0]
+            nj = j + dirs[d][1]
+            if (0 &lt;= ni &lt; m) and (0 &lt;= nj &lt; n) and ((ni, nj) not in seen):
+                # ...				# 写某些具体操作
+                q.append((ni, nj))
+                seen.add((ni, nj))
+    return ...						# 返回结果 </code></pre><h3 id="深度优先搜索（Depth-First-Search）"><a class="docs-heading-anchor" href="#深度优先搜索（Depth-First-Search）">深度优先搜索（Depth-First Search）</a><a id="深度优先搜索（Depth-First-Search）-1"></a><a class="docs-heading-anchor-permalink" href="#深度优先搜索（Depth-First-Search）" title="Permalink"></a></h3><pre><code class="language-c hljs">// C++ 深度优先搜索 的框架
+vector&lt;int&gt; temp;
+void dfs(int cur, int n) {
+    if (cur == n + 1) {
+        // 记录答案
+        // ...
+        return;
+    }
+    // 考虑选择当前位置
+    temp.push_back(cur);
+    dfs(cur + 1, n, k);
+    temp.pop_back();
+    // 考虑不选择当前位置
+    dfs(cur + 1, n, k);
+}</code></pre><h3 id="回溯算法（Backtrack）"><a class="docs-heading-anchor" href="#回溯算法（Backtrack）">回溯算法（Backtrack）</a><a id="回溯算法（Backtrack）-1"></a><a class="docs-heading-anchor-permalink" href="#回溯算法（Backtrack）" title="Permalink"></a></h3><p>适用问题：</p><ul><li>解决一个问题有多个步骤</li><li>每个步骤有多种方法</li><li>需要找出所有的方法</li></ul><p>原理：在一棵树上的<strong>深度优先遍历</strong></p><h2 id="做题记录"><a class="docs-heading-anchor" href="#做题记录">做题记录</a><a id="做题记录-1"></a><a class="docs-heading-anchor-permalink" href="#做题记录" title="Permalink"></a></h2><p>时间复杂度：<span>$O(n)$</span>，空间复杂度：<span>$O(n)$</span>.</p><h3 id="二分搜索（Binary-Search）"><a class="docs-heading-anchor" href="#二分搜索（Binary-Search）">二分搜索（Binary Search）</a><a id="二分搜索（Binary-Search）-1"></a><a class="docs-heading-anchor-permalink" href="#二分搜索（Binary-Search）" title="Permalink"></a></h3><p>二分查找的题目，就看 liweiwei 的题解就行了：<a href="https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/">写对二分查找不能靠模板，需要理解加练习 （附练习题）</a></p><p>一般情况下，边界设置为 <code>left = mid + 1</code> 与 <code>right = mid</code>，这个时候中点是下取整，即偏向于左边取：<code>mid = (right - left) / 2 + left</code>。</p><blockquote><p>当看到边界设置行为是 <code>left = mid</code> 与 <code>right = mid - 1</code> 的时候，需要将 <code>mid = (right - left + 1) / 2 + left</code>，即调整为上取整，即偏向于右边取。</p></blockquote><p><a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/">34. 在排序数组中查找元素的第一个和最后一个位置</a>，我的<a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/liang-ci-er-fen-cha-zhao-by-strongnine-9-04l4/">题解</a>；</p><p><a href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array/">33. 搜索旋转排序数组</a>，我的<a href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array/solution/er-fen-cha-zhao-de-lian-xi-by-strongnine-rmzn/">题解</a>；</p><p><a href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/">81. 搜索旋转排序数组 II</a>，我的<a href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/solution/er-fen-cha-zhao-de-lian-xi-by-strongnine-toku/">题解</a>；</p><p><a href="https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/">153. 寻找旋转排序数组中的最小值</a>，我的<a href="https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/solution/er-fen-cha-zhao-de-lian-xi-by-strongnine-k84i/">题解</a>；</p><p><a href="https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/">154. 寻找旋转排序数组中的最小值 II</a>，我的<a href="https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/solution/er-fen-cha-zhao-de-lian-xi-by-strongnine-mszd/">题解</a>；</p><h3 id="栈"><a class="docs-heading-anchor" href="#栈">栈</a><a id="栈-1"></a><a class="docs-heading-anchor-permalink" href="#栈" title="Permalink"></a></h3><p><a href="https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/">剑指 Offer 09. 用两个栈实现队列</a>，我的<a href="https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/solution/yong-liang-ge-zhan-shi-xian-dui-lie-by-s-0dtx/">题解</a>；</p><p><a href="https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/">剑指 Offer 30. 包含min函数的栈</a>，我的<a href="https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/solution/wei-hu-liang-ge-zhan-lai-shi-xian-by-str-gyca/">题解</a>；</p><p><a href="https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/">剑指 Offer 06. 从尾到头打印链表</a>，我的<a href="https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/solution/san-chong-fang-fa-jie-jue-fan-xiang-da-y-irt5/">题解</a>；</p><h3 id="树"><a class="docs-heading-anchor" href="#树">树</a><a id="树-1"></a><a class="docs-heading-anchor-permalink" href="#树" title="Permalink"></a></h3><p>前序遍历、中序遍历、后序遍历基本写法：</p><p><a href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal/">144. 二叉树的前序遍历</a>，</p><p><a href="https://leetcode-cn.com/problems/binary-tree-inorder-traversal/">94. 二叉树的中序遍历</a>，</p><p><a href="https://leetcode-cn.com/problems/binary-tree-postorder-traversal/">145. 二叉树的后序遍历</a>，</p><p>关于前中后序三种遍历，极客时间王争的课程给了三个对应的递推代码</p><pre><code class="language-c hljs">// 前序遍历
+void preOrder(Node* root) {
+  if (root == null) return;
+  print root // 此处为伪代码，表示打印root节点
+  preOrder(root-&gt;left);
+  preOrder(root-&gt;right);
+}
+
+// 中序遍历
+void inOrder(Node* root) {
+  if (root == null) return;
+  inOrder(root-&gt;left);
+  print root // 此处为伪代码，表示打印root节点
+  inOrder(root-&gt;right);
+}
+
+// 后序遍历
+void postOrder(Node* root) {
+  if (root == null) return;
+  postOrder(root-&gt;left);
+  postOrder(root-&gt;right);
+  print root // 此处为伪代码，表示打印root节点
+}</code></pre><h3 id="双指针"><a class="docs-heading-anchor" href="#双指针">双指针</a><a id="双指针-1"></a><a class="docs-heading-anchor-permalink" href="#双指针" title="Permalink"></a></h3><p><strong>简单题：</strong></p><p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/">350. 两个数组的交集 II</a>，我的<a href="https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/solution/350-liang-ge-shu-zu-de-jiao-ji-shi-yong-nyhsl/">题解</a>；</p><p><strong>中等题：</strong></p><p><a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/">82. 删除排序链表中的重复元素 II</a>；</p><h3 id="链表"><a class="docs-heading-anchor" href="#链表">链表</a><a id="链表-1"></a><a class="docs-heading-anchor-permalink" href="#链表" title="Permalink"></a></h3><p><a href="https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/">剑指 Offer 24. 反转链表</a>，我的<a href="https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/solution/die-dai-he-di-gui-liang-chong-fang-fa-by-s3su/">题解</a>；</p><h3 id="动态规划（Dynamic-Programming）"><a class="docs-heading-anchor" href="#动态规划（Dynamic-Programming）">动态规划（Dynamic Programming）</a><a id="动态规划（Dynamic-Programming）-1"></a><a class="docs-heading-anchor-permalink" href="#动态规划（Dynamic-Programming）" title="Permalink"></a></h3><p>动态规划的 liweiwei 有一个关于买卖股票问题的题解：<a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/bao-li-mei-ju-dong-tai-gui-hua-chai-fen-si-xiang-b/">暴力解法、动态规划（Java）</a>，还有<a href="https://leetcode-cn.com/circle/article/qiAgHn/">股票问题系列通解（转载翻译）</a>。</p><p><strong>简单题：</strong></p><p><a href="https://leetcode-cn.com/problems/maximum-subarray/">53. 最大子序和</a>，我的<a href="https://leetcode-cn.com/problems/maximum-subarray/solution/53-zui-da-zi-xu-he-dong-tai-gui-hua-by-s-csae/">题解</a>；</p><p><strong>经典股票系列问题</strong></p><p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">121. 买卖股票的最佳时机</a>，简单题，我的<a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/121-mai-mai-gu-piao-de-zui-jia-shi-ji-ji-54ir/">题解</a>。</p><p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/">122. 买卖股票的最佳时机 II</a>，中等题，</p><p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">123. 买卖股票的最佳时机 III</a>，困难题，</p><p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/">188. 买卖股票的最佳时机 IV</a>，困难题，</p><p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/">309. 最佳买卖股票时机含冷冻期</a>，中等题，</p><p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">714. 买卖股票的最佳时机含手续费</a>，中等题，</p><h3 id="哈希"><a class="docs-heading-anchor" href="#哈希">哈希</a><a id="哈希-1"></a><a class="docs-heading-anchor-permalink" href="#哈希" title="Permalink"></a></h3><p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/">350. 两个数组的交集 II</a>，我的<a href="https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/solution/350-liang-ge-shu-zu-de-jiao-ji-shi-yong-nyhsl/">题解</a>；</p><h2 id="/-题解草稿"><a class="docs-heading-anchor" href="#/-题解草稿">0/ 题解草稿</a><a id="/-题解草稿-1"></a><a class="docs-heading-anchor-permalink" href="#/-题解草稿" title="Permalink"></a></h2></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../git/git_notebook/">« Git 学习笔记</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Friday 17 December 2021 13:42">Friday 17 December 2021</span>. Using Julia version 1.6.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
