@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>算法总结 · 9Docs</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">9Docs</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../git/git_notebook/">Git 学习笔记</a></li><li><span class="tocitem">LeetCode 刷题</span><ul><li><a class="tocitem" href="../data_structure/">数据结构</a></li><li class="is-active"><a class="tocitem" href>算法总结</a><ul class="internal"><li><a class="tocitem" href="#最高有效位"><span>最高有效位</span></a></li><li><a class="tocitem" href="#最低有效位"><span>最低有效位</span></a></li><li><a class="tocitem" href="#Brian-Kernighan-算法"><span>Brian Kernighan 算法</span></a></li><li><a class="tocitem" href="#广度优先搜索（Breadth-First-Search）"><span>广度优先搜索（Breadth-First Search）</span></a></li><li><a class="tocitem" href="#深度优先搜索（Depth-First-Search）"><span>深度优先搜索（Depth-First Search）</span></a></li><li><a class="tocitem" href="#回溯算法（Backtrack）"><span>回溯算法（Backtrack）</span></a></li></ul></li><li><a class="tocitem" href="../leetcoding/">刷题记录</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">LeetCode 刷题</a></li><li class="is-active"><a href>算法总结</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>算法总结</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/strongnine/9Docs/blob/master/docs/src/leetcode/algorithm.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="算法"><a class="docs-heading-anchor" href="#算法">算法</a><a id="算法-1"></a><a class="docs-heading-anchor-permalink" href="#算法" title="Permalink"></a></h1><h2 id="最高有效位"><a class="docs-heading-anchor" href="#最高有效位">最高有效位</a><a id="最高有效位-1"></a><a class="docs-heading-anchor-permalink" href="#最高有效位" title="Permalink"></a></h2><p>如果正整数 <span>$y$</span> 是 2 的整数次幂，则 <span>$y$</span> 的二进制表示中只有最高位为 1，其余都是 0，因此 <span>$y\&amp; (y-1)=0$</span>. 如果 <span>$y\le x$</span>，则称 <span>$y$</span> 为 <span>$x$</span> 的「最高有效位」。</p><p>题目 <a href="https://leetcode-cn.com/problems/counting-bits/">338. 比特位计数</a> 利用这样的一个方式，动态地维护最高有效位 <code>highBit</code>，然后算出所有小于给定整数 <span>$n$</span> 的整数二进制表示包含 1 的数量。</p><h2 id="最低有效位"><a class="docs-heading-anchor" href="#最低有效位">最低有效位</a><a id="最低有效位-1"></a><a class="docs-heading-anchor-permalink" href="#最低有效位" title="Permalink"></a></h2><p>对于正整数 <span>$x$</span>，将其二进制表示右移一位，得到</p><h2 id="Brian-Kernighan-算法"><a class="docs-heading-anchor" href="#Brian-Kernighan-算法">Brian Kernighan 算法</a><a id="Brian-Kernighan-算法-1"></a><a class="docs-heading-anchor-permalink" href="#Brian-Kernighan-算法" title="Permalink"></a></h2><p>记 <span>$f(x)$</span> 表示 <span>$x$</span> 和 <span>$x-1$</span> 进行「与」运算所得的结果（即 <span>$f(x)=x\&amp;(x−1)$</span>），那么 <span>$f(x)$</span> 恰为 <span>$x$</span> 删去其二进制表示中最右侧的 1 的结果。参考 LeetCode 题目 <a href="https://leetcode-cn.com/problems/hamming-distance/">461. 汉明距离</a>。</p><p>例如 <span>$x=10001000$</span>，<span>$x-1=10000111$</span>，那么 <span>$x\&amp;(x-1)=10000000$</span>. </p><p>利用 Brian kernighan 算法计算出一个数的二进制表示有多少个 1 的方法如下。不断让 <span>$s=f(s)$</span>，直到 <span>$s=0$</span>。每循环一次 <span>$s$</span> 都会删除二进制表示中最右侧的 1，最终的循环次数即为 <span>$s$</span> 二进制表示中的 1 的数量。</p><h2 id="广度优先搜索（Breadth-First-Search）"><a class="docs-heading-anchor" href="#广度优先搜索（Breadth-First-Search）">广度优先搜索（Breadth-First Search）</a><a id="广度优先搜索（Breadth-First-Search）-1"></a><a class="docs-heading-anchor-permalink" href="#广度优先搜索（Breadth-First-Search）" title="Permalink"></a></h2><p>广度优先搜索 C++ 模板：</p><pre><code class="language-c hljs">private:
+	static constexpr int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+public:
+	vector&lt;vector&lt;int&gt;&gt; BFS(vector&lt;vector&lt;int&gt;&gt;&amp; matrix) {
+        int m = matrix.size(), n = matrix[0].size(0);
+        vector&lt;vector&lt;int&gt;&gt; seen(m, vector&lt;int&gt;(n));
+        queue&lt;pair&lt;int, int&gt;&gt; q;
+
+        // 广度优先搜索
+        while (!q.empty()) {
+            auto [i, j] = q.front();
+            q.pop();
+			for (int d = 0; d &lt; 4; ++d) {
+                int ni = i + dirs[d][0];
+                int nj = j + dirs[d][1];
+                if (ni &gt;= 0 &amp;&amp; ni &lt; m &amp;&amp; nj &gt;= 0 &amp;&amp; nj &lt; n &amp;&amp; !seen[ni][nj]) {
+                    // ...;	// 写某些具体的操作
+                    q.emplace(ni, nj);
+                    seen[ni][nj] = 1;
+                }
+            }
+        }
+        return ...;			// 返回结果
+    }
+</code></pre><p>Python3 模板</p><pre><code class="language-python hljs">def BFS(self, matrix: List[List[int]]) -&gt; ...:
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    m, n = len(matrix), len(matrix[0])
+    q = collections.deque(...);		# 队列
+    seen = set(...)					# 将见过的位置坐标放进集合里面
+    
+    while q:
+        i, j = q.popleft()
+        for d in range(4):
+            ni = i + dirs[d][0]
+            nj = j + dirs[d][1]
+            if (0 &lt;= ni &lt; m) and (0 &lt;= nj &lt; n) and ((ni, nj) not in seen):
+                # ...				# 写某些具体操作
+                q.append((ni, nj))
+                seen.add((ni, nj))
+    return ...						# 返回结果 </code></pre><h2 id="深度优先搜索（Depth-First-Search）"><a class="docs-heading-anchor" href="#深度优先搜索（Depth-First-Search）">深度优先搜索（Depth-First Search）</a><a id="深度优先搜索（Depth-First-Search）-1"></a><a class="docs-heading-anchor-permalink" href="#深度优先搜索（Depth-First-Search）" title="Permalink"></a></h2><pre><code class="language-c hljs">// C++ 深度优先搜索 的框架
+vector&lt;int&gt; temp;
+void dfs(int cur, int n) {
+    if (cur == n + 1) {
+        // 记录答案
+        // ...
+        return;
+    }
+    // 考虑选择当前位置
+    temp.push_back(cur);
+    dfs(cur + 1, n, k);
+    temp.pop_back();
+    // 考虑不选择当前位置
+    dfs(cur + 1, n, k);
+}</code></pre><h2 id="回溯算法（Backtrack）"><a class="docs-heading-anchor" href="#回溯算法（Backtrack）">回溯算法（Backtrack）</a><a id="回溯算法（Backtrack）-1"></a><a class="docs-heading-anchor-permalink" href="#回溯算法（Backtrack）" title="Permalink"></a></h2><p>适用问题：</p><ul><li>解决一个问题有多个步骤</li><li>每个步骤有多种方法</li><li>需要找出所有的方法</li></ul><p>原理：在一棵树上的<strong>深度优先遍历</strong></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../data_structure/">« 数据结构</a><a class="docs-footer-nextpage" href="../leetcoding/">刷题记录 »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Saturday 18 December 2021 07:36">Saturday 18 December 2021</span>. Using Julia version 1.6.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
