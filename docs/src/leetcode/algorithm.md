@@ -1,5 +1,101 @@
 # 算法总结
 
+## 二分查找（Binary Search）
+
+王争老师的二分查找循环写法：
+
+```c++
+int bsearch(vector<int> a, int n, int value) {
+    int low = 0;
+    int high = n - 1;
+    
+    while (low <= high) {
+        int mid = low + (hight - low) / 2;
+        if (a[mid] == value) {
+            return mid;
+        } else if (a[mid] < value) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+```
+
+递归写法：
+
+```c++
+int bsearch(vector<int> a, int n, int val) {
+    return bsearchInternally(a, 0, n - 1, val);
+}
+
+int bsearchInternally(vector<int>, int low, int high, int value) {
+    if (low > high) return -1;
+    
+    int mid = low + ((high - low) >> 1);
+    if (a[mid] == value) {
+        return mid;
+    } else if (a[mid] < value) {
+        return bsearchInternally(a, mid+1, high, value);
+    } else {
+        return bsearchInternally(a, low, mid-1, value);
+    }
+}
+```
+
+>  liweiwei 的版本下，循环条件是 `left < right`，他的写法中，退出循环时一定有 `left == right` 成立。
+
+二分查找的时间复杂度是 $\mathcal{O}(\log n)$，查找数据的效率非常高。
+
+二分查找的局限性：
+
+- 依赖顺序表结构，也就是数组；
+- 只针对有序数据。如果是对于静态数据（没有频繁插入和删除），可以用一次排序，多次二分查找，来均摊排序的成本；
+- 数据量太小不适合二分查找；
+- 数据量太大也不适合用二分。主要原因在于二分查找依赖于数组，而数组需要的是连续的内存空间，如果数组太大，难以找到连续的内存空间。；
+
+二分查找的原理及其简单，但是想要写出没有 Bug 的二分查找并不容易。
+
+> 尽管第一个二分查找算法在 1946 年出现，然而第一个完全正确的二分查找算法实现直到 1962 年才出现。
+>
+> —— 《计算机程序设计艺术》唐纳德 • 克努特（Donald E.Knuth）
+
+4 种常见二分查找变形问题：
+
+- 查找第一个值等于给定值的元素；
+- 查找最后一个值等于给定值的元素；
+- 查找第一个大于等于给定值的元素；
+- 查找最后一个小于等于给定值的元素；
+
+**变体一：查找第一个值等于给定值的元素**
+
+```c++
+int bsearch(vector<int> a, int n, int value) {
+    int low = 0;
+    int high = n - 1;
+    while (low <= high) {
+        int mid = low + ((high - low) >> 1);
+        if (a[mid] > value) {
+            high = mid - 1;
+        } else if (a[mid] < value) {
+            low = mid + 1;
+        } else {
+            if ((mid == 0) || (a[mid - 1] != value)) return mid;
+            else high = mid - 1;
+        }
+    }
+    return -1;
+}
+```
+
+对于第 11 行代码：
+
+- 如果 `mid == 0`，那这个元素是第一个元素，肯定是我们要找的；
+- 如果 `mid != 0` 并且前面一个元素 `a[mid-1]` 不等于要找的值 `value`，那这个元素就是我们要找的；
+- 如果 `a[mid]` 前面的元素也是 value，那么此时的 `a[mid]` 肯定不是第一个等于给定值 `value` 的元素，让 `high = mid - 1`；
+
 ## 最高有效位
 
 如果正整数 $y$ 是 2 的整数次幂，则 $y$ 的二进制表示中只有最高位为 1，其余都是 0，因此 $y\& (y-1)=0$. 如果 $y\le x$，则称 $y$ 为 $x$ 的「最高有效位」。

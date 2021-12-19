@@ -1,5 +1,7 @@
 # 做题记录
 
+[CodeTop 企业题库](https://codetop.cc/home)；
+
 ## 栈（stack）
 
 [剑指 Offer 09. 用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/solution/yong-liang-ge-zhan-shi-xian-dui-lie-by-s-0dtx/)；
@@ -59,9 +61,9 @@ void postOrder(Node* root) {
 
 
 
-## 二分搜索（Binary Search）
+## 二分查找（Binary Search）
 
-二分查找的题目，就看 liweiwei 的题解就行了：[写对二分查找不能靠模板，需要理解加练习 （附练习题）](https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/)
+[二分查找](https://strongnine.github.io/9Docs/dev/leetcode/algorithm/#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%EF%BC%88Binary%20Search%EF%BC%89)的题目，就看 liweiwei 的题解就行了：[写对二分查找不能靠模板，需要理解加练习 （附练习题）](https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/)
 
 一般情况下，边界设置为 `left = mid + 1` 与 `right = mid`，这个时候中点是下取整，即偏向于左边取：`mid = (right - left) / 2 + left`。
 
@@ -77,7 +79,7 @@ void postOrder(Node* root) {
 
 [154. 寻找旋转排序数组中的最小值 II](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/)，我的[题解](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/solution/er-fen-cha-zhao-de-lian-xi-by-strongnine-mszd/)；
 
-
+[69. Sqrt(x)](https://leetcode-cn.com/problems/sqrtx/)，简单题，字节算法，
 
 
 ## 动态规划（Dynamic Programming）

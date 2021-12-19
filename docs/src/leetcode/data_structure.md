@@ -23,19 +23,19 @@ x.assign(int size, int value);
 // 给向量 x 分配从迭代器初始位置到最终位置的值
 x.assign(InputIterator first, InputIterator last);	
 
-x.push_back();	    // 添加元素至向量末端
-x.pop_back();		// 将最后的元素弹出
+x.push_back();    // 添加元素至向量末端
+x.pop_back();     // 将最后的元素弹出
 ```
 
 ## 栈（Stack）
 
 ```c++
 using namespace std;
-stack<int> stk;		// 声明一个栈 stk
-stk.push(1);		// push 元素进栈
-stk.pop();			// 弹出栈顶元素
-skt.top();			// 查看栈顶元素
-stk.empty();		// 判断栈是否为空
+stack<int> stk;    // 声明一个栈 stk
+stk.push(1);       // push 元素进栈
+stk.pop();         // 弹出栈顶元素
+skt.top();         // 查看栈顶元素
+stk.empty();       // 判断栈是否为空
 ```
 
 
@@ -48,26 +48,38 @@ using namespace std;
 queue<string> q;
 queue<string> q {arr};
 
-q.front();			  // 返回第一个元素的引用，如果 q 为空，返回值是未定义的
-q.back();			  // 返回最后一个元素的引用
+q.front();            // 返回第一个元素的引用，如果 q 为空，返回值是未定义的
+q.back();             // 返回最后一个元素的引用
 q.push(const T& obj); // 在尾部添加一个元素的副本
-q.emplace();		  // 在尾部生成对象
-q.pop();			  // 删除第一个元素
-q.size();			  // 返回元素个数
-q.empty();			  // 判断是否为空
+q.emplace();          // 在尾部生成对象
+q.pop();              // 删除第一个元素
+q.size();             // 返回元素个数
+q.empty();            // 判断是否为空
 ```
 
 ## 哈希表（Hash-map）
 
+哈希字典：
+
 ```c++
 using namespace std;
-unordered_map<int, int> hash;	// 创建哈希表 hash
-hash[k] = v;					// 插入元素
-hash.erase(k);					// 移除元素
-hash.clear();					// 清空元素
+unordered_map<int, int> hash;  // 创建哈希表 hash
+hash[k] = v;                   // 插入元素
+hash.erase(k);                 // 移除元素
+hash.clear();                  // 清空元素
 // 打印 hash 表中所有元素
 for (const auto& elemt : hash) {
     cout << "key: " << elemt.first << ", value: " << elemt.second << "\n";
+}
+```
+
+哈希集合：
+
+```c++
+unordered_set<int> hash_set;
+// 判断元素 x 是否在集合中
+if (hash_set.find(x) != hash_set.end()) {
+    return true;
 }
 ```
 
@@ -99,6 +111,10 @@ struct ListNode {
 
 `isalpha(c)`：判断 `c` 是否为一个字母。
 
-`tolower(c)`：将字母转为小写字母；`toupper(c)`：将字母转为大写字母；
+**大小写转换**：`tolower(c)`：将字母转为小写字母；`toupper(c)`：将字母转为大写字母；
 
 `to_string(c)`：将 `c` 转化为字符；
+
+**排序**：
+
+1. 对一个数组排序：`sort(nums.begin(), nums.end());`
