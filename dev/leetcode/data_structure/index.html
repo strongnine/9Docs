@@ -4,35 +4,39 @@ x.assign(int size, int value);
 // 给向量 x 分配从迭代器初始位置到最终位置的值
 x.assign(InputIterator first, InputIterator last);	
 
-x.push_back();	    // 添加元素至向量末端
-x.pop_back();		// 将最后的元素弹出</code></pre><h2 id="栈（Stack）"><a class="docs-heading-anchor" href="#栈（Stack）">栈（Stack）</a><a id="栈（Stack）-1"></a><a class="docs-heading-anchor-permalink" href="#栈（Stack）" title="Permalink"></a></h2><pre><code class="language-c hljs">using namespace std;
-stack&lt;int&gt; stk;		// 声明一个栈 stk
-stk.push(1);		// push 元素进栈
-stk.pop();			// 弹出栈顶元素
-skt.top();			// 查看栈顶元素
-stk.empty();		// 判断栈是否为空</code></pre><h2 id="队列（Queue）"><a class="docs-heading-anchor" href="#队列（Queue）">队列（Queue）</a><a id="队列（Queue）-1"></a><a class="docs-heading-anchor-permalink" href="#队列（Queue）" title="Permalink"></a></h2><pre><code class="language-c hljs">using namespace std;
+x.push_back();    // 添加元素至向量末端
+x.pop_back();     // 将最后的元素弹出</code></pre><h2 id="栈（Stack）"><a class="docs-heading-anchor" href="#栈（Stack）">栈（Stack）</a><a id="栈（Stack）-1"></a><a class="docs-heading-anchor-permalink" href="#栈（Stack）" title="Permalink"></a></h2><pre><code class="language-c hljs">using namespace std;
+stack&lt;int&gt; stk;    // 声明一个栈 stk
+stk.push(1);       // push 元素进栈
+stk.pop();         // 弹出栈顶元素
+skt.top();         // 查看栈顶元素
+stk.empty();       // 判断栈是否为空</code></pre><h2 id="队列（Queue）"><a class="docs-heading-anchor" href="#队列（Queue）">队列（Queue）</a><a id="队列（Queue）-1"></a><a class="docs-heading-anchor-permalink" href="#队列（Queue）" title="Permalink"></a></h2><pre><code class="language-c hljs">using namespace std;
 // 生成方式
 queue&lt;string&gt; q;
 queue&lt;string&gt; q {arr};
 
-q.front();			  // 返回第一个元素的引用，如果 q 为空，返回值是未定义的
-q.back();			  // 返回最后一个元素的引用
+q.front();            // 返回第一个元素的引用，如果 q 为空，返回值是未定义的
+q.back();             // 返回最后一个元素的引用
 q.push(const T&amp; obj); // 在尾部添加一个元素的副本
-q.emplace();		  // 在尾部生成对象
-q.pop();			  // 删除第一个元素
-q.size();			  // 返回元素个数
-q.empty();			  // 判断是否为空</code></pre><h2 id="哈希表（Hash-map）"><a class="docs-heading-anchor" href="#哈希表（Hash-map）">哈希表（Hash-map）</a><a id="哈希表（Hash-map）-1"></a><a class="docs-heading-anchor-permalink" href="#哈希表（Hash-map）" title="Permalink"></a></h2><pre><code class="language-c hljs">using namespace std;
-unordered_map&lt;int, int&gt; hash;	// 创建哈希表 hash
-hash[k] = v;					// 插入元素
-hash.erase(k);					// 移除元素
-hash.clear();					// 清空元素
+q.emplace();          // 在尾部生成对象
+q.pop();              // 删除第一个元素
+q.size();             // 返回元素个数
+q.empty();            // 判断是否为空</code></pre><h2 id="哈希表（Hash-map）"><a class="docs-heading-anchor" href="#哈希表（Hash-map）">哈希表（Hash-map）</a><a id="哈希表（Hash-map）-1"></a><a class="docs-heading-anchor-permalink" href="#哈希表（Hash-map）" title="Permalink"></a></h2><p>哈希字典：</p><pre><code class="language-c hljs">using namespace std;
+unordered_map&lt;int, int&gt; hash;  // 创建哈希表 hash
+hash[k] = v;                   // 插入元素
+hash.erase(k);                 // 移除元素
+hash.clear();                  // 清空元素
 // 打印 hash 表中所有元素
 for (const auto&amp; elemt : hash) {
     cout &lt;&lt; &quot;key: &quot; &lt;&lt; elemt.first &lt;&lt; &quot;, value: &quot; &lt;&lt; elemt.second &lt;&lt; &quot;\n&quot;;
+}</code></pre><p>哈希集合：</p><pre><code class="language-c hljs">unordered_set&lt;int&gt; hash_set;
+// 判断元素 x 是否在集合中
+if (hash_set.find(x) != hash_set.end()) {
+    return true;
 }</code></pre><h2 id="链表（Linked-list）"><a class="docs-heading-anchor" href="#链表（Linked-list）">链表（Linked-list）</a><a id="链表（Linked-list）-1"></a><a class="docs-heading-anchor-permalink" href="#链表（Linked-list）" title="Permalink"></a></h2><p>在 LeetCode 中链表节点的定义为：</p><pre><code class="language-c hljs">struct ListNode {
     int val;
     ListNode *next;
     ListNode() : val(0), next(nullptr) {}
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
-};</code></pre><p><strong>哑节点（Dummy node）：</strong>在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。</p><h2 id="常用函数"><a class="docs-heading-anchor" href="#常用函数">常用函数</a><a id="常用函数-1"></a><a class="docs-heading-anchor-permalink" href="#常用函数" title="Permalink"></a></h2><p><code>__builtin_popcount()</code>：返回输入数据，二进制中「1」的个数，只对 <code>int</code> 类型；</p><p>如果想要对 <code>long int</code> 和 <code>long long</code> 类型使用，可以分别用 <code>__builtin_popcountl()</code> 和 <code>__builtin_popcountll</code></p><p><code>lower_bound(ForwardIterator first, ForwardIterator last, const T&amp; val)</code>：返回一个迭代指针，该指针指向在 <code>[first, last)</code> 中不小于 <code>val</code> 的第一个元素。</p><p><code>isalpha(c)</code>：判断 <code>c</code> 是否为一个字母。</p><p><code>tolower(c)</code>：将字母转为小写字母；<code>toupper(c)</code>：将字母转为大写字母；</p><p><code>to_string(c)</code>：将 <code>c</code> 转化为字符；</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../git/git_notebook/">« Git 学习笔记</a><a class="docs-footer-nextpage" href="../algorithm/">算法总结 »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Sunday 19 December 2021 06:51">Sunday 19 December 2021</span>. Using Julia version 1.6.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+};</code></pre><p><strong>哑节点（Dummy node）：</strong>在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。</p><h2 id="常用函数"><a class="docs-heading-anchor" href="#常用函数">常用函数</a><a id="常用函数-1"></a><a class="docs-heading-anchor-permalink" href="#常用函数" title="Permalink"></a></h2><p><code>__builtin_popcount()</code>：返回输入数据，二进制中「1」的个数，只对 <code>int</code> 类型；</p><p>如果想要对 <code>long int</code> 和 <code>long long</code> 类型使用，可以分别用 <code>__builtin_popcountl()</code> 和 <code>__builtin_popcountll</code></p><p><code>lower_bound(ForwardIterator first, ForwardIterator last, const T&amp; val)</code>：返回一个迭代指针，该指针指向在 <code>[first, last)</code> 中不小于 <code>val</code> 的第一个元素。</p><p><code>isalpha(c)</code>：判断 <code>c</code> 是否为一个字母。</p><p><strong>大小写转换</strong>：<code>tolower(c)</code>：将字母转为小写字母；<code>toupper(c)</code>：将字母转为大写字母；</p><p><code>to_string(c)</code>：将 <code>c</code> 转化为字符；</p><p><strong>排序</strong>：</p><ol><li>对一个数组排序：<code>sort(nums.begin(), nums.end());</code></li></ol></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../git/git_notebook/">« Git 学习笔记</a><a class="docs-footer-nextpage" href="../algorithm/">算法总结 »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.10 on <span class="colophon-date" title="Sunday 19 December 2021 12:57">Sunday 19 December 2021</span>. Using Julia version 1.6.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
