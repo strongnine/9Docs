@@ -25,3 +25,4 @@ Manifest.toml
 
 # File that ignore
 .DS_Store
+doc_draft.md

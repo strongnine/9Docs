@@ -1,6 +1,6 @@
-[![][docs-dev-img]][docs-dev-url]
-
 # 9Docs
+
+[![dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://strongnine.github.io/9Docs/dev/)
 
 我是强劲九（strongnine），[9Docs](https://strongnine.github.io/9Docs/dev/) 是我的个人笔记文档，以下是我在不同平台的账号：
 

@@ -83,8 +83,9 @@ def BFS(self, matrix: List[List[int]]) -> ...:
 
 ## 深度优先搜索（Depth-First Search）
 
+C++ 深度优先搜索的框架
+
 ```c++
-// C++ 深度优先搜索 的框架
 vector<int> temp;
 void dfs(int cur, int n) {
     if (cur == n + 1) {

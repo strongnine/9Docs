@@ -7,7 +7,7 @@
 位运算符：
 
 | 运算符 |描述 | 实例 |
-| ------ | ---- | ---- |
+| :------: | :----: | :----: |
 | &      | 按位「与」运算 |      |
 | \|     | 按位「或」运算 |      |
 | ^      | 按位「异或」运算 |      |
@@ -15,7 +15,7 @@
 | <<     | 二进制左移运算 |      |
 | >>    | 二进制右移运算 |      |
 
-## 向量（vector）
+## 向量（Vector）
 
 ```cpp
 // 给向量 x 分配 size 个 value 值
@@ -23,46 +23,57 @@ x.assign(int size, int value);
 // 给向量 x 分配从迭代器初始位置到最终位置的值
 x.assign(InputIterator first, InputIterator last);	
 
-// 后面添加元素
-x.push_back();
-// 将最后元素弹出
-x.pop_back();
+x.push_back();	    // 添加元素至向量末端
+x.pop_back();		// 将最后的元素弹出
 ```
 
-## 栈（stack）
-
-
-
-
-
-## 队列（queue）
+## 栈（Stack）
 
 ```c++
-// 生成方式
-std::queue<std::string> q;
-std::queue<std::string> q {arr};
-// 操作
-// 返回第一个元素的引用，如果 q 为空，返回值是未定义的
-q.front();
-// 返回最后一个元素的引用
-q.back();
-// 在尾部添加一个元素的副本
-q.push(const T& obj);
-// 在尾部生成对象
-q.emplace();
-// 删除第一个元素
-q.pop();
-// 返回元素个数
-q.size();
-// 判断是否为空
-q.empty();
+using namespace std;
+stack<int> stk;		// 声明一个栈 stk
+stk.push(1);		// push 元素进栈
+stk.pop();			// 弹出栈顶元素
+skt.top();			// 查看栈顶元素
+stk.empty();		// 判断栈是否为空
 ```
 
 
 
+## 队列（Queue）
+
+```c++
+using namespace std;
+// 生成方式
+queue<string> q;
+queue<string> q {arr};
+
+q.front();			  // 返回第一个元素的引用，如果 q 为空，返回值是未定义的
+q.back();			  // 返回最后一个元素的引用
+q.push(const T& obj); // 在尾部添加一个元素的副本
+q.emplace();		  // 在尾部生成对象
+q.pop();			  // 删除第一个元素
+q.size();			  // 返回元素个数
+q.empty();			  // 判断是否为空
+```
+
+## 哈希表（Hash-map）
+
+```c++
+using namespace std;
+unordered_map<int, int> hash;	// 创建哈希表 hash
+hash[k] = v;					// 插入元素
+hash.erase(k);					// 移除元素
+hash.clear();					// 清空元素
+// 打印 hash 表中所有元素
+for (const auto& elemt : hash) {
+    cout << "key: " << elemt.first << ", value: " << elemt.second << "\n";
+}
+```
 
 
-## 链表（linked-list）
+
+## 链表（Linked-list）
 
 在 LeetCode 中链表节点的定义为：
 

@@ -1,8 +1,8 @@
 ## 第一章 Git 基础
 
-### 1. 基本操作
+### 1. 常用命令
 
-#### 1.1. 配置 user 信息
+**1.1. 配置 user 信息**
 
 配置自己的用户名为 `strongnine`，邮箱为 `strongnine@163.com`，实际用的时候请将此换成自己的用户名和邮箱。
 
@@ -11,7 +11,7 @@ $ git config --global user.name 'strongnine'
 $ git config --global user.email 'strongnine@163.com'
 ```
 
-#### 1.2. config 的三个作用域
+**1.2. config 的三个作用域**
 
 ```shell
 $ git config --global
@@ -26,7 +26,7 @@ $ git config --list --local
 $ git config --list --global
 ```
 
-#### 1.3. git 命令
+**1.3. git 命令**
 
 创建仓库可以在 GitHub 上创建仓库，然后再通过 `git clone` 克隆到自己的本地，也可以现在本地新建的文件夹里用 `git init` 初始化创建仓库。
 
@@ -51,10 +51,6 @@ $ git init
 
 > `git commit -m"add README.md"` 可以直接将备注信息一起提交。
 
-**查看日志**：`git log` 可以查看提交记录；
-
-> `git log --graph` 可以有比较图形化的界面。
-
 **删除文件**：`git mv <文件名>` 是正确删除文件的方法。
 
 **重命名的文件**：`git mv oldname newname`
@@ -68,42 +64,46 @@ $ git init
 
 ### 2. 版本管理
 
-#### 2.1. 查看历史
+**2.1. 分支管理**
 
-```shell
-# git log 不带参数的时候是整个完整的日记
-# 如果加上 --oneline，就只显示每次提交的备注
-$ git log --oneline
+**查看历史**：`git log` 可以查看当前分支的提交历史记录日志，命令 `gitk` 可以调出图形界面查看历史版本。
 
-# 还可以指定最近的几个 commit，以 4 为例：
-$ git log -n4 --oneline
+> `git log --graph` 可以有比较图形化的界面；
+>
+> `git log --oneline` 只显示每次提交的备至；
+>
+> `git log -n4 --online` 指定查看最近 4 个 commit；
+>
+> `git log --all` 查看全部分支的日志；
+>
+> `git log --all --graph` 用图形化的方式显示所有分支的日志；
 
-# 查看本地有多少分支和创建分支
-$ git branch -v
-$ git checkout -b temp 415c5c...
+**查看分支**：`git branch -v` 可以查看本地有多少分支。
 
-# git log 只显示当前分支的日志，--all 查看全部分支
-$ git log --all
-# 还可以图形化显示
-$ git log --all --graph
+> `git branch -av`：查看所有分支；
+>
+> `git branch -d 分支名`：删除分支；
+>
+> `git branch -D 分支名`：强制删除分支；
 
-# 通过图形界面查看版本历史：
-# 命令行输入 gitk 会弹出图形界面
-$ gitk
-```
+!!! warning
+    如果分支还未被 merged 的时候要用强制删除，请确保该分支无用。
 
-网友「夕夕熊」补充：
+**创建分支**：`git checkout` 
 
-> 加上 --decorate 参数，部分同学才可以显示（master）（temp）等分支信息。
+> `git checkout -b` 可以创建新分支并且切换到该新的分支；
 
-#### 2.2. .git 目录的内容
 
-cat 命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能。
-cat HEAD 查看 HEAD 文件的内容
-git cat-file 命令 显示版本库对象的内容、类型及大小信息。
-git cat-file -t b44dd71d62a5a8ed3 显示版本库对象的类型
-git cat-file -s b44dd71d62a5a8ed3 显示版本库对象的大小
-git cat-file -p b44dd71d62a5a8ed3 显示版本库对象的内容
+> 有的时候需要加上 `--decorate` 参数才可以显示（master）（temp）等分支信息。
+
+**2.2. `.git` 目录的内容**
+
+`cat` 命令主要用来查看文件内容，创建文件，文件合并，追加文件内容等功能。
+`cat HEAD` 查看 HEAD 文件的内容
+`git cat-file` 命令 显示版本库对象的内容、类型及大小信息。
+`git cat-file -t b44dd71d62a5a8ed3` 显示版本库对象的类型
+`git cat-file -s b44dd71d62a5a8ed3` 显示版本库对象的大小
+`git cat-file -p b44dd71d62a5a8ed3` 显示版本库对象的内容
 
 HEAD：指向当前的工作路径
 config：存放本地仓库（local）相关的配置信息。
@@ -117,11 +117,9 @@ objects：存放对象 .git/objects/ 文件夹中的子文件夹都是以哈希�
 
 一个 commit 对应一颗 tree，tree 相当于文件夹，blob 相当于具体的文件（数据）。git 里面，文件内容相同， 就是视为同一个文件。
 
+> 当创建了新的空文件夹时，使用 `status` 不会检测到这个空的文件夹。
 
-
-当创建了新的空文件夹时，使用 `status` 不会检测到这个空的文件夹。
-
-#### 2.3. 分离头指针
+**2.3. 分离头指针**
 
 变更没有基于某个 branch，在分离头指针进行的 commit，如果没有及时合并到某个 branch，可能会被 git 当作垃圾清掉。如果这种变更是重要的，就要将其与某个 branch 绑在一起。
 
@@ -129,30 +127,18 @@ objects：存放对象 .git/objects/ 文件夹中的子文件夹都是以哈希�
 
 HEAD 指针可以指向某个分支的最后一次提交，也可以不和某个分支挂钩，当处于分离头指针时，可以直接指向某个 commit。它只能够定位到某个 commit。
 
-`git diff [commit1] [commit2]` 可以比较两个具体的 commit 的差异。`git diff HEAD HEAD^1` 将当前结点与其父亲结点进行对比。`HEAD^1, HEAD~1, HEAD~, HEAD^` 都一样。
+**对比提交之间的差异**：`git diff [commit1] [commit2]` 可以比较两个具体的 commit 的差异。`git diff HEAD HEAD^1` 将当前结点与其父亲结点进行对比。`HEAD^1, HEAD~1, HEAD~, HEAD^` 都一样。
 
 > 1. 一个节点，可以包含多个子节点（checkout 出多个分支）
 > 2. 一个节点可以有多个父节点（多个分支合并）
-> 3. \^ 和 \~ 都是父节点，区别是跟随数字时候，\^2 是第二个父节点，而 \~2 是父节点的父节点
-> 4. \^ 和 \~ 可以组合使用,例如 HEAD\~2\^2
+> 3. ^ 和 ~ 都是父节点，区别是跟随数字时候，^2 是第二个父节点，而 ~2 是父节点的父节点
+> 4. ^ 和 ~ 可以组合使用,例如 HEAD~2^2
 
 ## 第二章 独自使用 Git
 
-### 1. 删除无用分支
+### 1. commit 的操作
 
-```shell
-# 查看所有分支
-$ git branch -av
-# 删除分支
-$ git branch -d 分支名
-# 如果分支还未被 merged 用强制删除
-# 要注意保证分支无用
-$ git branch -D 分支名
-```
-
-### 2. commit 的操作
-
-#### 2.1. 修改 commit 的 message
+**1.1. 修改 commit 的 message**
 
 ```shell
 # 修改最新 commit 的信息
@@ -162,10 +148,10 @@ $ git commit --amend
 # 还会继续弹出一个交互界面，提示要把 message 如何修改
 $ git rebase -i 父节点
 ```
+!!! warning
+    这种操作只适用于还未合并到「主线」 的分支上，否则会影响到合作者的工作。
 
-这种操作只适用于还未合并到「主线」 的分支上，否则会影响到合作者的工作。
-
-#### 2.2. 整理多个 commit 
+**1.2. 整理多个 commit** 
 
 ```shell
 # 和上一个操作相似
@@ -176,7 +162,7 @@ $ git rebase -i 父节点
 $ git rebase -i 父节点
 ```
 
-#### 2.3. 对比差异
+**1.3. 对比差异**
 
 ```shell
 # 对比暂存区和 HEAD 里面内容的差异（看看做了哪些改动）
@@ -192,7 +178,7 @@ $ git diff -- <文件名>
 $ git diff <指针 1> <指针 2> -- <文件名>
 ```
 
-#### 2.4. 恢复变更
+**1.4. 恢复变更**
 
 ```shell
 # 把暂存区里面的文件全部恢复成和 HEAD 一样的
@@ -205,7 +191,7 @@ $ git checkout -- index.html
 $ git reset HEAD -- <文件名>...
 ```
 
-#### 2.5. 消除最近几次提交
+**1.5. 消除最近几次提交**
 
 ```shell
 # 将头指针指向特定的某次提交，并且删除这之前的提交
@@ -213,14 +199,14 @@ $ git reset HEAD -- <文件名>...
 $ git reset --hard <指针>
 ```
 
-#### 2.6. 删除文件
+**1.6. 删除文件**
 
 ```shell
 # 正确删除文件的方法
 $ git rm <文件名>
 ```
 
-#### 2.7. 临时加塞的紧急任务 —— stash 的使用
+**1.7. 临时加塞的紧急任务 —— stash 的使用**
 
 ```shell
 # 把当前状态存放
@@ -233,13 +219,13 @@ $ git stash apply
 $ git stash pop
 ```
 
-### 3. Git 管理
+### 2. Git 管理
 
-#### 3.1. 指定不需要 Git 管理的文件
+**2.1. 指定不需要 Git 管理的文件**
 
 `.gitignore` 文件上的内容就是表示指定类型的文件不给 Git 进行管理。
 
-#### 3.2. Git 的备份
+**2.2. Git 的备份**
 
  ![git_learning_fig2](../assets/git_learning_fig2.png)
 
@@ -263,7 +249,7 @@ $ git push --set-upstream <  > <  >
 
 ## 第三章 Github 同步
 
-### **配置公私钥**
+### 配置公私钥
 
 在 Github 首页上，寻找 help，在上面有关于如何 `connecting to github with SSH` 的做法。
 
@@ -328,7 +314,7 @@ $ git push <name> master
 
 ### 1. 多个人对文件修改
 
-#### 1.1. 不同人修改了不同文件
+**1.1. 不同人修改了不同文件**
 
 ```bash
 # 
@@ -348,7 +334,7 @@ $ git merge (github/feature/add_git_commands)
 >
 > 作者回复：我们在本地无法直接在 clone 下来的远程分支上做变更的，只能基于远程分支建本地分支后，才能创建 commit。
 
-#### 1.2. 不同人修改同一文件的不同区域
+**1.2. 不同人修改同一文件的不同区域**
 
 ```bash
 # pull 会把远端的内容拉下来，并且本地的也会进行更新
@@ -363,7 +349,7 @@ $ git branch -av
 >
 > 作者回复：其实就是两个分支的关系为 0|n 或者 n|0 ，如果两个分支直接为 n|m 的关系就不是 fast forward 。A 分支比 B 分支多 5 个 commit，B 比 A 分支多 3 个 commit。A 和 B 就不是 fast forward。
 
-#### 1.3. 不同人修改同一文件的同一区域
+**1.3. 不同人修改同一文件的同一区域**
 
 ```bash
 # 如果 push 不上去，使用 merge 又提示已经更新到最新了
@@ -384,7 +370,7 @@ $ git commit -am'(commit text)'
 
 ### 2. 更改了文件名
 
-#### 2.1. 同时变更了文件名和内容
+**2.1. 同时变更了文件名和内容**
 
 ```bash
 # 其中有一个人变更了文件名
@@ -393,7 +379,7 @@ $ git commit -am'(commit text)'
 $ git pull
 ```
 
-#### 2.2. 同一文件改成不同的文件名
+**2.2. 同一文件改成不同的文件名**
 
 ```bash
 # 依旧是报冲突
