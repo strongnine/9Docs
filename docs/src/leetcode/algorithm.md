@@ -1,4 +1,4 @@
-# 算法
+# 算法总结
 
 ## 最高有效位
 
@@ -8,7 +8,16 @@
 
 ## 最低有效位
 
-对于正整数 $x$，将其二进制表示右移一位，得到
+对于正整数 $x$，将其二进制表示右移一位，等价于将其二进制表示的最低位去掉，得到的数是 $\lfloor\frac{x}{2}\rfloor$，如果 $bits[\lfloor\frac{x}{2}\rfloor]$ 的值已知，则可以得到 $bits[x]$ 的值：
+
+- 如果 $x$ 是偶数，则 $bits[x]=bits[\lfloor\frac{x}{2}\rfloor]$；
+- 如果 $x$ 是奇数，则 $bits[x] = bits[\lfloor\frac{x}{2}\rfloor]+1$.
+
+上述两种情况可以合并成：$bits[x] $ 的值等于 $bits[\lfloor\frac{x}{2}\rfloor]$ 的值加上 $x$ 除以 2 的余数。
+
+由于 $\lfloor\frac{x}{2}\rfloor$ 可以通过 $x\gg1$ 得到，$x$ 除以 2 的余数可以通过 $x \& 1$ 得到，因此有：$bits[x]=bits[x\gg1]+(x\&1)$.
+
+题目 [338. 比特位计数](https://leetcode-cn.com/problems/counting-bits/) 利用最低有效位，遍历从 1 到 $n$ 的每个正整数 $i$，计算 $bits$ 的值，最终得到的数组 $bits$ 即为答案。
 
 ## Brian Kernighan 算法
 
