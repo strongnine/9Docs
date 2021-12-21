@@ -1,8 +1,11 @@
 # 做题记录
 
-[CodeTop 企业题库](https://codetop.cc/home)；
+题库网站：
 
-## 栈（stack）
+- [CodeTop 企业题库](https://codetop.cc/home)；
+- ……
+
+## 栈（Stack）
 
 [剑指 Offer 09. 用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/solution/yong-liang-ge-zhan-shi-xian-dui-lie-by-s-0dtx/)；
 
@@ -10,7 +13,7 @@
 
 [剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/solution/san-chong-fang-fa-jie-jue-fan-xiang-da-y-irt5/)；
 
-## 树（tree）
+## 树（Tree）
 
 前序遍历、中序遍历、后序遍历基本写法：
 
@@ -20,38 +23,13 @@
 
 [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)，简单题；
 
-关于前中后序三种遍历，极客时间王争的课程给了三个对应的递推代码
-
-```c++
-// 前序遍历
-void preOrder(Node* root) {
-  if (root == null) return;
-  print root // 此处为伪代码，表示打印root节点
-  preOrder(root->left);
-  preOrder(root->right);
-}
-
-// 中序遍历
-void inOrder(Node* root) {
-  if (root == null) return;
-  inOrder(root->left);
-  print root // 此处为伪代码，表示打印root节点
-  inOrder(root->right);
-}
-
-// 后序遍历
-void postOrder(Node* root) {
-  if (root == null) return;
-  postOrder(root->left);
-  postOrder(root->right);
-  print root // 此处为伪代码，表示打印root节点
-}
-```
+> 关于[前中后序三种遍历](https://strongnine.github.io/9Docs/dev/leetcode/algorithm/#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86)，极客时间王争的课程给了三个对应的递推代码.
 
 
-## 链表（linked-list）
 
-[剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)，我的[题解](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/solution/die-dai-he-di-gui-liang-chong-fang-fa-by-s3su/)；
+## 链表（Linked-list）
+
+[剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/solution/die-dai-he-di-gui-liang-chong-fang-fa-by-s3su/)；
 
 ## 双指针（Two Pointers）
 
