@@ -47,6 +47,10 @@ $ git init
 >
 >`git add -A` 相对于 `git add -u` 命令的优点 ： `git add -A` 可以提交所有被删除、被替换、被修改和新增的文件到数据暂存区，而 `git add -u` 只能操作跟踪过的文件。`git add -A` 等同于 `git add -all`. 
 
+**撤销添加（版本回退）**：有的时候我们 `add` 了一个文件，想要撤销，可以用 `git reset`
+
+> 撤销添加：`git reset HEAD` 将绿字变成红字；
+
 **提交修改**：`git commit` 将当前暂存区里的更新提交，会用默认编辑器跳出信息，可以在第一行添加提交的备注信息，例如 "add README.md". 
 
 > `git commit -m"add README.md"` 可以直接将备注信息一起提交。

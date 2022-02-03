@@ -17,14 +17,34 @@
 
 ## 向量（Vector）
 
-```cpp
+vector 容器是 STL 中最常用的容器之一，它与 array 容器非常类似，都可以看作是 C++ 对普通数组的「升级版」。不同之处在于：
+
+- array 实现的是静态数组（容量固定的数组）；
+- vector 实现的是动态数组，可以进行元素的插入、删除，动态调整占用的内存空间；
+
+vector 在尾部插入或删除元素的时间复杂度为 $\mathcal{O}(1)$，但是如果是在头部或者中部插入或删除元素，时间复杂度为 $\mathcal{O}(n)$. 
+
+```c++
+#include <vector>
+using namespace std;
+
+vector<int> x;     // 创建存储 int 类型的 vector
+vector<int> xs {2, 3, 5, 7}; // 在创建时指定初始值以及元素个数
+vector<int> x(20); // x 初始时就有 20 个值为 0 的元素
+vector<int> x(20, 1); // x 初始有 20 个值为 1 的元素
+x.reserve(20);     // 给 vector 分配内存，可以容纳 20 个元素
+
 // 给向量 x 分配 size 个 value 值
 x.assign(int size, int value);	
 // 给向量 x 分配从迭代器初始位置到最终位置的值
 x.assign(InputIterator first, InputIterator last);	
 
-x.push_back();    // 添加元素至向量末端
-x.pop_back();     // 将最后的元素弹出
+x.size();          // 返回实际元素个数
+x.assign();        // 用新元素替换原有内容
+x.front();         // 返回第一个元素的引用
+x.back();          // 返回最后一个元素的引用
+x.push_back();     // 添加元素至向量末端
+x.pop_back();      // 将最后的元素弹出
 ```
 
 ## 栈（Stack）
@@ -223,6 +243,12 @@ void delete(int data) {
 
 **二叉查找树的其他操作**：
 
+查找最大最小节点、前驱节点和后继节点。
+
+中序遍历二叉查找树，可以输出有序的数据序列，时间复杂度 $\mathcal{O}(n)$，二叉查找树也叫二叉排序树。
+
+**支持重复数据的二叉查找树**：
+
 
 
 ## 链表（Linked-list）
@@ -240,6 +266,34 @@ struct ListNode {
 ```
 
 **哑节点（Dummy node）：**在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。
+
+## 图（Graph）
+
+图有两种主要存储方式：邻接表和邻接矩阵。图的代码实现：
+
+```c++
+class Graph { // 无向图
+private:
+    int v;    // 顶点的个数
+    LinkedList* adj[];  // 邻接表
+    
+public:
+    void Graph(int v) {
+        this->v = v;
+        adj = new LinkedList(v);
+        for (int i = 0; i < v; ++i) {
+            adj[i] = new LinkedList();
+        }
+    }
+    
+    void addEdge(int s, int t) {  // 无向图一条边存两次
+        adj[s].add(t);
+        adj[t].add(s);
+    }
+}
+```
+
+
 
 ## 常用函数
 
@@ -262,3 +316,5 @@ struct ListNode {
 ## 参考
 
 [1] 《数据结构与算法之美》王争｜极客时间
+
+[2] [C 语言中文网](http://c.biancheng.net/)
