@@ -15,7 +15,9 @@
 | <<     | 二进制左移运算 |      |
 | >>    | 二进制右移运算 |      |
 
-## 向量（Vector）
+## 数组
+
+### 向量（Vector）
 
 vector 容器是 STL 中最常用的容器之一，它与 array 容器非常类似，都可以看作是 C++ 对普通数组的「升级版」。不同之处在于：
 
@@ -77,7 +79,25 @@ q.size();             // 返回元素个数
 q.empty();            // 判断是否为空
 ```
 
+## 链表（Linked-list）
+
+在 LeetCode 中链表节点的定义为：
+
+```c++
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+```
+
+**哑节点（Dummy node）：**在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。
+
 ## 哈希表（Hash-map）
+
+哈希表又叫散列表。
 
 哈希字典：
 
@@ -112,9 +132,11 @@ if (hash_set.find(x) != hash_set.end()) {
 - 层数（Level）：节点的深度 + 1；
 - 数的高度：根节点的高度；
 
+### 二叉树
+
 **二叉树（Binary Tree）**
 
-最常用的树结构是二叉树。二叉事的每个节点最多有两个子节点，分别称为「左子节点」和「右子节点」。
+最常用的树结构是二叉树，是十分重点的内容，在面试中经常考。二叉事的每个节点最多有两个子节点，分别称为「左子节点」和「右子节点」。
 
 **满二叉树**：叶子节点全部在最底层，除了叶子节点之外，每个节点都有左右两个子节点。
 
@@ -249,25 +271,17 @@ void delete(int data) {
 
 **支持重复数据的二叉查找树**：
 
+### Trie 树
 
+### B+ 树
 
-## 链表（Linked-list）
+### 红黑树
 
-在 LeetCode 中链表节点的定义为：
-
-```c++
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-```
-
-**哑节点（Dummy node）：**在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。
+## 堆
 
 ## 图（Graph）
+
+### 图的表示
 
 图有两种主要存储方式：邻接表和邻接矩阵。图的代码实现：
 
@@ -293,7 +307,7 @@ public:
 }
 ```
 
-
+#### 位图
 
 ## 常用函数
 
@@ -315,6 +329,7 @@ public:
 
 ## 参考
 
-[1] 《数据结构与算法之美》王争｜极客时间
+[1] [《数据结构与算法之美》王争｜极客时间](http://gk.link/a/11bwG)
 
 [2] [C 语言中文网](http://c.biancheng.net/)
+
