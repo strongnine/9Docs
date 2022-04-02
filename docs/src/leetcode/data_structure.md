@@ -1,5 +1,3 @@
-# 数据结构
-
 各种数据类型的范围：
 
 - `int`: $[-2147483648, 2147483647]$，大约等于 $-2\times 10^{9}\sim 2\times 10^{9}$.
@@ -17,7 +15,7 @@
 
 ## 数组
 
-### 向量（Vector）
+### C++ 中的向量（Vector）
 
 vector 容器是 STL 中最常用的容器之一，它与 array 容器非常类似，都可以看作是 C++ 对普通数组的「升级版」。不同之处在于：
 
@@ -49,6 +47,22 @@ x.push_back();     // 添加元素至向量末端
 x.pop_back();      // 将最后的元素弹出
 ```
 
+## 链表（Linked-list）
+
+在 LeetCode 中链表节点的定义为：
+
+```c++
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+```
+
+**哑节点（Dummy node）：**在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。
+
 ## 栈（Stack）
 
 ```c++
@@ -78,22 +92,6 @@ q.pop();              // 删除第一个元素
 q.size();             // 返回元素个数
 q.empty();            // 判断是否为空
 ```
-
-## 链表（Linked-list）
-
-在 LeetCode 中链表节点的定义为：
-
-```c++
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-```
-
-**哑节点（Dummy node）：**在操作链表时常用的技巧，它的 next 指针指向链表头节点。好处是不用对头节点进行特殊判断。
 
 ## 哈希表（Hash-map）
 
@@ -327,9 +325,5 @@ public:
 
 1. 对一个数组排序：`sort(nums.begin(), nums.end())`；
 
-## 参考
 
-[1] [《数据结构与算法之美》王争｜极客时间](http://gk.link/a/11bwG)
-
-[2] [C 语言中文网](http://c.biancheng.net/)
 

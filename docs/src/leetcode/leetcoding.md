@@ -1,41 +1,17 @@
 # 做题记录
 
-题库网站：
+参考网站：
 
-- [CodeTop 企业题库](https://codetop.cc/home)；
+- [LeetCode 中国](https://leetcode-cn.com/)：最大最全的题库网站；
+- [CodeTop 企业题库](https://codetop.cc/home)：能够根据不同的公司选择题库，有专门性地刷；
+- [labuladong 的算法小抄](https://labuladong.github.io/algo/)
 - ……
 
-## 栈（Stack）
+## 心路历程
 
-[剑指 Offer 09. 用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/solution/yong-liang-ge-zhan-shi-xian-dui-lie-by-s-0dtx/)；
-
-[剑指 Offer 30. 包含min函数的栈](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/solution/wei-hu-liang-ge-zhan-lai-shi-xian-by-str-gyca/)；
-
-[剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/solution/san-chong-fang-fa-jie-jue-fan-xiang-da-y-irt5/)；
-
-## 树（Tree）
-
-前序遍历、中序遍历、后序遍历基本写法：
-
-[144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)，简单题；
-
-[94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)，简单题；
-
-[145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)，简单题；
-
-> 关于[前中后序三种遍历](https://strongnine.github.io/9Docs/dev/leetcode/algorithm/#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86)，极客时间王争的课程给了三个对应的递推代码.
-
-
-
-## 链表（Linked-list）
-
-[剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)，简单题，我的[题解](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/solution/die-dai-he-di-gui-liang-chong-fang-fa-by-s3su/)；
-
-## 双指针（Two Pointers）
-
-[350. 两个数组的交集 II](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/)，简单题，我的[题解](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/solution/350-liang-ge-shu-zu-de-jiao-ji-shi-yong-nyhsl/)；
-
-[82. 删除排序链表中的重复元素 II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/)，中等题；
+- 刷题也好，面试也好，都是有技巧的；
+- 数据结构是工具，算法是通过合适的工具解决特定问题的方法。—— labuladong；
+- 做题先做「二叉树」，最容易培养框架思维，大部分算法技巧本质上都是树的遍历问题。—— labuladong；
 
 
 
@@ -58,6 +34,16 @@
 [154. 寻找旋转排序数组中的最小值 II](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/)，我的[题解](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/solution/er-fen-cha-zhao-de-lian-xi-by-strongnine-mszd/)；
 
 [69. Sqrt(x)](https://leetcode-cn.com/problems/sqrtx/)，简单题，字节算法，
+
+## 快慢指针
+
+## 左右指针
+
+## 滑动窗口
+
+## 前缀和数组
+
+## 差分数组
 
 
 ## 动态规划（Dynamic Programming）

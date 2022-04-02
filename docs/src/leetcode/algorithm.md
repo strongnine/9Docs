@@ -67,7 +67,7 @@ def merge(A[p...r], A[p...q], A[q+1...r]):
         A[p+i] = tmp[i]
 ```
 
-> 之后会思考一下，如何使用「哨兵」来简化 merge() 函数的编程
+> 之后会思考一下，如何使用「哨兵」来简化 `merge()` 函数的编程
 
 **性能分析**：
 
@@ -468,7 +468,7 @@ void dfs(int cur, int n) {
 
 **问题**：如何编程求出一组数据的有序对个数或者逆序对个数？
 
-利用[归并排序](https://strongnine.github.io/9Docs/dev/leetcode/algorithm/#.-分治算法（Divide-and-Conquer）)算法，将两个有序的小数组，合并成一个有序的数组，同时计算逆序对个数。
+利用[归并排序](https://strongnine.github.io/9Docs/dev/leetcode/algorithm/#归并排序（Merge Sort）)算法，将两个有序的小数组，合并成一个有序的数组，同时计算逆序对个数。
 
 > 王争老师的课程[《数据结构与算法之美》第 38 讲](http://gk.link/a/11bHy)有相关代码可供参考。
 >
@@ -542,6 +542,7 @@ void f(int i, int cw, int w) {
 用一个二维数组 `state[n][w+1]` 来记录每个物品决策完可以到达的状态。
 
 ```c++
+// C++ 版本的代码
 // weight: 物品重量，n: 物品个数，w: 背包可承载重量
 int knapsack(vector<int> weight, int n, int w) {
     vector<vector<int>> states(n, vector<int>(w + 1)); // 默认值 0
@@ -564,7 +565,84 @@ int knapsack(vector<int> weight, int n, int w) {
 }
 ```
 
-一般来说动态规划是一种空间换时间的方法。
+> 一般来说动态规划是一种空间换时间的方法。
+
+如果对上面的代码进行空间优化，只需要一个大小为 `w+1` 的一维数组就可以解决：
+
+```python
+def kanpsack2(items, n, w):
+    states = [False for _ in range(w+1)]
+    states[0] = True  # 第一行的数据要特殊处理，可以利用哨兵优化
+    if (items[0] <= w):
+        states[items[0]] = True
+    
+    for i in range(1, n):  # 动态规划
+        # 这一行 j 需要从大到小来处理，否则会出现 for 循环重复计算
+        # 原因是：
+        for j in range(w-items[i], -1, -1):  # 把第 i 个物品放入背包
+            if states[j] == True:
+                states[j+items[i]] = True
+                
+    for i in range(w, -1, -1):  # 输出结果
+        if states[i] == True:
+            return i
+    
+    return 0
+```
+
+**0 - 1 背包问题（升级版）**：现在不仅考虑背包重量和物品重量，不同的物品还有不同的价值，在满足背包最大重量限制下，背包中物品的总价值的最大值是多少？
+
+如果使用**回溯算法**：
+
+```python
+# Python 版本的代码
+maxV = float('-inf')  # 结果放到 maxV 中
+items = [2, 2, 4, 6, 3]  # 物品的重量
+value = [3, 4, 8, 9, 6]  # 物品的价值
+n = 5  # 物品个数
+w = 9  # 背包承受的最大重量
+def f(i, cw, cv):
+    if (cw == w) or (i == n):  # cw == w 表示装满了，i == n 表示物品都考察完了
+        if (cv > maxV):
+            maxV = cv
+        return
+    f(i+1, cw, cv)  # 选择不装第 i 个物品
+    if (cw + weight[i] <= w):
+        f(i+1, cw+weight[i], cv+value[i])  # 选择装第 i 个物品
+```
+
+如果使用动态规划：
+
+```python
+def knapsack3(weight, value, n, w):
+    states = [[0 for i in range(w+1)] for _ in range(n)]
+    for i in range(n):  # 初始化 states
+        for j in range(w+1):
+            states[i][j] = -1
+            
+    states[0][0] = 0
+    if (weight[0] <= w):
+        states[0][weight[0]] = value[0]
+        
+    for i in range(1, n):  # 动态规划，状态转移
+        for j in range(w+1):  # 不选择第 i 个物品
+            if (states[i-1][j] >= 0):
+                states[i][j] = states[i-1][j]
+                
+        for j in range(w-weight[i]+1):  # 选择第 i 个物品
+            if (states[i-1][j] >= 0):
+                v = states[i-1][j] + value[i]
+                if (v > states[i][j+weight[i]]):
+                    states[i][j+weight[i]] = v
+                    
+    # 找出最大值
+    maxvalue = -1
+    for j in range(w+1):
+        if (states[n-1][j] > maxvalue):
+            maxvalue = states[n-1][j]
+    
+    return maxvalue
+```
 
 
 
@@ -586,7 +664,7 @@ int knapsack(vector<int> weight, int n, int w) {
 
 ### AC 自动机
 
-## LeetCode 刷题总结
+## 其他补充知识
 
 ### 最高有效位
 
@@ -653,9 +731,7 @@ int knapsack(vector<int> weight, int n, int w) {
 5. **善用语言提供的类，避免重复造轮子**；
 6. **千万不要漫无目的地过度优化。**要优化代码的时候，要先做 Benchmark 基准测试，避免想当然地换了更高效的算法，但是实际上性能是下降了的；
 
-## 参考
 
-[1] [《数据结构与算法之美》王争｜极客时间](http://gk.link/a/11bwG)
 
-[2] [LeetCode 官方题解](https://leetcode-cn.com/u/leetcode-solution/)
+
 

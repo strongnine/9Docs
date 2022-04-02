@@ -12,7 +12,7 @@
   - 产品经理；
 - 个人学习资料的总结和推荐：
   - [书籍推荐](https://strongnine.github.io/9Docs/dev/library/book)；
-  - 知识星球、得到课程、极客时间、播客等[其他推荐](https://strongnine.github.io/9Docs/dev/library/recommend )；
+  - [课程推荐](https://strongnine.github.io/9Docs/dev/library/recommend )；
 
 以下是我在不同平台的账号，欢迎关注：
 

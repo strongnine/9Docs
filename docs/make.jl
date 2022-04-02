@@ -11,7 +11,7 @@ makedocs(
         "产品思维" => "product/product_manager.md",
         "个人推荐" => Any[
             "书籍推荐" => "library/book.md",
-            "其他推荐" => "library/recommend.md"
+            "课程推荐" => "library/recommend.md"
         ],
         "Git 学习笔记" => "git/git_notebook.md", 
     ],
