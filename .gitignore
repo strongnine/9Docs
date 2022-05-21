@@ -25,4 +25,7 @@ Manifest.toml
 
 # File that ignore
 .DS_Store
+.vscode
 doc_draft.md
+Julia Doc.md
+draft/

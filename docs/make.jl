@@ -4,13 +4,14 @@ makedocs(
     sitename = "9Docs", 
     pages = [
         "Home" => "index.md",
-        "数据结构与算法" => "algorithm/algo.md",
-        "机器学习" => Any[
-            "图神经网络" => "machine_learning/GNN.md",
-        ],
-        "产品思维" => "product/product_manager.md",
-        "个人推荐" => "library/recommend.md",
-        "Git 学习笔记" => "git/git_notebook.md", 
+        "特征工程" => "AI/FE.md",
+        "机器学习" => "AI/ML.md",
+        "神经网络" => "AI/NN.md",
+        "卷积神经网络" => "AI/CNN.md",
+        "循环神经网络" => "AI/RNN.md",
+        "图神经网络" => "AI/GNN.md",
+#        "自然语言处理" => "AI/NLP.md",
+        "Git 学习笔记" => "git/git_notebook.md",
     ],
 )
 
