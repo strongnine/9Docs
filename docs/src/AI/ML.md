@@ -47,18 +47,17 @@ Holdout 检验
   - 用 $S_i$ 训练出基分类器 $h_t$；
 
   - 计算基分类器 $h_t$ 的错误率：
-    $$
-    \varepsilon_t=\frac{\sum_{i=1}^{N_t}I[h_t(x_i)\neq y_i]D_i(x_i)}{N_t}
-    $$
+
+    $\varepsilon_t=\frac{\sum_{i=1}^{N_t}I[h_t(x_i)\neq y_i]D_i(x_i)}{N_t}$
+
     其中 $I[\cdot]$ 为判别函数；
 
   - 计算基分类器 $h_t$ 权重 $a_t=\log{\frac{(1-\varepsilon_t)}{\varepsilon_t}}$，这里可以看到错误率 $\varepsilon_t$ 越大，基分类器的权重 $a_t$ 就越小；
 
   - 设置下一次采样：
-    $$
-    D_{t+1}=\begin{cases}D_t(i) \text{ or } \frac{D_t(i)(1-\varepsilon_t)}{\varepsilon_t}, \, h_t(x_i)\neq y_i;\\
-    \frac{D_t(i)\varepsilon_t}{(1-\varepsilon_t)}, \, h_t(x_i)= y_i.\end{cases}
-    $$
+    
+    $D_{t+1}=\begin{cases}D_t(i) \text{ or } \frac{D_t(i)(1-\varepsilon_t)}{\varepsilon_t}, \, h_t(x_i)\neq y_i;\\
+    \frac{D_t(i)\varepsilon_t}{(1-\varepsilon_t)}, \, h_t(x_i)= y_i.\end{cases}$
 
 （3）合并基分类器：给定一个未知样本 $z$，输出分类结果为加权投票的结果 $\text{Sign}(\sum_{t=1}^Th_t(z)a_t)$.
 
@@ -69,18 +68,16 @@ Holdout 检验
 XGBoost 是陈天奇等人开发的一个开源机器学习项目，高效地实现了 GBDT 算法并进行了算法和工程上的许多改进，被广泛应用在 Kaggle 竞赛以及其他许多机器学习竞赛中。
 
 XGBoost 本质上还是一个 GBDT（Gradient Boosting Decision Tree），只是把速度和效率发挥到极致，所以前面加上了 X（代表 Extreme）。原始的 GBDT 算法基于经验损失函数的负梯度来构造新的决策树，只是在决策树构建完成后再进行剪枝。XGBoost 再决策树构建阶段就加入了正则项，即
-$$
-L_t=\sum_i l\left(y_i,\, F_{t-1}(x_i)+f_t(x_i)\right)+\Omega(f_t),
-$$
+
+$L_t=\sum_i l\left(y_i,\, F_{t-1}(x_i)+f_t(x_i)\right)+\Omega(f_t),$
+
 其中 $F_{t-1}(x_i)$ 表示现有的 $t-1$ 棵树最优解，树结构的正则项定义为
-$$
-\Omega(f_t)=\gamma T+\frac{1}{2}\lambda\sum_{j=1}^Tw^2_j,
-$$
+
+$\Omega(f_t)=\gamma T+\frac{1}{2}\lambda\sum_{j=1}^Tw^2_j,$
+
 其中 $T$ 为叶子节点个数，$w_j$ 表示第 $j$ 个叶子节点的预测值。对该损失函数在 $F_{t-1}$ 处进行二阶泰勒展开可以推导出
-$$
-L_t\approx\overset{\sim}{L_t}=\sum_{j=1}^T\left[G_jw_j+\frac{1}{2}(H_j+\lambda)w^2_j\right]+\gamma T
-$$
-$\cdots$ ***（之后的内容有很多偏数学的，先「不求甚解」，到时候用到的时候详细再去看看《百面机器学习》第 12 章第 06 个问题）***
+
+$L_t\approx\overset{\sim}{L_t}=\sum_{j=1}^T\left[G_jw_j+\frac{1}{2}(H_j+\lambda)w^2_j\right]+\gamma T$
 
 从所有的树结构中寻找最优的树结构是一个 NP-hard 问题，在实际中往往采用贪心法来构建出一个次优的树结构，基本思想是根据特定的准则选取最优的分裂。不同的决策树算法采用不同的准则，如 IC3 算法采用信息增益，C4.5 算法为了克服信息增益中容易偏向取值较多的特征而采用信息增益比，CART 算法使用基尼指数和平方误差，XGBoost 也有特定的准则来选取最优分裂。
 
