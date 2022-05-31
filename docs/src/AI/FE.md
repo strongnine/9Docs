@@ -200,6 +200,7 @@ $x\oplus y=\cos{(\theta_1+\theta_2)}$
 **注意**：我选择了不同的符号而不是使用内积，因为这个操作不满足内积的要求（线性，正定）。
 
 这就产生了如下的类 Gram 矩阵:
+
 $G=\begin{pmatrix} 
  \cos{(\phi_1+\phi_1)} & \cos{(\phi_1+\phi_2)} & \cdots & \cos{(\phi_1+\phi_n)} \\ 
  \cos{(\phi_2+\phi_1)} & \cos{(\phi_2+\phi_2)} & \cdots & \cos{(\phi_2+\phi_n)} \\ 
@@ -240,7 +241,7 @@ $x\oplus y=x\cdot y-\rangle-\sqrt{1-x^2}\cdot \sqrt{1-y^2}$
 可以看到：
 
 - 惩罚将平均输出移向 -1；
-- $x$ 和 $y$ 越接近0，惩罚越大。主要的原因是，这些点点更接近高斯噪声；
+- 如果 $x$ 和 $y$ 越接近0，惩罚越大。主要的原因是，这些点点更接近高斯噪声；
 - 对于 $x=y$：会转换为 -1；
 - 输出很容易与高斯噪声区分开。
 
@@ -301,11 +302,7 @@ Backward Difference Contrast
 
 以逻辑回归为例，假设数据的特征向量为 $X=(x_1,x_2,\dots,x_k)$，则有：
 
-
-
 $Y=\text{sigmoid}(\sum_i\sum_jw_{ij}\langle x_i,x_j\rangle)$
-
-
 
 其中 $\langle x_i,x_j\rangle$ 表示 $x_i$ 和 $x_j$ 的组合特征，$w_{ij}$ 的维度等于第 $i$ 和第 $j$ 个特征不同取值的个数。在上例中，「语言」这个特征有中文和英文两个选择，「类型」这个特征有电影和电视剧两个选择，那么 $w_{ij}$ 的维度就为 $2\times 2=4$. 当组合之前的两个特征不同取值的个数都不大时，用这种方式不会有太大的问题。但是对于某些问题，有用户 ID 和物品 ID，而用户和物品的数量动辄几千万，几千万乘几千万 $m\times n$，这么大的参数量，无法进行学习。
 
@@ -315,19 +312,11 @@ $Y=\text{sigmoid}(\sum_i\sum_jw_{ij}\langle x_i,x_j\rangle)$
 
 最基础的文本表示模型是**词袋模型**，就是将每篇文章看成一袋子词，并忽略每个词出现的顺序。每篇文章可以表示成一个长向量，向量中的每一维度代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。常用 TF-IDF（Term Frequency-Inverse Document Frequency）来计算权重：
 
-
-
 $\text{TF-IDF}(t,d)=\text{TF}(t,d)\times \text{IDF}(t)$
-
-
 
 其中 $\text{TF}(t,d)$ 为单词 $t$ 在文档 $d$ 中出现的频率，$\text{IDF}(t)$ 是逆文档频率，用来衡量单词 $t$ 对表达语义所起的重要性，表示为：
 
-
-
-$\text{IDF}(t) = \log{\frac{\text{Num. of articles}}{\text{Num. of articles containing word $t$ }+1}}$
-
-
+$\text{IDF}(t) = \log{\frac{\text{Num. of articles}}{\text{Num. of articles containing word }t+1}}$
 
 直观解释为，如果一个单词在非常多的文章里面都出现，那么它可能是一个比较通用的词汇，对于区分谋篇文章特殊语义的贡献比较小，因此对权重做一定惩罚。
 

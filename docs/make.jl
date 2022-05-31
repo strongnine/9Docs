@@ -12,6 +12,7 @@ makedocs(
             "循环神经网络" => "AI/RNN.md",
             "图神经网络" => "AI/GNN.md",
             "生成对抗网络" => "AI/GAN.md",
+            "计算机视觉" => "AI/CV.md",
             "自然语言处理" => "AI/NLP.md",
         ],
         "Git 学习笔记" => "git/git_notebook.md",
