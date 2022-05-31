@@ -20,7 +20,7 @@ $\mathcal{L}(D) = -\int p(x) \left[ p(data \mid x) \log D(x) + p(g \mid x) \log(
 
 $p(x) = p_{\text{src}}(data)p(x\mid data) + p_{\text{src}}(g)p(x\mid g).$
 
-> $\doteq$ 和 $\approx$ 是等价的，都是表达约等于的意思。一般写完等号之后，发现不是等于，而是约等于，所以就懒得涂抹写成 $\approx$，所以就添加一个点。
+> 注：$\doteq$ 和 $\approx$ 是等价的，都是表达约等于的意思。一般写完等号之后，发现不是等于，而是约等于，所以就懒得涂抹写成 $\approx$，所以就添加一个点。
 
 将损失函数 (1) 式中的 $p(x)p(data\mid x)$ 替换为 $p_{\text{src}}(data)p_{\text{data}}(x)$，以及将 $p(x)p(g\mid x)$ 替换为 $p_{\text{src}}(g)p_{\text{g}}(x)$，就可以得到最终的目标函数
 
