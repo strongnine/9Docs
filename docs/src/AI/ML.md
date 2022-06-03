@@ -41,31 +41,33 @@ $Accuracy = \frac{TP+TN}{TP+TN+FP+FN},$
 
 > 为了具有更加简介的表达，将网络的输出表示为 $f$，而实际标签表达为 $y$。
 
-**$0-1$ 损失函数**：最常用于二分类问题，$Y=\{1,-1\}$，我们希望 $\texttt{sign}\, f(x_i,\theta)=y_i$，所以 $0-1$ 损失函数为
+在分类问题上常用的损失函数：
+
+（1）**$0-1$ 损失函数**：最常用于二分类问题，$Y=\{1,-1\}$，我们希望 $\texttt{sign}\, f(x_i,\theta)=y_i$，所以 $0-1$ 损失函数为
 
 $L_{0-1}(f,y) = 1_{fy\le 0},$
 
 其中 $1_{P}$ 是指示函数（Indicator Function），当且仅当 $P$ 为真时取值为 1，否则取值为 0。$0-1$ 损失的优点是可以直观地刻画分类的错误率，缺点是由于其非凸、非光滑的特点，算法很难对该函数进行优化。
 
-**Hinge 损失函数**：是 $0-1$ 损失函数相对紧的凸上界，且当 $fy\ge 1$ 时，函数不对其做任何惩罚。它在 $fy=1$ 处不可导，不能够用梯度下降法进行优化，而是用次梯度下降法（Subgradient Descent Method）。适用于 Maximum-Margin 分类，主要用于支持向量机（SVM）中，用来解间距最大化的问题。
+（2）**Hinge 损失函数**：是 $0-1$ 损失函数相对紧的凸上界，且当 $fy\ge 1$ 时，函数不对其做任何惩罚。它在 $fy=1$ 处不可导，不能够用梯度下降法进行优化，而是用次梯度下降法（Subgradient Descent Method）。适用于 Maximum-Margin 分类，主要用于支持向量机（SVM）中，用来解间距最大化的问题。
 
 $L_{\text{hinge}}(f,y)=\max\{0,1-fy\}.$
 
-**感知损失函数（Perceptron Loss）**：是 Hinge 损失函数的一个变种。Hinge 对判定边界附近的点（正确端）惩罚力度很高，但是 Perceptron 只要样本的判定类别正确就行，不管其判定边界的距离。它比 Hinge 更加简单，不是 Max-margin Boundary，所以模型的泛化能力没有 Hinge 强。
+（3）**感知损失函数（Perceptron Loss）**：是 Hinge 损失函数的一个变种。Hinge 对判定边界附近的点（正确端）惩罚力度很高，但是 Perceptron 只要样本的判定类别正确就行，不管其判定边界的距离。它比 Hinge 更加简单，不是 Max-margin Boundary，所以模型的泛化能力没有 Hinge 强。
 
 $L_{\text{Perceptron}}=\max(0, -f).$
 
-**Logistic 损失函数**：是 $0-1$ 损失函数的凸上界，该函数处处光滑，对所有的样本点都有所惩罚，因此对异常值相对更敏感一点。
+（4）**Logistic 损失函数**：是 $0-1$ 损失函数的凸上界，该函数处处光滑，对所有的样本点都有所惩罚，因此对异常值相对更敏感一点。
 
 $L_{\text{logistic}}(f,y)=\log_2(1+\exp(-fy)).$
 
-**Log 对数损失函数**：即对数似然损失（Log-likelihood Loss），它的标准形式
+（5）**Log 对数损失函数**：即对数似然损失（Log-likelihood Loss），它的标准形式
 
 $L_{\text{log}}(f(\boldsymbol{x};\theta),y)=-\log f_y(\boldsymbol{x};\theta),$
 
 其中 $f_y(\boldsymbol{x};\theta)$ 可以看作真实类别 $y$ 的似然函数。
 
-**交叉熵（Cross Entropy）损失函数**：对于两个概率分布，一般可以用交叉熵去衡量它们的差异。标签的真实分布 $\boldsymbol{y}$ 和模型预测分布 $f(\boldsymbol{x};\theta)$ 之间的交叉熵为
+（6）**交叉熵（Cross Entropy）损失函数**：对于两个概率分布，一般可以用交叉熵去衡量它们的差异。标签的真实分布 $\boldsymbol{y}$ 和模型预测分布 $f(\boldsymbol{x};\theta)$ 之间的交叉熵为
 
 $\mathcal{L}(f(\boldsymbol{x};\theta),\boldsymbol{y})=-\boldsymbol{y}^\top\log f(\boldsymbol{x};\theta)=-\sum_{c=1}^Cy_c\log f_c(\boldsymbol{x};\theta).$
 
@@ -75,19 +77,23 @@ $\mathcal{L}(f(\boldsymbol{x};\theta),\boldsymbol{y})=-\log f_y(\boldsymbol{x};\
 
 其中 $f(\boldsymbol{x};\theta)$ 可以看作真实类别 $y$ 的似然函数。因此交叉熵损失函数也就是**负对数似然函数（Negative Log-Likelihood）**。
 
-**平方损失（Mean Squared Error）函数**：在回归问题中最常用的损失函数。对于 $Y=\mathbb{R}$，我们希望 $f(x_i,\theta)\approx y_i$
+在回归问题中常用的损失函数：
+
+（1）**平方损失（Mean Squared Error）函数**：在回归问题中最常用的损失函数。对于 $Y=\mathbb{R}$，我们希望 $f(x_i,\theta)\approx y_i$
 
 $L_{\text{MSE}}(f,y)=(f-y)^2.$
 
-**绝对损失（Mean Absolute Error）函数**：当预测值距离真实值较远的时候，平方损失函数的惩罚力度大，也就是说它对于异常点比较敏感。如果说平方损失函数是在做均值回归的话，那么绝对损失函数就是在做中值回归，对于异常点更加鲁棒一点。只不过绝对损失函数在 $f=y$ 处无法求导。
+（2）**绝对损失（Mean Absolute Error）函数**：当预测值距离真实值较远的时候，平方损失函数的惩罚力度大，也就是说它对于异常点比较敏感。如果说平方损失函数是在做均值回归的话，那么绝对损失函数就是在做中值回归，对于异常点更加鲁棒一点。只不过绝对损失函数在 $f=y$ 处无法求导。
 
 $L_{\text{MAE}}(f,y)=|f-y|.$
 
-**Huber 损失函数**：也称为 Smooth L1 Loss， 综合考虑可导性和对异常点的鲁棒性。在 $|f-y|$ 较小的时候为平方损失，比较大的时候为线性损失
+（3）**Huber 损失函数**：也称为 Smooth L1 Loss， 综合考虑可导性和对异常点的鲁棒性。在 $|f-y|$ 较小的时候为平方损失，比较大的时候为线性损失
 
 $L_{\text{Huber}}(f,y)=\begin{cases}(f-y)^2,\qquad |f-y|\le \delta\\ 2\delta|f-y|-\delta^2,\quad|f-y|>\delta\end{cases}$
 
+（4）**Log-Cosh 损失函数**：
 
+（5）**分位数损失函数**：
 
 ### 随机梯度算法
 

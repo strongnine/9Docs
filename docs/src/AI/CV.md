@@ -12,50 +12,130 @@
 
 **两步模型**是指有独立的、显式的候选区域提取过程，即先在输入图像上筛选出一些可能存在物体的候选区域，然后针对每个候选区域，判断其是否存在物体，如果存在就给出物体的类别和位置修正信息。例如 R-CNN、SPPNet、Fast R-CNN、Faster R-CNN、R-FCN、Mask R-CNN 等模型。
 
+**……**
+
+**目标检测中的注意力机制 —— SENet**
+
 ### 目标检测历史
 
 ![](../assets/目标检测模型发展历程.png)
 
 在一开始的 CNNs 上，把一张图片划分成为固定的区域，然后识别这些区域中是否有某个物体，有的话就把这个区域标识出来。但是在实际中，图片上的物体大小是不固定的，用这种固定大小的区域去识别物体显然是不合理的。人们想到，如果想要让框更加合适，可以增加框的数量，然后让每个区域都变得尽可能地小。但是这样框太多的时候，又会导致计算量的增加。
 
-**基于区域的卷积神经网络（Region-based CNN，R-CNN）**：是第一个将 CNN 用于目标检测的深度学习模型。它是是解决这种缺点的更好方法，它使用生成区域建议的方式来选择区域。R-CNN 的选框方式是根据选择性搜索（selective search）来进行的，选框也叫做区域（regions）。
+#### R-CNN
 
-**选择性搜索**：一个物体会包括四种信息：不同的尺度、颜色、纹理和边界，选择性搜索目标就是识别这些模式，提出不同的区域。首先，先生成最初的分割得很细的子分割，然后再将这些很细的小区域按照颜色相似度、纹理相似度、大小相似度和形状相似兼容性来合并成更大的区域。这个最后合成的区域就是物体在图片中的位置，即**感兴趣区域（Region of Interest，RoI）**。
+**基于区域的卷积神经网络（Region-based CNN，R-CNN）**出现于 2014 年，是第一个将 CNN 用于目标检测的深度学习模型。它是是解决这种缺点的更好方法，它使用生成区域建议的方式来选择区域。R-CNN 的选框方式是根据**选择性搜索来进行的，选框也叫做区域（regions）。
 
-得到的 RoI 大小是不一样的，将这些 RoI reshape成 CNN 输入的大小，然后 CNN 提取每个区域的特征值，用**支持向量机（Support Vector Machine，SVM）**来对这些区域进行分类，最后**边界框回归（Bounding Box Regression）**就预测生成的框。
+1. 首先使用无监督的**选择性搜索（Selective Serch，SS）**方法将图像中具有相似颜色直方图特征的区域进行合并，产生 2000 个大小不一样的候选区域。这个最后合成的区域就是物体在图片中的位置，即**感兴趣区域（Region of Interest，RoI）**；
 
-R-CNN 具有的不足就在于，每一张图片都会生成很多个 RoI，整个过程用了三个模型：特征提取的 CNN、物体分类的 SVM、预测边界框的回归模型。这些过程让 R-CNN 变得非常慢，预测一张图片要几十秒。
+2. 然后从输入图像中截取这些候选区域对应的图像，将其裁剪缩放 reshape 至合适的尺寸，并相继送入一个 CNN 特征提取网络进行高层次的特征提取；
 
-**Fast R-CNN**：添加了一个 **RoI 池化层（RoI Pooling Layer）**来把所有的建议区域转换成适合的尺寸，输入到后面的**全连接层（Fully Connection）**。Fast R-CNN 将 R-CNN 的三个独立的模型集合到一个模型中，因为减少了很多的计算量，Fast R-CNN 在时间花费大大地减少了。
+3. 提取出的特征再被送入一个**支持向量机（Support Vector Machine，SVM）**来对这些区域进行分类，以及一个线性回归器进行边界框位置和大小的修正，即**边界框回归（Bounding Box Regression）**；
 
-具体步骤为：图片通过 CNN 得到 RoI，然后 RoI 池化层将 RoI 改变成相同的尺寸，再将这些区域输入到全连接层上进行分类，同时使用 softmax 和**线性回归层（Linear Regression Layers）**来输出 Bounding Boxes。
+4. 最后对检测结果进行**非极大值抑制（Non-Maximum Suppression，NMS）**，得到最终的检测结果；
 
-Faster R-CNN：Fast R-CNN 依然在使用选择性搜索来作为寻找 RoI 的方法，虽然速度提高了，但是一张图片依旧需要花费 2 秒的时间。因此，Faster R-CNN 使用一个**区域建议网络（Region Proposal Network，RPN）**来获得更高的效率。RPN 图片特征 map 作为输入，生成一系列带目标分数的建议，也就是告诉网络给出的区域有物体的可能性有多大，分数越高代表包含了物体的可能性越高。
+R-CNN 的不足：
+
+- 每一张图片都会生成很多个 RoI；
+- 整个过程用了三个模型：特征提取的 CNN、物体分类的 SVM、预测边界框的回归模型，让 R-CNN 变得非常慢，预测一张图片要几十秒；
+
+> **选择性搜索（Selective Serch，SS）**：一个物体会包括四种信息：不同的尺度、颜色、纹理和边界，选择性搜索目标就是识别这些模式，提出不同的区域。首先，先生成最初的分割得很细的子分割，然后再将这些很细的小区域按照颜色相似度、纹理相似度、大小相似度和形状相似兼容性来合并成更大的感兴趣区域 RoI。
+>
+> **非极大值抑制（Non-Maximum Suppression，NMS）**：
+
+#### Fast R-CNN
+
+**Fast R-CNN** 出现于 2015 年，它添加了一个 **RoI 池化层（RoI Pooling Layer）**来把所有的建议区域转换成适合的尺寸，输入到后面的**全连接层（Fully Connection）**。Fast R-CNN 将 R-CNN 的三个独立的模型集合到一个模型中，因为减少了很多的计算量，Fast R-CNN 在时间花费大大地减少了。
+
+具体步骤为：
+
+1. 图片通过 CNN 得到 RoI，然后 RoI 池化层将 RoI 改变成相同的尺寸；
+
+2. 再将这些区域输入到全连接层上进行分类，同时使用 softmax 和**线性回归层（Linear Regression Layers）**来输出 Bounding Boxes；
+
+Fast R-CNN 的优势和不足：
+
+- 依然在使用选择性搜索来作为寻找 RoI 的方法，虽然速度提高了，但是一张图片依旧需要花费 2 秒的时间。
+
+> **RoI 池化层（RoI Pooling Layer）**：
+
+#### SPPNet
+
+SPPNet 出现于 2015 年，
+
+#### R-FCN
+
+R-FCN 出现于 2016 年
+
+#### SSD
+
+SSD 出现于 2016 年
+
+#### YOLO
+
+YOLO 出现于 2016 年
+
+#### Faster R-CNN
+
+**Faster R-CNN** 出现于 2017 年，它使用一个**区域建议网络（Region Proposal Network，RPN）**来获得比 Fast R-CNN 更高的效率。RPN 将图片特征 map 作为输入，生成一系列带目标分数的建议，也就是告诉网络给出的区域有物体的可能性有多大，分数越高代表包含了物体的可能性越高。
 
 具体步骤：
 
 1. 把图片作为输入放进卷积网络中去，返回的是一个特征映射（feature map）；
+
 2. RPN 处理这些 map，返回带分数的物体建议；
+
 3. 接下来的 RoI pooling 把这些建议都 reshape 成相同的尺寸；
+
 4. 最后，放到含有 softmax 层和线性回归层的全连接层上，来分类和输出 bounding boxes。
 
- RPN 被集成在了网络里面，等于从区域建议到最后的分类回归都在同一个网络，实现了端到端。即我们给这个网络输入一张图片，网络就会输出 bounding boxes 和分数。
+RPN 被集成在了网络里面，等于从区域建议到最后的分类回归都在同一个网络，实现了端到端。即我们给这个网络输入一张图片，网络就会输出 bounding boxes 和分数。
 
-**区域建议网络（Region Proposal Network，RPN）**：在 RPN 在这个 map 上使用一个滑动窗口（sliding window），在每个窗口中都会生成 k 个不同形状和大小的 anchor boxes。Anchor 就是在图片中有不同形状和大小的但具有固定尺寸的边界框。什么意思呢？就是每一个 anchor 都是固定的大小，比如有 $3\times3$、$6\times 6$、$3\times 6$、$6\times 3$ 这些，他们和最后的 bounding boxes 不一样，anchor 的尺寸都是固定的。对于每一个 anchor，RPN 会做两件事情：
+**区域建议网络（Region Proposal Network，RPN）**：可以输入任何大小的图片（或者特征映射图），然后输出一系列目标建议矩形框，每个矩形框都会有一个对应的分数，代表这个框里面有多大的概率是一个物体。在 Faster R-CNN 中 RPN 是一个全卷积网络（Fully-Convolutional Network，FCN）
 
-（1）首先预测 anchor 框出的部分属于物体的可能性；
+![](../assets/Faster R-CNN RPN.png)
 
-（2）然后对 anchor 生成的 bounding box 做回归，去调节这个 anchor 能使它更加好的框出物体。
+RPN 实际上可以看成是一个小型的 CNN，原文说的是它在 feature map 上使用一个大小为 $n\times n$ 的滑动窗口（sliding window），在 Faster R-CNN 论文里 $n=3$：
 
-在 RPN 之后我们会得到不同形状大小的 bounding boxes，再输入到 RoI 池化层中。在这一步，虽然知道 boxes 里面是一个物体了，但其实是不知道它属于哪个类别的。就好像是，它知道这个东西是个物体，但是不知道是猫是狗还是人。
+- 首先，实际上这里就是一个 $3\times 3$ 的卷积层，将维数（或者说通道数 Channel）为 $C_1$ 的特征图映射成维度为 $C_2$ 的特征图（在 Faster R-CNN 论文中，在使用 ZF 模型时 $C_2=256$，在使用 VGG 模型时 $C_2=512$）；
+- 然后，这个特征图会分别进入两个 $1\times 1$  卷积层，一个做矩形框分类（判断是否为物体），另一个做矩形框回归。$1\times 1$ 卷积的作用是压缩通道数（Channel），图中用于矩形框分类的部分通道数变为 $2k$，用于矩形框回归的部分通道数变为 $4k$，这里的 $k$ 是 anchor 的数量（在论文里取 $k=9$）。分类部分的维度为 2，分别表示框出的部分为「目标」与「非目标」的概率；回归部分的维度为 4，分别表征不同 anchor boxes 对 groud truth 的长、宽、X 坐标、Y 坐标的预测；
+- 在训练的时候，只有 RPN 输出的区域建议与 groud truth 的 $\text{IoU}>0.7$ 的 anchor boxes 与 groud truth 的位置大小误差才会对最终的损失 $\mathcal{Loss}$ 有贡献。
+- RPN 输出的 $k$ 个
 
-**RoI 池化层**的作用就是提取每个 anchor 的固定大小的 feature map。这些 feature map 最后就被送到全连接层里去做 softmax 分类和线性回归。最后就会得到分类好的又有 bounding box 的物体了。
+Faster R-CNN 的优势和不足：
 
-通过使用端到端的方式去进行，并且也不会考虑所有的 RoI，处理一张图片只需要 0.2 秒。
+- 通过使用端到端的方式去进行，并且也不会考虑所有的 RoI，处理一张图片只需要 0.2 秒。
 
-### RetinaNet 中的 Focal Loss —— 解决正负样本不均衡问题
+#### Light-Head R-CNN
 
-在 RetinaNet 的论文 *Focal Loss for Dense Object Detection* 中提出了一个新的损失函数 —— Focal Loss，主要用于解决在单步目标检测场景上训练时前景（foreground）和背景（background）类别极端失衡（比如 1:1000）的问题。
+Light-Head R-CNN 出现于 2017 年
+
+#### Mask R-CNN
+
+Mask R-CNN 出现于 2017 年
+
+#### FPN
+
+**特征金字塔网络（Feature Pyramid Networks，FPN）**：低层的特征语义信息比较少，但是目标位置准确；高层的特征语义信息比较丰富，但是目标位置比较粗略。有些算法采用多尺度特征融合的方法，但是一般是采用融合后的特征做预测。这篇文章创新的点在于预测是在不同特征层独立进行的。
+
+![](../assets/(2017 FPN) Fig1.jpg)
+
+论文中的图 1. 展示了 4 种利用特征的方式：
+
+- 图像金字塔（Featurized image pyramid）：将图像 reshape 为不同的尺度，不同尺度的图像生成对应不同尺度的特征。这种方式缺点在于增加了时间成本；
+- 单个特征图（Single feature map）：像 SPPNet、Fast R-CNN、Faster R-CNN 等模型采用的方式，只使用最后一层的特征图；
+- 金字塔特征层次结构（Pyramidal feature hierarchy）：像 SSD 模型采用多尺度特征融合的方式，没有上采样的过程，从网络不同层抽取不同尺度的特征做预测。优点在于不会增加额外的计算量；缺点在于 SSD 没有用到足够底层的特征（SSD 中最底层的特征是 VGG 网络的 Conv4\_3）；
+- 特征金字塔网络（Feature Pyramid Network）：顶层特征通过上采样和低层特征做融合，每层独立预测；
+
+FPN 主要用于区域建议，而不是 backbone 网络上。其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**。
+
+
+
+#### RetinaNet
+
+RetinaNet 出现于  2017 年在 RetinaNet 的论文 *Focal Loss for Dense Object Detection* 中提出了一个新的损失函数 —— Focal Loss，主要用于解决在单步目标检测场景上训练时前景（foreground）和背景（background）类别极端失衡（比如 1:1000）的问题。Focal Loss 可以抑制负样本对最终损失的贡献以提升网络的整体表现。
+
+> 将不含有待检测物体的区域称为负样本，含有待检测物体的区域称为正样本。
 
 一般来说，对于二分类问题，交叉熵损失为：
 
@@ -67,9 +147,19 @@ $p_t\begin{cases}p, \qquad \text{if } y=1,\\ 1-p, \quad \text{otherwise}. \end{c
 
 因此交叉熵损失可以重写为 $\text{CE}(p,y)=\text{CE}(p_t)=-\log(p_t).$
 
+#### EAST
+
+**一种高效准确的场景文本检测器（An Efficient and Accurate Scene Text Detector，EAST）**：
+
+#### GFL
+
+**广义焦点损失（Generalized Focal Loss，GFL）**：
+
 
 
 ## 人脸识别
+
+**人脸识别中的模型 ArcFace……**
 
 ### 人脸识别中的损失函数
 
@@ -94,3 +184,22 @@ $\mathcal{L}_{\text{softmax}}=-\frac{1}{N_b}\sum_{i=1}^{N_b}\log \frac{\exp({\bo
 **Triplet Loss**：
 
 **Center Loss**：
+
+## 光学字符识别
+
+**光学字符识别（Optical Character Recognition，OCR）**：挖掘图像中的文本信息，需要对图像中的文字进行检测和识别。OCR 的确切定义是，将包含键入、印刷或场景文本的电子图像转换成机器编码文本的过程。
+
+OCR 算法通常分为两个基本模块，属于物体检测其中一个子类的**文本检测**以及**文本识别**。
+
+传统的文本检测：基于二值化的连通区域提取，基于最大极值稳定区域（Maximally Stable Extremal Regions，MSER），方向梯度直方图（Histogram of Oriented Gradient，HOG）可以提取特征；隐马尔可夫模型（Hidden Markov Model，HMM）对最终的词语进行预测。
+
+文本检测框架的两种类型：
+
+- **基于候选框**：在通用物体检测的基础上，通过设置更多不同长宽比的锚框来适应文本变长的特性，以达到文本定位的效果。类似的模型包括：Rosetta、SegLink、TextBoxes++；
+- **基于像素分割**：首先通过图像语义分割获得可能属于的文本区域的像素，之后通过像素点直接回归或者对文本像素的聚合得到最终的文本定位。类似的模型包括：TextSnake、SPCNet、MaskTextSpotter；
+- 不同方法的优缺点：
+  - 基于候选框的文本检测对文本尺度本身不敏感，对小文本的检出率更高；但是对于倾斜角度较大的密集文本块，该方法很容易因为无法适应文本方向的剧烈变化以及对文本的包覆性不够紧密而检测失败。
+  - 基于候选框的检测方法利用整体文本的粗粒度特征，而非像素级别的精细特征，因此其检测精度往往不如基于像素分割的文本检测。
+  - 基于像素分割的文本检测往往具有更好的精确度，但是对于小尺度的文本，因为对应的文本像素过于稀疏，检出率通常不搞，除非以牺牲检测效率为代价对输入图像进行大尺度的放大。
+- **同时基于候选框和像素分割**：将基于候选框的文本检测框架和基于像素分割的文本检测框架结合在一起，共享特征提取部分，并将像素分割的结果转换为候选框检测回归过程中的一种注意力机制，从而使文本检测的准确性和召回率都得到提高，例如云从科技公司提出的 Pixel-Anchor；
+
