@@ -2,7 +2,9 @@
 
 ## 目标检测
 
-目标检测（Object Detection）是计算机视觉中极为重要的基础问题，是实例分割（Instance Segmentation)、场景理解（Secne Understanding）、目标跟踪（Object Tracking）、图像标注（Image Captioning）等问题的基础。
+### 基础概念
+
+**目标检测（Object Detection）**是计算机视觉中极为重要的基础问题，是实例分割（Instance Segmentation)、场景理解（Secne Understanding）、目标跟踪（Object Tracking）、图像标注（Image Captioning）等问题的基础。
 
 **目标检测任务：**给定一张图片，将图片中的每个物体识别出来并且提出一个置信度，用矩形方框（Bounding Box）或者不规则的区域标识出来。
 
@@ -12,9 +14,18 @@
 
 **两步模型**是指有独立的、显式的候选区域提取过程，即先在输入图像上筛选出一些可能存在物体的候选区域，然后针对每个候选区域，判断其是否存在物体，如果存在就给出物体的类别和位置修正信息。例如 R-CNN、SPPNet、Fast R-CNN、Faster R-CNN、R-FCN、Mask R-CNN 等模型。
 
-**……**
+**交并比（Intersection-over-Union，IoU）**：即两个 Bounding Boxes 之间交集与并集的比值。对于预测 Bounding Box 与 Ground-truth Box 来说，比值越大代表预测的 Bounding Box 结果越好。
 
-**目标检测中的注意力机制 —— SENet**
+**非极大值抑制（Non-Maximum Suppression，NMS）**：目标检测过程中在同一个目标的位置上会产生大量的候选框，这些候选框之间可能会有重叠，NMS 的作用就是消除冗余的边界框，找到最佳的目标边界框。NMS 的流程如下：
+
+- 步骤 1. 根据置信度得分进行排序；
+- 步骤 2. 选择置信度最高的边界框添加到最终输出列表中，将其从边界框列表中删除；
+- 步骤 3. 计算所有边界框的面积；
+- 步骤 4. 计算置信度最高的边界框与其他候选框的 IoU；
+- 步骤 5. 删除 IoU 大于给定阈值的边界框；
+- 步骤 6. 重复上述过程，直到边界框列表为空；
+
+NMS 中的阈值给得越大，则越有可能出现同一个物体有多个边界框的情况。步骤 4 中如果置信度最高的边界框与其他候选框的 IoU 比较大的话，就可以认为这两个边界框中是同一个物体，因此只要留下最大的那一个，把其他的删除了。
 
 ### 目标检测历史
 
@@ -39,9 +50,11 @@ R-CNN 的不足：
 - 每一张图片都会生成很多个 RoI；
 - 整个过程用了三个模型：特征提取的 CNN、物体分类的 SVM、预测边界框的回归模型，让 R-CNN 变得非常慢，预测一张图片要几十秒；
 
-> **选择性搜索（Selective Serch，SS）**：一个物体会包括四种信息：不同的尺度、颜色、纹理和边界，选择性搜索目标就是识别这些模式，提出不同的区域。首先，先生成最初的分割得很细的子分割，然后再将这些很细的小区域按照颜色相似度、纹理相似度、大小相似度和形状相似兼容性来合并成更大的感兴趣区域 RoI。
->
-> **非极大值抑制（Non-Maximum Suppression，NMS）**：
+**选择性搜索（Selective Serch，SS）**：一个物体会包括四种信息：不同的尺度、颜色、纹理和边界，选择性搜索目标就是识别这些模式，提出不同的区域。首先，先生成最初的分割得很细的子分割，然后再将这些很细的小区域按照颜色相似度、纹理相似度、大小相似度和形状相似兼容性来合并成更大的感兴趣区域 RoI。
+
+#### SPPNet
+
+SPPNet 出现于 2015 年，
 
 #### Fast R-CNN
 
@@ -50,18 +63,20 @@ R-CNN 的不足：
 具体步骤为：
 
 1. 图片通过 CNN 得到 RoI，然后 RoI 池化层将 RoI 改变成相同的尺寸；
-
 2. 再将这些区域输入到全连接层上进行分类，同时使用 softmax 和**线性回归层（Linear Regression Layers）**来输出 Bounding Boxes；
+
+**RoI 池化层（RoI Pooling Layer）**：目的是对非均匀尺寸的输入执行最大池化以获得固定尺寸的特征图。RoI 池化层的原型是何凯明提出的空间金字塔池化（Spatial Pyramid Pooling），RoI 池化是 SPP 只使用其中一层的特殊情况。
+
+- RoI Pooling 接收卷积特征图作为输入；
+- 将 RoI 分割为 $H\times W$ 个网格（论文中为 $7\times 7$），对每一个网格都进行 max pooling 得到最终 $H\times W$ 大小的特征图；
+
+下面是 RoI Pooling 的一个 GIF 示例：
+
+![](https://deepsense.ai/wp-content/uploads/2017/02/roi_pooling-1.gif)
 
 Fast R-CNN 的优势和不足：
 
 - 依然在使用选择性搜索来作为寻找 RoI 的方法，虽然速度提高了，但是一张图片依旧需要花费 2 秒的时间。
-
-> **RoI 池化层（RoI Pooling Layer）**：
-
-#### SPPNet
-
-SPPNet 出现于 2015 年，
 
 #### R-FCN
 
@@ -95,12 +110,25 @@ RPN 被集成在了网络里面，等于从区域建议到最后的分类回归�
 
 ![](../assets/Faster R-CNN RPN.png)
 
+> 图中的数据，在原论文中的具体值为：$C_2=256 \text{ or } 512$，$H=W=16$，$k=9$. 
+
 RPN 实际上可以看成是一个小型的 CNN，原文说的是它在 feature map 上使用一个大小为 $n\times n$ 的滑动窗口（sliding window），在 Faster R-CNN 论文里 $n=3$：
 
-- 首先，实际上这里就是一个 $3\times 3$ 的卷积层，将维数（或者说通道数 Channel）为 $C_1$ 的特征图映射成维度为 $C_2$ 的特征图（在 Faster R-CNN 论文中，在使用 ZF 模型时 $C_2=256$，在使用 VGG 模型时 $C_2=512$）；
-- 然后，这个特征图会分别进入两个 $1\times 1$  卷积层，一个做矩形框分类（判断是否为物体），另一个做矩形框回归。$1\times 1$ 卷积的作用是压缩通道数（Channel），图中用于矩形框分类的部分通道数变为 $2k$，用于矩形框回归的部分通道数变为 $4k$，这里的 $k$ 是 anchor 的数量（在论文里取 $k=9$）。分类部分的维度为 2，分别表示框出的部分为「目标」与「非目标」的概率；回归部分的维度为 4，分别表征不同 anchor boxes 对 groud truth 的长、宽、X 坐标、Y 坐标的预测；
-- 在训练的时候，只有 RPN 输出的区域建议与 groud truth 的 $\text{IoU}>0.7$ 的 anchor boxes 与 groud truth 的位置大小误差才会对最终的损失 $\mathcal{Loss}$ 有贡献。
-- RPN 输出的 $k$ 个
+- **步骤 1**：实际上 RPN 就是一个 $3\times 3$ 的卷积层，将维数（或者说通道数 Channel）为 $C_1$ 的特征图 1 映射成维度为 $C_2$ 的特征图 2（在 Faster R-CNN 论文中，在使用 ZF 模型时 $C_2=256$，在使用 VGG 模型时 $C_2=512$）；
+- **步骤 2**：这个特征图 2 会分别进入两个 $1\times 1$  卷积层，一个做矩形框分类（判断是否为物体），对应特征图 3-1，另一个做矩形框回归，对应特征图 3-2。$1\times 1$ 卷积的作用是压缩通道数（Channel），图中用于矩形框分类的特征图 3-1 通道数变为 $2k$，用于矩形框回归的特征图 3-2 通道数变为 $4k$，这里的 $k$ 是 anchor boxes 的数量（在论文里取 $k=9$）。分类部分的维度为 2，分别表示框出的部分为「目标」与「非目标」的概率；回归部分的维度为 4，分别表征不同 anchor boxes 对 groud-truth 的长、宽、X 坐标、Y 坐标的预测；
+- 在训练的时候，只有 RPN 输出的区域建议与 groud-truth 的 $\text{IoU}>0.7$ 的 anchor boxes 与 groud-truth 的位置大小误差才会对最终的损失 $\mathcal{Loss}$ 有贡献。
+- 对于特征图 1 中的每一个 $n\times n$ 的滑动窗口， RPN 输出 $k$ 个区域建议，这 $k$ 区域建议都是由 $k$ 个 anchor boxes 作为基准调整得到的。特征图 1 中的每一个点都可以对应到原图的某个点，这个点称为锚点（anchor）。
+- 在论文中，对于每一个 anchor，以其为中心选择 9 个不同大小和不同长宽比的 anchor boxes，具体为 $128^2, 256^2, 512^2$ 三种尺度，每个尺度按 $1:1, 1:2, 2:1$ 的 3 种长宽比例进行缩放，因此一共有 9 个。
+- 实际上 RPN 并不是直接预测最终的区域建议，而是调节所有的 anchor boxes 并且经过非极大值抑制得到最终的区域建议。对于一个大小为 $H\times W$ 的特征图，会有 $kHW$ 个 anchor boxes。
+- 对于每个 anchor，如果满足两种情况：（1）与 ground-truth box 有最大的 IoU（并不一定会大于 0.7）；（2）与 ground-truth 的 IoU 大于 0.7，那么给其分配正标签，表示预测的效果是好的；如果与 ground-truth 的 IoU 小于 0.3 那么给其分配负标签，表示预测的结果很差。除了这些情况，其他的 anchor 不会对对损失函数有贡献。
+
+
+
+对于每一个图片，损失函数为：
+
+$L\left( \{p_i\},\{t_i\} \right) = \frac{1}{N_{cls}}\sum_iL_{cls}(p_i,p_i^*) + \lambda\frac{1}{N_{reg}}\sum_ip_i^*L_{reg}(t_i,t_i^*).$
+
+其中，$i$ 是 mini-batch 中 anchor 的索引，$p_i$ 是第 $i$ 个 anchor 中为物体的预测概率。对于 ground-truth label  $p_i^*$，如果 anchor 是正标签那么其为 1，如果为负标签那么其为 0。$t_i$ 为一个向量，表示所预测的边界框（Bounding Box）的 4 个坐标，$t_i^*$ 表示正标签 anchor 所对应的 ground-truth box 的坐标。分类损失 $L_{cls}$ 是两个类别（「目标」与「非目标」）的对数损失（Log Loss）；回归损失 $L_{reg}(t_i,t_i^*)=R(t_i,t_i^*)$. 
 
 Faster R-CNN 的优势和不足：
 
@@ -129,8 +157,6 @@ Mask R-CNN 出现于 2017 年
 
 FPN 主要用于区域建议，而不是 backbone 网络上。其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**。
 
-
-
 #### RetinaNet
 
 RetinaNet 出现于  2017 年在 RetinaNet 的论文 *Focal Loss for Dense Object Detection* 中提出了一个新的损失函数 —— Focal Loss，主要用于解决在单步目标检测场景上训练时前景（foreground）和背景（background）类别极端失衡（比如 1:1000）的问题。Focal Loss 可以抑制负样本对最终损失的贡献以提升网络的整体表现。
@@ -147,9 +173,9 @@ $p_t\begin{cases}p, \qquad \text{if } y=1,\\ 1-p, \quad \text{otherwise}. \end{c
 
 因此交叉熵损失可以重写为 $\text{CE}(p,y)=\text{CE}(p_t)=-\log(p_t).$
 
-#### EAST
+#### SENet
 
-**一种高效准确的场景文本检测器（An Efficient and Accurate Scene Text Detector，EAST）**：
+目标检测中的注意力机制
 
 #### GFL
 
@@ -203,3 +229,6 @@ OCR 算法通常分为两个基本模块，属于物体检测其中一个子类�
   - 基于像素分割的文本检测往往具有更好的精确度，但是对于小尺度的文本，因为对应的文本像素过于稀疏，检出率通常不搞，除非以牺牲检测效率为代价对输入图像进行大尺度的放大。
 - **同时基于候选框和像素分割**：将基于候选框的文本检测框架和基于像素分割的文本检测框架结合在一起，共享特征提取部分，并将像素分割的结果转换为候选框检测回归过程中的一种注意力机制，从而使文本检测的准确性和召回率都得到提高，例如云从科技公司提出的 Pixel-Anchor；
 
+#### EAST
+
+**一种高效准确的场景文本检测器（An Efficient and Accurate Scene Text Detector，EAST）**：

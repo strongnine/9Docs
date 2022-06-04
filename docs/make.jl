@@ -15,6 +15,11 @@ makedocs(
             "计算机视觉" => "AI/CV.md",
             "自然语言处理" => "AI/NLP.md",
         ],
+        "编程语言" => Any[
+            "Python" => "lang/Python.md",
+            "C++" => "lang/Cpp.md",
+            "Julia" => "lang/Julia.md",
+        ],
         "Git 学习笔记" => "git/git_notebook.md",
     ],
 )
