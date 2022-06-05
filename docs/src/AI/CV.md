@@ -148,22 +148,46 @@ Mask R-CNN 出现于 2017 年
 
 ![](../assets/(2017 FPN) Fig1.jpg)
 
-论文中的图 1. 展示了 4 种利用特征的方式：
+论文中的图 1 展示了 4 种利用特征的方式：
 
 - 图像金字塔（Featurized image pyramid）：将图像 reshape 为不同的尺度，不同尺度的图像生成对应不同尺度的特征。这种方式缺点在于增加了时间成本；
 - 单个特征图（Single feature map）：像 SPPNet、Fast R-CNN、Faster R-CNN 等模型采用的方式，只使用最后一层的特征图；
 - 金字塔特征层次结构（Pyramidal feature hierarchy）：像 SSD 模型采用多尺度特征融合的方式，没有上采样的过程，从网络不同层抽取不同尺度的特征做预测。优点在于不会增加额外的计算量；缺点在于 SSD 没有用到足够底层的特征（SSD 中最底层的特征是 VGG 网络的 Conv4\_3）；
 - 特征金字塔网络（Feature Pyramid Network）：顶层特征通过上采样和低层特征做融合，每层独立预测；
 
-FPN 主要用于区域建议，而不是 backbone 网络上。其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**。
+![](../assets/(2017 FPN) Fig2.jpg)
 
-#### RetinaNet
+论文的图 2 展示的是两种不同的金字塔结构，上面的结构将最顶部最小的特征图进行上采样之后与前面阶段的特征图相融合，最终只在最底层最大的特征图（自顶向下的最后一层也可以叫做 Finest Level）上进行预测。下面的结构预测是在每一层中独立进行的。
 
-RetinaNet 出现于  2017 年在 RetinaNet 的论文 *Focal Loss for Dense Object Detection* 中提出了一个新的损失函数 —— Focal Loss，主要用于解决在单步目标检测场景上训练时前景（foreground）和背景（background）类别极端失衡（比如 1:1000）的问题。Focal Loss 可以抑制负样本对最终损失的贡献以提升网络的整体表现。
+论文的算法结构如图 3 所示，其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**。$1\times 1 $ 卷积层的主要作用是减少卷积核的个数。
+
+![](../assets/(2017 FPN) Fig3.png)
+
+- Bottom-Up Pathway 是网络的前向过程。论文将不改变 feature map 大小的层视为在同一个网络阶段（stage），每次抽取出来的 feature map 都是每个 stage 的最后一层输出，因为最后一层的特征是最强的，每个阶段的 feature map 记为 $\{C_2, C_3, C_4, C_5\}$。
+- Top-Down Pathway 过程采用上采样（Upsampling）进行，生成的 feature map 记为 $\{P_2, P_3, P_4, P_5\}$。
+- Lateral Connections 是将上采样的结果和自底向上生成的相同大小的 feature mao 进行融合（merge）。
+- 在融合过后会使用 $3\times 3$ 卷积对每个融合结果进行卷积，以消除上采样的混叠效应（Aliasing Effect）。
+
+将 FPN 用于 RPN 网络中生成 Region Proposal，在每一个 stage 都定义了不同大小的 anchor，对于 $\{P_2, P_3, P_4, P_5, P_6\}$ 分别为 $\{32^2, 64^2, 128^2, 256^2, 512^2\}$，每种尺度的 anchor 有不同的比例 $1:2, 1:1, 2:1$，整个特征金字塔有 15 种 anchors。
+
+
+
+#### RetinaNet (Focal Loss)
+
+>  推荐阅读：
+>
+> - [MMDetection](https://mmdetection.readthedocs.io/en/latest/)；
+> - [GitHub：MMDetection](https://github.com/open-mmlab/mmdetection)；
+
+何凯明在 ICCV2017 上的新作 *Focal Loss for Dense Object Detection* 提出了一个一个新的损失函数 —— Focal Loss，主要用于解决在单阶段目标检测场景上训练时前景（foreground）和背景（background）类别极端失衡（比如 1:1000）的问题。Focal Loss 可以抑制负样本对最终损失的贡献以提升网络的整体表现。
 
 > 将不含有待检测物体的区域称为负样本，含有待检测物体的区域称为正样本。
 
-一般来说，对于二分类问题，交叉熵损失为：
+Focal Loss 的最终形式为：
+
+$\text{FL}(p_t)=-\alpha_t(1-p_t)^\gamma\log(p_t).$
+
+演变过程如下，一般来说，对于二分类问题，交叉熵损失为：
 
 $\text{CE}(p,y)=\begin{cases}-\log(p),\qquad \text{if } y=1\\ -\log(1-p),\quad \text{otherwise}. \end{cases}$
 
@@ -173,13 +197,49 @@ $p_t\begin{cases}p, \qquad \text{if } y=1,\\ 1-p, \quad \text{otherwise}. \end{c
 
 因此交叉熵损失可以重写为 $\text{CE}(p,y)=\text{CE}(p_t)=-\log(p_t).$
 
+这里应该区分的一个点是：难易样本不平衡和正负样本不平衡，Focal Loss 主要是在解决难易样本不平衡的问题上。一般解决正负样本不平衡的问题，会在交叉熵损失前面加上一个参数 $\alpha$ 得到
+
+$\text{CE}(p_t)=-\alpha_t\log(p_t),$
+
+只是这样的方案只能解决正负样本不平衡的问题，至于难易样本不平衡，Focal Loss 的思想就是降低高置信度样本的损失：
+
+$\text{FL}(p_t)=-(1-p_t)^\gamma\log(p_t).$
+
+假设 $\gamma=2$ 时，如果样本置信度为 $p=0.968$，那么 $(1-0.968)^2\approx 0.001$ 就可以将这个高置信度样本的损失衰减 1000 倍。
+
+将增加参数 $\alpha$ 添加到 Focal Loss 上就可以同时解决正负以及难易样本不平衡的问题，最终 Focal Loss 的形式为：
+
+$\text{FL}(p_t)=-\alpha_t(1-p_t)^\gamma\log(p_t).$
+
+在 [MMDetection](https://mmdetection.readthedocs.io/en/latest/_modules/mmdet/models/losses/focal_loss.html) 的 [GItHub 开源代码](https://github.com/open-mmlab/mmdetection/blob/master/mmdet/models/losses/focal_loss.py)中可以看到对于 Focal Loss 实现的 Python 代码，实际上真正使用的是 CUDA 版本代码，因此这里给出的代码只是供人学习的。
+
+Focal Loss 存在的问题：
+
+- 模型过多地关注那些特别难分的样本 —— 离群点（outliers），即便是模型已经收敛了，但是这些离群点依旧是
+
 #### SENet
 
 目标检测中的注意力机制
 
+#### FCOS
+
+发表于 ICCV2019 的论文：FCOS: Fully Convolutional One-Stage Object Detection
+
+#### ATSS
+
+论文 *Bridging the Gap Between Anchor-based and Anchor-free Detection via Adaptive Training Sample Selection* 中提出了一种根据目标的统计信息自动选择正负样本的**自适应样本选择机制（Adaptive Training Sample Selection，ATSS）**。
+
 #### GFL
 
-**广义焦点损失（Generalized Focal Loss，GFL）**：
+论文 *Generalized Focal Loss: Learning Qualified and Distributed Bounding Boxes for Dense Object Detection* 所提出的 **广义焦点损失（Generalized Focal Loss，GFL）**主要解决两个问题：
+
+- 在训练和推理的时候，分类和质量估计的不一致性；
+- 狄拉克分布针对复杂场景下（模糊和不确定性边界）存在不灵活的问题；
+
+解决这两个问题的方式是设计新的「表示」方法：
+
+- 通过联合质量估计和分类设计新的 Loss；
+- 定义一种新的边界框表示方式来进行回归；
 
 
 
