@@ -35,7 +35,7 @@ NMS 中的阈值给得越大，则越有可能出现同一个物体有多个边�
 
 #### R-CNN
 
-**基于区域的卷积神经网络（Region-based CNN，R-CNN）**出现于 2014 年，是第一个将 CNN 用于目标检测的深度学习模型。它是是解决这种缺点的更好方法，它使用生成区域建议的方式来选择区域。R-CNN 的选框方式是根据**选择性搜索来进行的，选框也叫做区域（regions）。
+**基于区域的卷积神经网络（Region-based CNN，R-CNN）**出现于 2014 年，是第一个将 CNN 用于目标检测的深度学习模型。它是是解决这种缺点的更好方法，它使用生成区域建议的方式来选择区域。R-CNN 的选框方式是根据选择性搜索来进行的，选框也叫做区域（regions）。
 
 1. 首先使用无监督的**选择性搜索（Selective Serch，SS）**方法将图像中具有相似颜色直方图特征的区域进行合并，产生 2000 个大小不一样的候选区域。这个最后合成的区域就是物体在图片中的位置，即**感兴趣区域（Region of Interest，RoI）**；
 
@@ -159,18 +159,16 @@ Mask R-CNN 出现于 2017 年
 
 论文的图 2 展示的是两种不同的金字塔结构，上面的结构将最顶部最小的特征图进行上采样之后与前面阶段的特征图相融合，最终只在最底层最大的特征图（自顶向下的最后一层也可以叫做 Finest Level）上进行预测。下面的结构预测是在每一层中独立进行的。
 
-论文的算法结构如图 3 所示，其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**。$1\times 1 $ 卷积层的主要作用是减少卷积核的个数。
+论文的算法结构如图 3 所示，其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**，$1\times 1$ 卷积层的主要作用是减少卷积核的个数。
 
 ![](../assets/(2017 FPN) Fig3.png)
 
 - Bottom-Up Pathway 是网络的前向过程。论文将不改变 feature map 大小的层视为在同一个网络阶段（stage），每次抽取出来的 feature map 都是每个 stage 的最后一层输出，因为最后一层的特征是最强的，每个阶段的 feature map 记为 $\{C_2, C_3, C_4, C_5\}$。
 - Top-Down Pathway 过程采用上采样（Upsampling）进行，生成的 feature map 记为 $\{P_2, P_3, P_4, P_5\}$。
-- Lateral Connections 是将上采样的结果和自底向上生成的相同大小的 feature mao 进行融合（merge）。
+- Lateral Connections 是将上采样的结果和自底向上生成的相同大小的 feature map 进行融合（merge）。
 - 在融合过后会使用 $3\times 3$ 卷积对每个融合结果进行卷积，以消除上采样的混叠效应（Aliasing Effect）。
 
 将 FPN 用于 RPN 网络中生成 Region Proposal，在每一个 stage 都定义了不同大小的 anchor，对于 $\{P_2, P_3, P_4, P_5, P_6\}$ 分别为 $\{32^2, 64^2, 128^2, 256^2, 512^2\}$，每种尺度的 anchor 有不同的比例 $1:2, 1:1, 2:1$，整个特征金字塔有 15 种 anchors。
-
-
 
 #### RetinaNet (Focal Loss)
 
@@ -179,7 +177,7 @@ Mask R-CNN 出现于 2017 年
 > - [MMDetection](https://mmdetection.readthedocs.io/en/latest/)；
 > - [GitHub：MMDetection](https://github.com/open-mmlab/mmdetection)；
 
-何凯明在 ICCV2017 上的新作 *Focal Loss for Dense Object Detection* 提出了一个一个新的损失函数 —— Focal Loss，主要用于解决在单阶段目标检测场景上训练时前景（foreground）和背景（background）类别极端失衡（比如 1:1000）的问题。Focal Loss 可以抑制负样本对最终损失的贡献以提升网络的整体表现。
+何凯明在 ICCV2017 上的新作 Focal Loss for Dense Object Detection 提出了一个一个新的损失函数 —— Focal Loss，主要用于解决在单阶段目标检测场景上训练时前景（foreground）和背景（background）类别极端失衡（比如 1:1000）的问题。Focal Loss 可以抑制负样本对最终损失的贡献以提升网络的整体表现。
 
 > 将不含有待检测物体的区域称为负样本，含有待检测物体的区域称为正样本。
 
@@ -223,15 +221,39 @@ Focal Loss 存在的问题：
 
 #### FCOS
 
-发表于 ICCV2019 的论文：FCOS: Fully Convolutional One-Stage Object Detection
+发表于 ICCV2019 的论文：FCOS: Fully Convolutional One-Stage Object Detection 提出了 FCOS，与 YOLO 类似，它直接将 backbone 输出的 feature map 上的每一个像素当做预测起点，即把每一个位置都当做训练样本，只要该位置落入某个 Ground-Truth 框，就将其当做正样本进行训练。为了让一个目标在推理时不会在多个 feature map 上被重复输出，认为限制了每一层回归目标的尺度大小，超过该限制的目标，这一层就不检测。
+
+论文中图 2 展示了 FCOS 的具体结构：
+
+![](../assets/(2019 FCOS) Fig2.png)
+
+FCOS 在检测头增加一个**中心度（Centerness）**分支，保证回归框的中心和 GT 较为接近，同时和 FPN 结合，在每一层上只回归特定大小的目标，从而将不同尺度的目标分配到对应层级上
+
+$\text{centerness}^*=\sqrt{\frac{\min(l^*,r^*)}{\max(l^*,r^*)}\times \frac{\min(t^*,b^*)}{\max(t^*,b^*)}},$
+
+其中 
+
+#### CenterNet
+
+
 
 #### ATSS
 
-论文 *Bridging the Gap Between Anchor-based and Anchor-free Detection via Adaptive Training Sample Selection* 中提出了一种根据目标的统计信息自动选择正负样本的**自适应样本选择机制（Adaptive Training Sample Selection，ATSS）**。
+论文 Bridging the Gap Between Anchor-based and Anchor-free Detection via Adaptive Training Sample Selection 中提出了一种根据目标的统计信息自动选择正负样本的**自适应样本选择机制（Adaptive Training Sample Selection，ATSS）**。
+
+论文里提到无论是 anchor-based 方法还是 anchor-free 方法，
 
 #### GFL
 
-论文 *Generalized Focal Loss: Learning Qualified and Distributed Bounding Boxes for Dense Object Detection* 所提出的 **广义焦点损失（Generalized Focal Loss，GFL）**主要解决两个问题：
+> 推荐阅读：
+>
+> - GFL 作者本人 李翔 的文章 [知乎：大白话 Generalized Focal Loss](https://zhuanlan.zhihu.com/p/147691786)；
+
+论文 Generalized Focal Loss: Learning Qualified and Distributed Bounding Boxes for Dense Object Detection 所提出的 **广义焦点损失（Generalized Focal Loss，GFL）**的具体形式如下：
+
+$\text{GFL}(p_{y_l}, p_{y_r})=-|y-(y_l p_{y_l}+y_rp_{y_r})|^\beta\left( (y_r-y)\log(p_{y_l}) + (y-y_l)\log(p_{{y_r}})\right).$
+
+GFL 主要解决两个问题：
 
 - 在训练和推理的时候，分类和质量估计的不一致性；
 - 狄拉克分布针对复杂场景下（模糊和不确定性边界）存在不灵活的问题；
@@ -241,7 +263,28 @@ Focal Loss 存在的问题：
 - 通过联合质量估计和分类设计新的 Loss；
 - 定义一种新的边界框表示方式来进行回归；
 
+GFL 工作的核心是围绕**表示（representation）**的改进去进行的，表示具体是指检测器最终的输出，也就是 head 末端的物理对象，以 FCOS、ATSS 为代表的 one-stage anchor-free 检测器基本会包含 3 个表示：
 
+- 分类表示；
+- 检测框表示；
+- 检测框的质量估计。在 FCOS、ATSS 中采用 centerness，一些其他的工作会采用 IoU，这些 score 基本都在 0 到 1 之间；
+
+现有的表示主要存在的问题：
+
+- classification score 和 IoU / centerness score 训练测试不一致，具体有：
+  - 用法不一致。训练的时候，分类和质量估计是分开训练的，但是在测试的时候又是乘在一起作为 NMS score 排序的依据；
+  - 对象不一致。质量估计通常只针对正样本训练，对于 one-stage 检测器而言，在做 NMS score 排序的时候，所有的样本都会将分类 score 和质量预测 score 相乘用于排序，这样会引发一个情况：一个分类 score 相对低的真正负样本，由于预测了一个不可信的高质量 score，导致到它可能排到一个分类 score 不高并且质量 score 较低的真正的正样本的前面；
+- Bounding Box 回归采用的表示不够灵活，没有办法建模复杂场景下的 uncertainty；
+
+Focal Loss 支持 0 或者 1 类型的离散 label，而对于分类 - 质量联合表示，label 是 0～1 之间的连续值。如果对 Focal Loss 在连续 label 上进行拓展，就可以使其即保证平衡正负难易样本的特性，又支持连续数值的监督，因此得到 Quality Focal Loss（QFL），具体形式如下：
+
+$\text{QFL}(\sigma)=-|y-\sigma|^\beta\left((1-y)\log(1-\sigma)+y\log(\sigma) \right),$
+
+其中 $y$ 为 0～1 的质量标签，$\sigma$ 为预测，QFL 的全局最小解是 $\sigma=y$。之后又增加了一个称为 Distribution Focal Loss（DFL）的 loss，目的是希望网络能够快速地聚焦到标注位置附近的数值，使得它们概率尽可能大，DFL 的具体形式如下：
+
+$\text{DFL}(S_i,S_{i+1})=-\left((y_{i+1}-y)\log(S_i)+(y-y_i\log(S_{i+1})) \right).$
+
+如果将 QFL 和 DFL 统一起来，就可以表示为 GFL。
 
 ## 人脸识别
 
