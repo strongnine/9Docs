@@ -159,3 +159,23 @@ print("下一个迭代值：{}".format(addOneGenera.__next__()))
 >>> 下一个迭代值：4
 ```
 
+## 虚拟环境 virtualenv
+
+pip, virtualenv, fabric 统称为 Python 的三大神器。其中 `virtualenv` 的作用是建立一个虚拟的 Python 环境。
+
+通过 pip 安装 virtualenv：`pip install virtualenv`，如果输入 `virtualenv --version` 能够输出版本号就代表安装成功了。
+
+**为项目搭建新的虚拟环境**：`virtualenv nine-py`，执行完之后会在当前的目录中创建一个相对应名字的文件夹，是独立的 Python 运行环境，包含了 Python 可执行文件，以及 pip 库的一份拷贝，在这个环境中安装的库都是独立的，不会影响到其他的环境。
+
+> 如果想要指定 Python 解释器：`virtualenv -p /usr/bin/python2.7 nine-py`
+
+**激活虚拟环境**：`source nine-py/bin/activate`
+
+**停用虚拟环境**：`deactivate`（停用之后会回到系统默认的 Python 解释器）
+
+**查看当前安装版本**：`pip freeze`
+
+**将当前环境输出为文件**：`pip freeze > requirements.txt`，会创建一个 requirements.txt 文件，其中包含当前环境所有包以及对应版本的简单列表。
+
+**安装环境文件**：`pip install -r requirements.txt`
+

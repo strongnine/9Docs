@@ -20,7 +20,10 @@ makedocs(
             "C++" => "lang/Cpp.md",
             "Julia" => "lang/Julia.md",
         ],
-        "Git 学习笔记" => "git/git_notebook.md",
+        "Git" => "git.md",
+        "Docker" => "docker.md",
+        "Linux" => "Linux.md",
+        "Vim" => "vim.md",
     ],
 )
 

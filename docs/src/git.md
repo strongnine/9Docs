@@ -117,7 +117,7 @@ objects：存放对象 .git/objects/ 文件夹中的子文件夹都是以哈希�
 
  **commit、tree、blob 的关系**
 
-![relations](../assets/rela_commit_tree_blob.png)
+![relations](./assets/rela_commit_tree_blob.png)
 
 一个 commit 对应一颗 tree，tree 相当于文件夹，blob 相当于具体的文件（数据）。git 里面，文件内容相同， 就是视为同一个文件。
 
@@ -231,7 +231,7 @@ $ git stash pop
 
 **2.2. Git 的备份**
 
- ![git_learning_fig2](../assets/git_learning_fig2.png)
+ ![git_learning_fig2](./assets/git_learning_fig2.png)
 
 哑协议传输进度不可看见，智能协议可见。智能协议比哑协议快。
 
