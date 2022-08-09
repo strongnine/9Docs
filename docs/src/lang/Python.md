@@ -5,7 +5,20 @@ py 文件执行完保持交互界面：在终端用命令行 `python file.py` �
 ```python
 # 执行完不退出 Python 交互
 import code
-code.·(banner="", local=locals())
+code(banner="", local=locals())
+```
+
+### defaultdict
+
+defaultdict 的作用是在于，当字典里的 key 不存在但被查找时，返回的不是 keyError 而是一个默认值。
+
+```python
+from collections import defaultdict  # 需要先导入
+# 用法 dict_type = defaultdict( factory_function)
+dict_int  = defaultdict(int)  # 不存在时返回 整数 0
+dict_set  = defaultdict(set)  # 不存在时返回 空集 {}
+dict_str  = defaultdict(str)  # 不存在时返回 空字符 ""
+dict_list = defaultdict(list) # 不存在时返回 空列表 []
 ```
 
 

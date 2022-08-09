@@ -20,6 +20,7 @@ makedocs(
             "C++" => "lang/Cpp.md",
             "Julia" => "lang/Julia.md",
         ],
+        "面试笔试" => "interview.md",
         "Git" => "git.md",
         "Docker" => "docker.md",
         "Linux" => "Linux.md",

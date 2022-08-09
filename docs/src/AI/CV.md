@@ -16,6 +16,32 @@
 
 **交并比（Intersection-over-Union，IoU）**：即两个 Bounding Boxes 之间交集与并集的比值。对于预测 Bounding Box 与 Ground-truth Box 来说，比值越大代表预测的 Bounding Box 结果越好。
 
+可以学习一下 IoU 的 Python 代码 [IoU_demo.py](https://github.com/humengdoudou/object_detection_mAP/blob/master/IoU_demo.py)。
+
+```python
+# 这六行短短的代码可以囊括所有 pred bbox 和 gt bbox 之间的关系。包括相交、不相交、各种相交形式等等
+ixmin = max(pred_bbox[0], gt_bbox[0])
+iymin = max(pred_bbox[1], gt_bbox[1])
+ixmax = min(pred_bbox[2], gt_bbox[2])
+iymax = min(pred_bbox[3], gt_bbox[3])
+iw = np.maximum(ixmax - ixmin + 1., 0.)
+ih = np.maximum(iymax - iymin + 1., 0.)
+```
+
+**均交并比（Mean Intersection over Union, MIoU）**：MIoU 是语义分割的标准度量，其计算两个集合的交集和并集之比。
+
+$\text{MIoU}=\frac{1}{k+1}\sum^{k}_{i=0}{\frac{p_{ii}}{\sum_{j=0}^{k}{p_{ij}+\sum_{j=0}^{k}{p_{ji}-p_{ii}}}}}$
+
+其中 $p_{ij}$ 表示真实值为 $i$，被预测为 $j$ 的数量。
+
+![](../assets/CV MIoU Fig 1.png)
+
+橙色是真实值，蓝色是预测值，中间是两个部分的相交部分。
+
+**均像素精度（Mean Pixel Accuracy, MPA）**：预测正确的部分占整个真实值的比例，或者说真正例占假负例的比例，即面积 3 和面积 1 的比例。
+
+而 MIoU 就是两个部分交集部分与并集部分的比，越接近 1 证明预测结果越好，最理想的情况是 1. 
+
 **非极大值抑制（Non-Maximum Suppression，NMS）**：目标检测过程中在同一个目标的位置上会产生大量的候选框，这些候选框之间可能会有重叠，NMS 的作用就是消除冗余的边界框，找到最佳的目标边界框。NMS 的流程如下：
 
 - 步骤 1. 根据置信度得分进行排序；
@@ -26,6 +52,75 @@
 - 步骤 6. 重复上述过程，直到边界框列表为空；
 
 NMS 中的阈值给得越大，则越有可能出现同一个物体有多个边界框的情况。步骤 4 中如果置信度最高的边界框与其他候选框的 IoU 比较大的话，就可以认为这两个边界框中是同一个物体，因此只要留下最大的那一个，把其他的删除了。
+
+代码：
+
+```python
+out = net(x)  # forward pass, 将图像 x 输入网络，得到 pred cls + reg
+boxes, scores = detector.forward(out, priors)  # 结合 priors，将 pred reg（即预测的 offsets）解码成最终的 pred bbox
+boxes = boxes[0]
+scores = scores[0]
+
+# scale each detection back up to the image
+boxes *= sca;e  # (0, 1) 区间坐标的 bbox 做尺度反正则化
+boxes = boxes.cpu().numpy()
+scores = scores.cpu().numpy()
+
+for	j in range(1, num_classes):  # 对每一个类 j 的 pred bbox 单独做 NMS
+    # 因为第 0 类是 background，不用做 NMS，因此 index 从 1 开始
+    inds = np.where(scores[:, j] > thresh)[0]  # 找到该类 j 下，所有 cls score 大于 thresh 的 bbox
+    # score 小于阈值的 bbox 直接过滤掉，不用进行 NMS
+    if len(inds) == 0:  # 没有满足条件的 bbox，返回空，跳过
+        all_boxes[j][i] = np.empty([0, 5], dtype=np.float32)
+        continue
+    c_bboxes = boxes[inds]
+    c_scores = scores[inds, j]  # 找到对应类 j 下的 score 即可
+    c_dets = np.hstack((c_bboxes, c_scores[:, np.newaxis])).astype(np.float32, copy=False)  # 将满足条件的 bbox + cls score 的 bbox 通过 hstack 完成合体
+    
+    keep = nms(c_dets, 0.45, force_cpu=args.cpu)  # NMS，返回需要保存的 bbox index: keep
+    c_dets = c_dets[keep, :]
+    all_boxes[j][i] = c_dets  # i 对应每张图片，j 对应图像中类别 j 的 bbox 清单
+```
+
+
+
+**True Positive (TP)**：$\text{IoU} > 0.5$ 的检测框数量（同一个 Ground Truth 只计算一次）
+
+**False Positive (FP）**：$\text{IoU}\le 0.5$ 的检测框（检测到同一个 Ground Truth 的多余检测框的数量
+
+**False Negative (FN)**：没有检测到的 Ground Truth 的数量
+
+**True Negative (TN)**：在 mAP 评价指标中不会使用到
+
+**查准率（Precision）**：
+
+$\text{Precision} = \frac{\text{TP}}{(\text{TP} + \text{FP})} = \frac{\text{FP}}{\text{all detections}}$
+
+**查全率、查全率（Recall）**：
+
+$\text{Recall} = \frac{\text{TP}}{(\text{TP}+\text{FN})}=\frac{\text{TP}}{\text{all ground truths}}$
+
+
+
+**PR 曲线（Precision-Recall Curve）**：
+
+**平均精确度（Average Precision）**：PR 曲线下面积
+
+**mAP（mean Average Precison）**：各类别 AP 的平均值。在 VOC2010 以前（VOC07），只要选择当 $\text{Recall}\ge 0, 0.1, 0.2, \dots, 1$ 共 11 个点时的 Precision 最大值，然后 AP 就是这 11 个 Precision 的平均值；在 VOC2010 开始，需要针对每一个不同的 Recall 值（包括 0 和 1），选取其大于等于这些 Recall 值时的 Precision 最大值，然后计算 PR 曲线下面积作为 AP 值。
+
+> 通常 VOC10 标准下计算的 mAP 值会高于 VOC07，原因如下：
+>
+> **插值平均精度（Interpolated Average Precision）**：一些作者选择了另一种近似值，称为插值平均精度。 通常，他们仍然称其为平均精度。 这种方法不使用 $P(k)$，在 $k$ 个图像的截止处的精度，插值平均精度使用：
+>
+> $\max_{\tilde{k}\ge k}P(\tilde{k})$
+>
+> 换句话说，插值平均精度不是使用在截止 $k$ 处实际观察到的精度，而是使用在所有具有更高召回率的截止上观察到的最大精度。计算插值平均精度的完整方程为：
+>
+> $\sum_{k=1}^{N}\max_{\tilde{k}\ge k}P(\tilde{k})\Delta r(k)$
+>
+> **近似平均精度（Approximated Average）**与实际观察到的曲线非常接近。 插值平均精度高估了许多点的精度，并产生比近似平均精度更高的平均精度值。
+>
+> 此外，在计算插值平均精度时，在何处采集样本存在差异。 有些人在从 0 到 1 的固定 11 个点采样：$\{0, 0.1, 0.2, ..., 0.9, 1.0\}$。 这称为 11 点插值平均精度。 其他人在召回率发生变化的每个 $k$ 处采样。
 
 ### 目标检测历史
 
