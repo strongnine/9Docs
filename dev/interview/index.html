@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>面试笔试 · 9Docs</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">9Docs</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><span class="tocitem">人工智能</span><ul><li><a class="tocitem" href="../AI/FE/">特征工程</a></li><li><a class="tocitem" href="../AI/ML/">机器学习</a></li><li><a class="tocitem" href="../AI/NN/">神经网络</a></li><li><a class="tocitem" href="../AI/CNN/">卷积神经网络</a></li><li><a class="tocitem" href="../AI/RNN/">循环神经网络</a></li><li><a class="tocitem" href="../AI/GNN/">图神经网络</a></li><li><a class="tocitem" href="../AI/GAN/">生成对抗网络</a></li><li><a class="tocitem" href="../AI/CV/">计算机视觉</a></li><li><a class="tocitem" href="../AI/NLP/">自然语言处理</a></li></ul></li><li><span class="tocitem">编程语言</span><ul><li><a class="tocitem" href="../lang/Python/">Python</a></li><li><a class="tocitem" href="../lang/Cpp/">C++</a></li><li><a class="tocitem" href="../lang/Julia/">Julia</a></li></ul></li><li class="is-active"><a class="tocitem" href>面试笔试</a><ul class="internal"><li><a class="tocitem" href="#笔试"><span>笔试</span></a></li></ul></li><li><a class="tocitem" href="../git/">Git</a></li><li><a class="tocitem" href="../docker/">Docker</a></li><li><a class="tocitem" href="../Linux/">Linux</a></li><li><a class="tocitem" href="../vim/">Vim</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>面试笔试</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>面试笔试</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/strongnine/9Docs/blob/main/docs/src/interview.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h2 id="笔试"><a class="docs-heading-anchor" href="#笔试">笔试</a><a id="笔试-1"></a><a class="docs-heading-anchor-permalink" href="#笔试" title="Permalink"></a></h2><h3 id="面试：输入输出的处理"><a class="docs-heading-anchor" href="#面试：输入输出的处理">面试：输入输出的处理</a><a id="面试：输入输出的处理-1"></a><a class="docs-heading-anchor-permalink" href="#面试：输入输出的处理" title="Permalink"></a></h3><p>Python 的输出输出处理：</p><pre><code class="language-python hljs"># strip() 去掉两端的空白符，返回 str
+# split() 按照空白符分割，返回 List[str]
+# map(type, x) 把列表 x 中的元素映射成类型 type
+# 1. 题目没有告知多少组数据时，用 while True
+while True:
+    try:
+        # ...
+    except:
+        break
+        
+# 2. 题目告知有 T 组数据时，用 For loop
+T = int(input().strip())
+for _ in range(T):
+    # ...
+    
+    
+# 3. 不同的输入
+s = input().strip()  # 输入一个字符
+num = int(input().strip())  # 输入一个整数
+nums = list(map(int, input().strip().split()))  # 输入一个整数列表</code></pre><h3 id="面试题-1：整数除法"><a class="docs-heading-anchor" href="#面试题-1：整数除法">面试题 1：整数除法</a><a id="面试题-1：整数除法-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-1：整数除法" title="Permalink"></a></h3><p><strong>题目</strong>：输入 2 个 int 型整数，它们进行除法计算并返回商，要求不得使用乘号 *、除号 / 及求余符号 %。当发生溢出时，返回最大的整数值。假设除数不为 0。例如，输入 15 和 2，输出 15/2 的结果，即 7。</p><ul><li>用减法实现除法，时间复杂度 <span>$\mathcal{O}(\log n)$</span></li><li>对于含有负数的情况，可以先记录最终答案的是正是负，然后全部转化为绝对值计算，最后在返回时操作；</li><li>由于是整数的除法，且除数不等于 0，因此商的绝对值一定小于等于被除数的绝对值。只有一种情况会导致溢出，即 <span>$(-2^{31})/(-1)$</span>。</li></ul><pre><code class="language-python hljs">import sys
+def divide(dividend: int, divisor: int) -&gt; int:
+    # 0x80000000 为最小的 int 整数，即 -2^31
+    if (dividend == 0x80000000 and divisor == -1):
+        return sys.maxint  # 溢出时返回最大整数
+    
+    # 如果 negative == 1 则结果为 负数，否则为 正数
+    negative = 2
+    if dividend &gt; 0:
+        negative -= 1
+        dividend = -dividend
+        
+    if divisor &gt; 0:
+        negative -= 1
+        divisor = -divisor
+    
+    result = divideCore(dividend, divisor)
+    return -result if negative == 1 else result
+
+def divideCore(dividend: int, divisor: int) -&gt; int:
+    &quot;&quot;&quot;
+    使用减法实现两个负数的除法
+    &quot;&quot;&quot;
+    result = 0
+    while dividend &lt;= divisor:
+        value = divisor
+        quotient = 1  # 商
+        while (value &gt;= 0xc0000000) and (dividend &lt;= value + value):
+            # 0xc0000000 是 0x80000000 的一半，即 -2^30（防止溢出）
+            quotient += quotient
+            value += value
+            
+        result += quotient
+        dividend -= value
+    
+    return result</code></pre><h3 id="面试题-2：二进制加法"><a class="docs-heading-anchor" href="#面试题-2：二进制加法">面试题 2：二进制加法</a><a id="面试题-2：二进制加法-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-2：二进制加法" title="Permalink"></a></h3><p><strong>题目</strong>：输入两个表示二进制的字符串，请计算它们的和，并以二进制字符串的形式输出。例如，输入的二进制字符串分别是「11」和「10」，则输出「101」。</p><pre><code class="language-python hljs">def binaryAdd(a, b):
+    ans = &quot;&quot;
+    i = len(a) - 1
+    j = len(b) - 1
+    carry = 0
+    while (i &gt;= 0) or (j &gt;= 0):
+        digitA = a[i] - &#39;0&#39; if i &gt;= 0 else 0
+        digitB = b[j] - &#39;0&#39; if j &gt;= 0 else 0
+        i += 1
+        j += 1
+        sum_ = digitA + digitB + carry
+        carry = sum_ - 2 if sum_ &gt;= 2 else sum_
+        ans.append(str(sum_))
+    
+    if carry == 1:
+        ans.append(&quot;1&quot;)
+    
+    # 字符串翻转的两种方法
+    return ans[::-1]  # 使用字符串切片
+	# return &#39;&#39;.join(reversed(ans))  # 使用 reversed()</code></pre><h3 id="面试题-3：前-n-个数字二进制形式中-1-的个数"><a class="docs-heading-anchor" href="#面试题-3：前-n-个数字二进制形式中-1-的个数">面试题 3：前 n 个数字二进制形式中 1 的个数</a><a id="面试题-3：前-n-个数字二进制形式中-1-的个数-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-3：前-n-个数字二进制形式中-1-的个数" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个非负数 n，请计算 0 到 n 之间每个数字的二进制形式中 1 的个数，并输出一个数组。例如，输入的 n 为 4，由于 0、1、2、3、4 的二进制形式中 1 的个数分别为 0、1、1、2、1，因此输出数组 <code>[0, 1, 1, 2, 1]</code>。</p><h4 id="计算每个整数的二进制形式中-1-的个数"><a class="docs-heading-anchor" href="#计算每个整数的二进制形式中-1-的个数">计算每个整数的二进制形式中 1 的个数</a><a id="计算每个整数的二进制形式中-1-的个数-1"></a><a class="docs-heading-anchor-permalink" href="#计算每个整数的二进制形式中-1-的个数" title="Permalink"></a></h4><pre><code class="language-python hljs">def countBits(num):
+    result = [0 for _ in range(num + 1)]
+    for i in range(num + 1):
+        j = i
+        while j != 0:
+            result[i] += 1
+            # x &amp; (x - 1) 的操作可以将整数 x 二进制的最右边的 1 变成 0
+            j = j &amp; (j - 1)
+            
+    return result</code></pre><p>上述代码的时间复杂度 <span>$\mathcal{O}(nk)$</span>，<span>$k$</span> 为二进制中 1 的个数</p><h4 id="根据-x-and-(x-1)-计算其二进制形式中-1-的个数"><a class="docs-heading-anchor" href="#根据-x-and-(x-1)-计算其二进制形式中-1-的个数">根据 <code>x &amp; (x - 1)</code> 计算其二进制形式中 1 的个数</a><a id="根据-x-and-(x-1)-计算其二进制形式中-1-的个数-1"></a><a class="docs-heading-anchor-permalink" href="#根据-x-and-(x-1)-计算其二进制形式中-1-的个数" title="Permalink"></a></h4><p>整数 <code>x</code> 的二进制形式中 1 的个数比 <code>x &amp; (x - 1)</code> 的多 1 个</p><pre><code class="language-python hljs">def countBits(num):
+    result = [0 for _ in range(num + 1)]
+    for i in range(num + 1):
+        result[i] = result[i &amp; (i + 1)] + 1
+        
+    return result</code></pre><p>这个代码的时间复杂度 <span>$\mathcal{O}(n)$</span>. </p><h4 id="根据-x-/-2-计算-x-的二进制形式中-1-的个数"><a class="docs-heading-anchor" href="#根据-x-/-2-计算-x-的二进制形式中-1-的个数">根据 <code>x / 2</code> 计算 <code>x</code> 的二进制形式中 1 的个数</a><a id="根据-x-/-2-计算-x-的二进制形式中-1-的个数-1"></a><a class="docs-heading-anchor-permalink" href="#根据-x-/-2-计算-x-的二进制形式中-1-的个数" title="Permalink"></a></h4><p>如果正整数 <code>x</code> 是一个偶数，那么 <code>x</code> 相当于将 <code>x / 2</code> 左移一位的结果，他们两个的二进制中的 1 个数是相同的。如果 <code>x</code> 是奇数，那么 <code>x</code> 相当于将 <code>x / 2</code> 左移一位之后再将最右边一位设为 1 的结果，因此奇数 <code>x</code> 的二进制形式中 1 的个数比 <code>x / 2</code> 的个数多 1 个。</p><pre><code class="language-python hljs">def countBits(num):
+    result = [0 for _ in range(num + 1)]
+    for i in range(num + 1):
+        # 位运算效率更高：
+        # 用 i &gt;&gt; 1 替代 i / 2
+        # 用 i &amp; 1 替代 i % 2
+        result[i] = result[i &gt;&gt; 1] + (i &amp; 1)
+    
+    return result</code></pre><p>这种解法时间复杂度 <span>$\mathcal{O}(n)$</span></p><h3 id="面试题-4：只出现一次的数字"><a class="docs-heading-anchor" href="#面试题-4：只出现一次的数字">面试题 4：只出现一次的数字</a><a id="面试题-4：只出现一次的数字-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-4：只出现一次的数字" title="Permalink"></a></h3><p>题目：输入一个整数数组，数组中只有一个数字出现了一次，而其他数字都出现了 3 次。请找出那个只出现一次的数字。例如，如果输入的数组为 <code>[0, 1, 0, 1, 0, 1, 100]</code>，则只出现一次的数字是 100。</p><blockquote><p>简单版本：输入数组中除一个数字只出现一次之外其他数字都出现两次，请找出只出现一次的数字。因为任何一个数字异或它自己的结果都是 0，因此解法就是将数组中所有数字进行异或运算，最终的结果就是那个只出现一次的数字。</p></blockquote><p>这个题目与简单版本的不同就是，其他重复的数字是出现 3 次的。</p><p>思路是将数组中所有数字的同一位置的数位相加，得到的结果中每个数位都除以 3，如果能够整除，那么只出现一次的数字，对应的数位就是 0，如果结果余 1，那么对应的数位就是 1.</p><pre><code class="language-python hljs">def singleNumber(nums: List[int]):
+    bitSums = [0 for _ in range(32)]  # 一个整数是由 32 个 0 或 1 组成的
+    for num in nums:
+        for i in range(32):
+            bitSums[i] += (num &gt;&gt; (31 - i)) &amp; 1  # 得到整数 num 的二进制形式中左数起第 i 个数位
+            
+    result = 0
+    for i in range(32):
+        result = (result &lt;&lt; 1) + bitSums[i] % 3
+    
+    return result</code></pre><p>进阶题目：输入一个整数数组，数组中只有一个数字出现 m 次，其他数字都出现 n 次。请找出那个唯一出现 m 次的数字。假设 m 不能被 n 整除。</p><p>如果数组中所有数字的第 i 个数位相加之和能被 n 整除，那么出现 m 次的数字的第 i 个数位一定是 0；否则出现 m 次的数字的第 i 个数位一定是 1</p><h3 id="面试题-5：单词长度的最大乘积"><a class="docs-heading-anchor" href="#面试题-5：单词长度的最大乘积">面试题 5：单词长度的最大乘积</a><a id="面试题-5：单词长度的最大乘积-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-5：单词长度的最大乘积" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个字符串数组 words，请计算不包含相同字符的两个字符串 words[i] 和 words[j] 的长度乘积的最大值。如果所有字符串都包含至少一个相同字符，那么返回 0。假设字符串中只包含英文小写字母。例如，输入的字符串数组 words 为 [&quot;abcw&quot;，&quot;foo&quot;，&quot;bar&quot;，&quot;fxyz&quot;，&quot;abcdef&quot;]，数组中的字符串 &quot;bar&quot; 与 &quot;foo&quot; 没有相同的字符，它们长度的乘积为 9。&quot;abcw&quot; 与 &quot;fxyz&quot; 也没有相同的字符，它们长度的乘积为 16，这是该数组不包含相同字符的一对字符串的长度乘积的最大值。</p><p><strong>暴力法</strong>：对于 str1 中的每个字符 ch，扫描字符串 str2 判断字符 ch 是否出现在 str2 中。如果两个字符串的长度分别为 p 和 q，那么暴力法时间复杂度 <span>$\mathcal{O}(pq)$</span>.</p><p><strong>哈希表记录字符串中出现的字符</strong>：题目假设字符串只包含英文小写字母，用长度为 26 的数组模拟哈希表</p><pre><code class="language-python hljs">def maxProduct(words: List[str]):
+    n = len(words)
+    flags = [[0 for _ in range(26)] for _ in range(len(words))]
+    # Step 1. 初始化每个字符串对应的哈希表
+    for i in range(n):
+        word = words[i]
+        for ch in word:
+            flags[i][ord(ch) - ord(&#39;a&#39;)] = 1
+    
+    result = 0
+    for i in range(n):
+        # Step 2. 根据哈希表判断每对字符串是否包含相同的字符
+        for j in range(i + 1, n):
+            k = 0
+            while k &lt; 26:
+                if flags[i][k] and flags[j][k]:
+                    break
+                k += 1
+            
+            # Step 3. 如果所有字符都不相同，计算乘积
+            if k == 26:
+                prod = len(words[i]) * len(words[j])
+                result = max(result, prod)
+    
+    return result</code></pre><p>第 1 步如果 words 的长度为 n，平均每个字符串长度为 k，那么时间复杂度为 <span>$\mathcal{O}(nk)$</span>；第 2 步总共有 <span>$n^2$</span> 对字符串，时间复杂度为 <span>$\mathcal{O}(n^2)$</span>，总的时间复杂度为 <span>$\mathcal{O}(nk+n^2)$</span>.</p><p><strong>用整数的二进制数位记录字符串中出现的字符</strong>：int 型整数的有 32 个数位，将二进制的最右边代表 ‘a’，倒数最右代表 ‘b’，对应的数位为 1 则代表 words[i] 包含该字母，否则不包含。如果两个字符串没有相同的字符，那么它们对应的整数的「与」运算结果等于 0.</p><pre><code class="language-python hljs">def maxProduct(words: List[str]):
+    n = len(words)
+    flags = [0 for _ in range(n)]
+    for i in range(n):
+        word = word[i]
+        for ch in word:
+            flag[i] |= 1 &lt;&lt; (ch - &#39;a&#39;)
+            
+    result = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if (flags[i] &amp; flags[j] == 0):
+                prod = len(words[i]) * len(words[j])
+                result = max(result, prod)
+    
+    return result</code></pre><p>这种解法的时间复杂度也是 <span>$\mathcal{O}(nk+n^2)$</span>，空间复杂度 <span>$\mathcal{O}(n)$</span>，但是这种解法在判断两个字符串是否包含相同字符时只需要 1 次运算，而前面的需要 26 次。</p><h3 id="面试题-6：排序数组中的两个数字之和"><a class="docs-heading-anchor" href="#面试题-6：排序数组中的两个数字之和">面试题 6：排序数组中的两个数字之和</a><a id="面试题-6：排序数组中的两个数字之和-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-6：排序数组中的两个数字之和" title="Permalink"></a></h3><p>题目：输入一个<strong>递增排序</strong>的数组和一个值 k，请问如何在数组中找出两个和为 k 的数字并返回它们的下标？假设数组中存在且只存在一对符合条件的数字，同时一个数字不能使用两次。例如，输入数组 [1，2，4，6，10]，k 的值为 8，数组中的数字 2 与 6 的和为 8，它们的下标分别为 1 与 3。</p><p><strong>双指针</strong>：初始下指针 p1 指向数组下标 0，指针 p2 指向数组末尾，如果两个指针指向的数字之和小于 k，可以把指针 p1 向右移动增加和的大小；如果两个指针指向的数字之和大于 k，可以把指针 p2 向左移动减小和的大小；如果两个指针指向的数字之和等于 k，那么就找到了符合条件的两个数字。</p><pre><code class="language-python hljs">def twoSum(numbers: int, target: int):
+    i = 0
+    j = len(numbers) - 1
+    while i &lt; j and numbers[i] + numbers[j] != target:
+        if numbers[i] + numbers[j] &lt; target:
+            i += 1
+        else:
+            j -= 1
+    
+    return [i, j]</code></pre><h3 id="面试题-7：数组中和为-0-的-3-个数字"><a class="docs-heading-anchor" href="#面试题-7：数组中和为-0-的-3-个数字">面试题 7：数组中和为 0 的 3 个数字</a><a id="面试题-7：数组中和为-0-的-3-个数字-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-7：数组中和为-0-的-3-个数字" title="Permalink"></a></h3><p>题目：输入一个数组，如何找出数组中所有和为 0 的 3 个数字的三元组？需要注意的是，返回值中不得包含重复的三元组。例如，在数组 [-1，0，1，2，-1，-4] 中有两个三元组的和为 0，它们分别是 [-1，0，1] 和 [-1，-1，2]。</p><p>先对数组进行排序，在固定用变量 i 指向的数字之后，用函数 twoSum 在排序后的数组中找出所有下标大于 i 并且和为 -nums[i] 的两个数字（下标分别为 j 和 k）。如果 nums[i], nums[j], nums[k] 的和大于 0，那么下标 k 向左移动；如果 nums[i], nums[j], nums[k] 的和小于 0，那么下标 j 向右移动；如果 3 个数字之和正好等于 0，那么向右移动下标 j，以便找到其他和为 -nums[i] 的两个数字。</p><pre><code class="language-python hljs">def threeSum(nums: List[int]) -&gt; List[List[int]]:
+    n = len(nums)
+    result = []
+    if n &gt;= 3:
+        nums.sort()
+        i = 0
+        while (i &lt; n - 2):
+            twoSum(nums, i, result)
+            temp = nums[i]
+            while(i &lt; n and nums[i] == temp):
+                i += 1
+    return result
+
+def twoSum(nums: List[int], i: int, result: List[List[int]]) -&gt; None:
+    n = len(nums)
+    j = i + 1
+    k = n - 1
+    while j &lt; k:
+        if nums[i] + nums[j] + nums[k] == 0:
+            result.append([i, j, k])
+            
+            temp = nums[j]
+            while (nums[j] == temp and j &lt; k):
+                j += 1
+            elif nums[i] + nums[j] + nums[k] &lt; 0:
+                j += 1
+            else:
+                k -= 1</code></pre><h3 id="面试题-8：和大于或等于-k-的最短子数组"><a class="docs-heading-anchor" href="#面试题-8：和大于或等于-k-的最短子数组">面试题 8：和大于或等于 k 的最短子数组</a><a id="面试题-8：和大于或等于-k-的最短子数组-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-8：和大于或等于-k-的最短子数组" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个<strong>正整数</strong>组成的数组和一个正整数 k，请问数组中和大于或等于 k 的连续子数组的最短长度是多少？如果不存在所有数字之和大于或等于 k 的子数组，则返回 0。例如，输入数组 [5，1，4，3]，k 的值为 7，和大于或等于 7 的最短连续子数组是 [4，3]，因此输出它的长度 2。</p><blockquote><p>子数组由数组中一个或连续的多个数字组成。</p></blockquote><p>指针 p1 和 p2 初始指向数组的第 1 个元素，由于数组中的数字都是正整数：</p><ul><li>如果两个指针之间的子数组中所有数字之和大于等于 k，那么 p1 向右移动，相当于子数组删除最左边的元素；</li><li>如果两个指针之间的子数组中所有数字之和小于 k，那么 p2 向右移动，相当于子数组在最右边添加一个数字；</li></ul><pre><code class="language-python hljs">def minSubArrayLen(k: int, nums: List[int]) -&gt; int:
+    left = 0
+    sum_ = 0 
+    minLength = float(&#39;inf&#39;)
+    for right in range(len(nums)):
+        sum_ += nums[right]
+        while left &lt;= right and sum_ &gt;= k:
+            minLength = min(minLength, right - left + 1)
+            sum_ -= nums[left]
+            left += 1
+    
+    return minLength if minLength &lt; float(&#39;inf&#39;) else 0</code></pre><p>时间复杂度：<span>$\mathcal{O}(n)$</span></p><h3 id="面试题-9：乘积小于-k-的子数组"><a class="docs-heading-anchor" href="#面试题-9：乘积小于-k-的子数组">面试题 9：乘积小于 k 的子数组</a><a id="面试题-9：乘积小于-k-的子数组-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-9：乘积小于-k-的子数组" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个由<strong>正整数</strong>组成的数组和一个正整数 k，请问数组中有多少个数字乘积小于 k 的连续子数组？例如，输入数组 [10，5，2，6]，k 的值为 100，有 8 个子数组的所有数字的乘积小于 100，它们分别是 [10]、[5]、[2]、[6]、[10，5]、[5，2]、[2，6] 和 [5，2，6]。</p><p>用指针 p1 和 p2 指向数组中的两个数字，初始时都指向数组的第一个元素，指针 p1 永远不会走到指针 p2 的右边：</p><ul><li>如果两个指针之间的子数组中数字的乘积小于 k，指针 p2 向右移动；</li><li>如果两个指针之间的子数组中数字的乘积大于等于 k，指针 p1 向右移动；</li></ul><p><strong>找出所有数字乘积小于 k 的子数组的个数</strong>：一旦 p1 向右移动到某个位置时子数组的乘积小于 k，只需要保持 p2 不懂，向右移动 p1 形成的所有子数组的数字乘积就一定小于 k</p><pre><code class="language-python hljs">def numSubarrayProductLessThanK(nums: List[int], k: int) -&gt; int:
+    product = 1
+    left = 0
+    count = 0
+    for right in range(len(nums)):
+        product *= nums[right]
+        while left &lt;= right and product &gt;= k:
+            product /= nums[left]
+            left += 1
+    
+        count += right - left + 1 if right &gt;= left else 0
+    
+    return count</code></pre><h3 id="面试题-10：和为-k-的子数组"><a class="docs-heading-anchor" href="#面试题-10：和为-k-的子数组">面试题 10：和为 k 的子数组</a><a id="面试题-10：和为-k-的子数组-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-10：和为-k-的子数组" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个整数数组和一个整数 k，请问数组中有多少个数字之和等于 k 的连续子数组？例如，输入数组 [1，1，1]，k 的值为 2，有 2 个连续子数组之和等于 2。</p><p><strong>注意</strong>：该问题与前面两个问题的区别在于，数组中的数字不是<strong>正整数</strong>，如果使用双指针的方式，无法保证指针右移，数组中的和就变大（或变小）。</p><pre><code class="language-python hljs">from collections import defaultdict
+def subarraySum(nums: List[int], k; int) -&gt; int:
+    sumToCount = defaultdict(int)  # 哈希表保存从第 1 个数到当前扫描到的数字之间的数字之和
+    sumToCount[0] = 1
+    
+    sum_ = 0
+    count = 0
+    for num in nums:
+        sum_ += num
+        count += sumToCount[sum_ - k]
+        sumToCount[sum_] = sumToCount[sum_] + 1
+    
+    return count</code></pre><p>时间复杂度：<span>$\mathcal{O}(n)$</span>；空间复杂度：<span>$\mathcal{O}(n)$</span></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../lang/Julia/">« Julia</a><a class="docs-footer-nextpage" href="../git/">Git »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.22 on <span class="colophon-date" title="Tuesday 9 August 2022 08:00">Tuesday 9 August 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
