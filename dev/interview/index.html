@@ -214,4 +214,223 @@ def subarraySum(nums: List[int], k; int) -&gt; int:
         count += sumToCount[sum_ - k]
         sumToCount[sum_] = sumToCount[sum_] + 1
     
-    return count</code></pre><p>时间复杂度：<span>$\mathcal{O}(n)$</span>；空间复杂度：<span>$\mathcal{O}(n)$</span></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../lang/Julia/">« Julia</a><a class="docs-footer-nextpage" href="../git/">Git »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.22 on <span class="colophon-date" title="Tuesday 9 August 2022 08:00">Tuesday 9 August 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    return count</code></pre><p>时间复杂度：<span>$\mathcal{O}(n)$</span>；空间复杂度：<span>$\mathcal{O}(n)$</span></p><h3 id="面试题-11：0-和-1-的个数相同的子数组"><a class="docs-heading-anchor" href="#面试题-11：0-和-1-的个数相同的子数组">面试题 11：0 和 1 的个数相同的子数组</a><a id="面试题-11：0-和-1-的个数相同的子数组-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-11：0-和-1-的个数相同的子数组" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个只包含 0 和 1 的数组，请问如何求 0 和 1 的个数相同的最长连续子数组的长度？例如，在数组 [0，1，0] 中有两个子数组包含相同个数的 0 和 1，分别是 [0，1] 和 [1，0]，它们的长度都是 2，因此输出 2。</p><p><strong>分析</strong>：把输入数组中所有的 0 替换成 -1，在一个只包含数字 1 和 -1 的数组中，子数组中的 -1 和 1 的数目相同，那么子数组的所有数字之和就是 0，题目变成求数字之和为 0 的最长子数组的长度。</p><p>如果数组中前 i 个数字之和为 m，前 j 个数字（j &gt; i）之和也为 m，那么从第 i+1 个数字到第 j 个数字的子数组的数字之和为 0，这个数组的长度是 j-i</p><p>把数组从第 1 个数字开始到当前扫描到的数字累加之和保存到一个哈希表中，哈希表的 key 是从第 1 个数字开始累加到当前扫描到的数字之和，value 是当前扫描的数字的下标。</p><pre><code class="language-python hljs">def findMaxLength(nums: List[int]) -&gt; int:
+    sumToIndex = dict()
+    sumToIndex[0] = -1
+    sum_ = 0
+    maxLength = 0
+    for i in range(len(nums)):
+        sum_ += -1 if nums[i] == 0 else 1
+        if sum_ in sumToIndex.keys():
+            maxLength = max(maxLength, i - sumToIndex(sum_))
+        else:
+            sumToIndex[sum] = i
+            
+    return maxLength</code></pre><p>时间复杂度：<span>$\mathcal{O}(n)$</span>，空间复杂度：<span>$\mathcal{O}(n)$</span></p><h3 id="面试题-12：左右两边子数组的和相等"><a class="docs-heading-anchor" href="#面试题-12：左右两边子数组的和相等">面试题 12：左右两边子数组的和相等</a><a id="面试题-12：左右两边子数组的和相等-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-12：左右两边子数组的和相等" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个整数数组，如果一个数字左边的子数组的数字之和等于右边的子数组的数字之和，那么返回该数字的下标。如果存在多个这样的数字，则返回最左边一个数字的下标。如果不存在这样的数字，则返回 -1。例如，在数组 [1，7，3，6，2，9] 中，下标为 3 的数字（值为 6）的左边 3 个数字 1、7、3 的和与右边两个数字 2 和 9 的和相等，都是 11，因此正确的输出值是 3。</p><p>在第 i 个元素左边的子数组的和是从第 1 个数字累加到第 i-1 个数字的和，右边的子数组（不包括第 i 个）的数字之和就是从第 i+1 数字开始累加到最后一个数字的和，这个和也等于数组所有数字之和减去第 1 个数字累加到第 i 个数字的和。</p><ul><li>先得到整个数组的和；</li><li>记录数组累加到第 i 个数字的和；</li><li>遍历到第 i 个数字时，用整个数组的和减去累加到第 i 个数字，就是右边的子数组数字之和；</li></ul><pre><code class="language-python hljs">def pivotIndex(nums: List[int]) -&gt; int:
+    total = 0
+    for num in nums:
+        total += num
+    
+    sum_ = 0
+    for i in range(len(nums)):
+        sum_ += nums[i]
+        if sum_ - nums[i] == total - sum_:
+            return i
+    
+    return -1</code></pre><p>时间复杂度：<span>$\mathcal{O}(n)$</span>；空间复杂度：<span>$\mathcal{O}(1)$</span></p><h3 id="面试题-13：二维子矩阵的数字之和"><a class="docs-heading-anchor" href="#面试题-13：二维子矩阵的数字之和">面试题 13：二维子矩阵的数字之和</a><a id="面试题-13：二维子矩阵的数字之和-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-13：二维子矩阵的数字之和" title="Permalink"></a></h3><p><strong>题目</strong>：输入一个二维矩阵，如何计算给定左上角坐标和右下角坐标的子矩阵的数字之和？对于同一个二维矩阵，计算子矩阵的数字之和的函数可能由于输入不同的坐标而被反复调用多次。例如，输入图 2.1 中的二维矩阵，以及左上角坐标为（2，1）和右下角坐标为（4，3）的子矩阵，该函数输出 8。</p><pre><code class="language-python hljs"># +---+---+---+---+---+
+# | 3 | 0 | 1 | 4 | 2 |
+# +---+---+---+---+---+
+# | 5 | 6 | 3 | 2 | 1 |
+# +---┌───┬───┬───┐---+
+# | 1 │ 2 │ 0 │ 1 │ 5 |
+# +---├───┼───┼───┤---+
+# | 4 │ 1 │ 0 │ 1 │ 7 |
+# +---├───┼───┼───┤---+
+# | 1 │ 0 │ 3 │ 0 │ 5 |
+# +---└───┴───┴───┘---+
+# 
+# 图 2.1 一个 5x5 的二维数组</code></pre><p>左上角坐标为 (r1, c1)，右下角坐标为 (r2, c2) 的子矩阵的数字之和可以用左上角都为 (0, 0)，右下角为 (r2, c2) 的子矩阵减去右下角为 (r1-1, c2) 的子矩阵，减去右下角为 (r2, c1-1) 的子矩阵，再加上右下角为 (r1-1, c1-1) 的子矩阵。</p><p>假设矩阵 <code>sums[i][j]</code> 是左上角 (0, 0) 到右下角 (i, j) 的子矩阵的数字之和，那么问题的答案就是 <code>sums[r2][c2] + sums[r1-1][c2] - sums[r2][c1-1] + sums[r1-1][c1-1]</code></p><pre><code class="language-python hljs">class NumMatrix:
+    def __init__(self):
+        pass
+    
+    def NumMatrix(self, matrix: List[List[int]]) -&gt; None:
+        m = len(matrix)
+        if m == 0: return
+        n = len(matrix[0])
+        if n == 0: return 
+        
+        sums = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
+        for i in range(n):
+            rowSum = 0
+            for j in range(m):
+                rowSum += matrix[i][j]
+                sums[i + 1][j + 1] = sums[i][j + 1] + rowSum
+        
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -&gt; int:
+        return sums[row2 + 1][col2 + 1] - sums[row1][col2 + 1] - sums[row2 + 1][col1] + sums[row1][col1]</code></pre><h3 id="面试题-14：字符串中的变位词"><a class="docs-heading-anchor" href="#面试题-14：字符串中的变位词">面试题 14：字符串中的变位词</a><a id="面试题-14：字符串中的变位词-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-14：字符串中的变位词" title="Permalink"></a></h3><p><strong>题目</strong>：输入字符串 s1 和 s2，如何判断字符串 s2 中是否包含字符串 s1 的某个变位词？如果字符串 s2 中包含字符串 s1 的某个变位词，则字符串 s1 至少有一个变位词是字符串 s2 的子字符串。<strong>假设两个字符串中只包含英文小写字母。</strong>例如，字符串 s1 为 &quot;ac&quot;，字符串 s2 为 &quot;dgcaf&quot;，由于字符串 s2 中包含字符串 s1 的变位词 &quot;ca&quot;，因此输出为 true。如果字符串 s1 为 &quot;ab&quot;，字符串 s2 为 &quot;dgcaf&quot;，则输出为 false。</p><blockquote><p>变位词：指组成各个单词的字母及每个字母出现的次数完全相同，只是字母排列的顺序不同。</p></blockquote><pre><code class="language-python hljs">def checkInclusion(s1: str, s2: str) -&gt; bool:
+    n1 = len(s1)
+    n2 = len(s2)
+    if len(s2) &lt; len(s1): return False
+    
+    # 用哈希表来记录字符串中每个字母的出现次数
+    counts = [0 for _ in range(26)]
+
+    for i in range(n1):
+        counts[s1[i] - &#39;a&#39;] += 1
+        counts[s2[i] - &#39;a&#39;] -= 1
+    
+    if areAllZero(counts): return True
+	
+    for i in range(n1, n2):
+        counts[s2[i] - &#39;a&#39;] -= 1
+        counts[s2[i - n1] - &#39;a&#39;] += 1
+        if areAllZero(counts): return True
+    
+    return False
+
+def areAllZero(counts: List[int]) -&gt; bool:
+    for count in counts:
+        if count != 0: return False
+    
+    return True</code></pre><h3 id="面试题-15：字符串中的所有变位词"><a class="docs-heading-anchor" href="#面试题-15：字符串中的所有变位词">面试题 15：字符串中的所有变位词</a><a id="面试题-15：字符串中的所有变位词-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-15：字符串中的所有变位词" title="Permalink"></a></h3><p><strong>题目</strong>：输入字符串 s1 和 s2，如何找出字符串 s2 的所有变位词在字符串 s1 中的起始下标？假设两个字符串中只包含英文小写字母。例如，字符串 s1 为 &quot;cbadabacg&quot;，字符串 s2 为 &quot;abc&quot;，字符串 s2 的两个变位词 &quot;cba&quot; 和 &quot;bac&quot; 是字符串 s1 中的子字符串，输出它们在字符串 s1 中的起始下标 0 和 5。</p><pre><code class="language-python hljs">def findAnagrams(s1: str, s2: str) -&gt; List[int]:
+    indices = list()
+    n1, n2 = len(s1), len(s2)
+    if n1 &lt; n2: return indices
+    
+    counts = [0 for _ in range(26)]
+    i = 0
+    while i &lt; n2:
+        counts[s2[i] - &#39;a&#39;] += 1
+        counts[s1[i] - &#39;a&#39;] -= 1
+        i += 1
+    
+    if areAllZero(counts):
+        indices.append(0)
+    
+    while i &lt; n1:
+        counts[s1[i] - &#39;a&#39;] -= 1
+        counts[s1[i - n2] - &#39;a&#39;] += 1
+        if areAllZero(counts):
+            indices.append(i - n2 + 1)
+        i += 1
+        
+    return indices</code></pre><h3 id="面试题-16：-不含重复字符的最长子字符串"><a class="docs-heading-anchor" href="#面试题-16：-不含重复字符的最长子字符串">面试题 16： 不含重复字符的最长子字符串</a><a id="面试题-16：-不含重复字符的最长子字符串-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-16：-不含重复字符的最长子字符串" title="Permalink"></a></h3><p>题目：输入一个字符串，求该字符串中不含重复字符的最长子字符串的长度。例如，输入字符串 &quot;babcca&quot;，其最长的不含重复字符的子字符串是 &quot;abc&quot;，长度为 3。</p><p>用一个哈希表记录字符串出现的次数、如果子字符串中不含重复字符，那么它对应的哈希表中没有比 1 大的值。</p><pre><code class="language-python hljs">def lengthOfLongestSubstring(s: str) -&gt; int:
+    n = len(s)
+    if n == 0: return 0
+    
+    # ASCII 码总共有 256 个字符
+    counts = [0 for _ in range(256)]
+    
+    i, j = 0, -1  # i 是右指针，j 是左指针
+    longest = 1
+    while i &lt; n:
+        counts[s[i]] += 1
+        while hasGreaterThan1(counts):
+            j += 1
+            counts[s[j]] -= 1
+        
+        longest = max(i - j, longest)
+    
+    return longest
+
+def hasGreaterThan1(counts: int) -&gt; bool:
+    for count in counts:
+        if count &gt; 1:
+            return True
+    
+    return False</code></pre><p><strong>优化</strong>：定义一个变量 countDup 来存储哈希表中大于 1 的数字的个数。当一个字符对应的数字从 1 变成 2 时，countDup 加 1；当一个字符对应的数字由 2 变成 1 时，countDup 减 1.</p><pre><code class="language-python hljs">def lengthOfLongestSubstring(s: str) -&gt; int:
+    n = len(s)
+    if n == 0: return 0
+    
+    counts = [0 for _ in range(256)]
+    i, j = 0, -1
+    longest = 1
+    countDup = 0
+    while i &lt; n:
+        counts[s[i]] += 1
+        if counts[s[i]] == 2:
+            countDup += 1
+        
+        while countDup &gt; 0:
+            j += 1
+            counts[s[j]] -= 1
+            if counts[s[j]] == 1:
+                countDup -= 1
+        
+        longest = max(i - j, longest)
+    
+    return longest</code></pre><h3 id="面试题-17：包含所有字符的最短字符串"><a class="docs-heading-anchor" href="#面试题-17：包含所有字符的最短字符串">面试题 17：包含所有字符的最短字符串</a><a id="面试题-17：包含所有字符的最短字符串-1"></a><a class="docs-heading-anchor-permalink" href="#面试题-17：包含所有字符的最短字符串" title="Permalink"></a></h3><p><strong>题目</strong>：输入两个字符串 s 和 t，请找出字符串 s 中包含字符串 t 的所有字符的最短子字符串。例如，输入的字符串 s 为 &quot;ADDBANCAD&quot;，字符串 t 为 &quot;ABC&quot;，则字符串 s 中包含字符 &#39;A&#39;、&#39;B&#39; 和 &#39;C&#39; 的最短子字符串是 &quot;BANC&quot;。如果不存在符合条件的子字符串，则返回空字符串 &quot;&quot;。如果存在多个符合条件的子字符串，则返回任意一个。</p><p>如果一个字符串 s 中包含另一个字符串 t 的所有字符，那么字符串 t 的所有字符在字符串 s 中都出现，并且同一个字符在字符串 s 中出现的次数不少于在字符串 t 中出现的次数。</p><pre><code class="language-python hljs">from collections import defaultdict
+def minWindow(s: str, t: str):
+    charToCount = defarltdict(int)
+    for ch in t:
+        charToCount[ch] = charToCount[ch] + 1
+    
+    count = len(charToCount)
+    start, end = 0, 0
+    minStart, minEnd = 0, 0
+    minLength = float(&#39;inf&#39;)
+    while end &lt; len(s) or (count == 0 and end == len(s)):
+        if count &gt; 0:
+            endCh = s[end]
+            if endCh in charToCount:
+                charToCount[endCh] -= 1
+                if charToCound[endCh] == 0:
+                    count -= 1
+            
+            end += 1
+        else:
+            if end - start &lt; minLength:
+                minLength = end - start
+                minStart = start
+                minEnd = end
+            
+            startCh = s[start]
+            if startCh in charToCount:
+                charToCount[startCh] += 1
+                if charToCount[startCh] == 1:
+                    count += 1
+            
+            start += 1
+
+    return s[minStart, minEnd] if minLength &lt; float(&#39;inf&#39;) else &quot;&quot;</code></pre><h3 id="LeetCode-微软模拟笔试-1"><a class="docs-heading-anchor" href="#LeetCode-微软模拟笔试-1">LeetCode 微软模拟笔试 1</a><a id="LeetCode-微软模拟笔试-1-1"></a><a class="docs-heading-anchor-permalink" href="#LeetCode-微软模拟笔试-1" title="Permalink"></a></h3><p>给定两个字符串 <code>a</code> 和 <code>b</code>，寻找重复叠加字符串 <code>a</code> 的最小次数，使得字符串 <code>b</code> 成为叠加后的字符串 <code>a</code> 的子串，如果不存在则返回 <code>-1</code>。</p><p><strong>注意：</strong>字符串 <code>&quot;abc&quot;</code> 重复叠加 0 次是 <code>&quot;&quot;</code>，重复叠加 1 次是 <code>&quot;abc&quot;</code>，重复叠加 2 次是 <code>&quot;abcabc&quot;</code>。</p><pre><code class="language-python hljs">class Solution:
+    def repeatedStringMatch(self, a: str, b: str) -&gt; int:
+        # 看看 b 中的字母是不是 a 都有
+        if not set(b).issubset(set(a)): return -1
+        start = -1
+        n = len(a)
+        for i in range(n):
+            if a[i] == b[0]:
+                start = i
+                cnt = 1
+                for j in range(len(b)):
+                    if start == n:
+                        start = 0
+                        cnt += 1
+                    if a[start] == b[j]:
+                        if j == len(b) - 1:
+                            return cnt
+                        start += 1
+                    else: break
+
+        return -1</code></pre><p>给定一个二叉树的 <strong>根节点</strong> <code>root</code>，请找出该二叉树的 <strong>最底层 最左边</strong> 节点的值。</p><p>假设二叉树中至少有一个节点。</p><pre><code class="language-python hljs"># Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def __init__(self):
+        self.leftistDepth = 0  # 当前最左的节点的深度
+        self.ans = -1  # 最深最左的节点的值
+
+    def pretrack(self, root, depth):
+        if not root: return
+        if not root.left and depth &gt; self.leftistDepth:  # 当前的节点是最左的 并且是 目前为止最深的
+            self.ans = root.val
+            self.leftistDepth = depth
+        self.pretrack(root.left, depth + 1)
+        self.pretrack(root.right, depth + 1)
+
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -&gt; int:
+        self.pretrack(root, 1)
+        return self.ans</code></pre><h3 id="下一个排列"><a class="docs-heading-anchor" href="#下一个排列">下一个排列</a><a id="下一个排列-1"></a><a class="docs-heading-anchor-permalink" href="#下一个排列" title="Permalink"></a></h3><p>给你一个整数数组 <code>nums</code> ，找出 <code>nums</code> 在字典序中的下一个排列。必须 <code>原地</code> 修改，只允许使用额外常数空间。</p><p>需要找到一个左边的「较小数」和右边的「较大数」，同时要求「较小数」尽量靠右，「较大数」尽可能小。具体做法如下：</p><ul><li>从后向前查找第一个顺序对 <code>(i, i + 1)</code>，满足 <code>a[i] &lt; a[i + 1]</code>，<code>a[i]</code> 即为想要的「较小数」，此时 <code>(i + 1, n)</code> 必然是下降序列；</li><li>在区间 <code>[i + 1, n - 1]</code> 中从后向前查找第一个元素 <code>j</code> 满足 <code>a[i] &lt; a[j]</code>，<code>a[j]</code> 即为想要找的「较大数」；</li><li>交换 <code>a[i]</code> 与 <code>a[j]</code>，可以证明区间 <code>[i + 1, n - 1]</code> 必为降序，我们可以直接使用双指针反转区间 <code>[i + 1, n - 1]</code> 使其变为升序；</li></ul><p>如果步骤 1 找不到满足条件的顺序对，说明当前序列已经是一个降序序列，是最大的序列，可以直接跳过步骤 2 执行步骤 3。</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../lang/Julia/">« Julia</a><a class="docs-footer-nextpage" href="../git/">Git »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 29 August 2022 02:41">Monday 29 August 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
