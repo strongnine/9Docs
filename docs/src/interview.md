@@ -379,3 +379,343 @@ def subarraySum(nums: List[int], k; int) -> int:
 
 时间复杂度：$\mathcal{O}(n)$；空间复杂度：$\mathcal{O}(n)$
 
+### 面试题 11：0 和 1 的个数相同的子数组
+
+**题目**：输入一个只包含 0 和 1 的数组，请问如何求 0 和 1 的个数相同的最长连续子数组的长度？例如，在数组 [0，1，0] 中有两个子数组包含相同个数的 0 和 1，分别是 [0，1] 和 [1，0]，它们的长度都是 2，因此输出 2。
+
+**分析**：把输入数组中所有的 0 替换成 -1，在一个只包含数字 1 和 -1 的数组中，子数组中的 -1 和 1 的数目相同，那么子数组的所有数字之和就是 0，题目变成求数字之和为 0 的最长子数组的长度。
+
+如果数组中前 i 个数字之和为 m，前 j 个数字（j > i）之和也为 m，那么从第 i+1 个数字到第 j 个数字的子数组的数字之和为 0，这个数组的长度是 j-i
+
+把数组从第 1 个数字开始到当前扫描到的数字累加之和保存到一个哈希表中，哈希表的 key 是从第 1 个数字开始累加到当前扫描到的数字之和，value 是当前扫描的数字的下标。
+
+```python
+def findMaxLength(nums: List[int]) -> int:
+    sumToIndex = dict()
+    sumToIndex[0] = -1
+    sum_ = 0
+    maxLength = 0
+    for i in range(len(nums)):
+        sum_ += -1 if nums[i] == 0 else 1
+        if sum_ in sumToIndex.keys():
+            maxLength = max(maxLength, i - sumToIndex(sum_))
+        else:
+            sumToIndex[sum] = i
+            
+    return maxLength
+```
+
+时间复杂度：$\mathcal{O}(n)$，空间复杂度：$\mathcal{O}(n)$
+
+### 面试题 12：左右两边子数组的和相等
+
+**题目**：输入一个整数数组，如果一个数字左边的子数组的数字之和等于右边的子数组的数字之和，那么返回该数字的下标。如果存在多个这样的数字，则返回最左边一个数字的下标。如果不存在这样的数字，则返回 -1。例如，在数组 [1，7，3，6，2，9] 中，下标为 3 的数字（值为 6）的左边 3 个数字 1、7、3 的和与右边两个数字 2 和 9 的和相等，都是 11，因此正确的输出值是 3。
+
+在第 i 个元素左边的子数组的和是从第 1 个数字累加到第 i-1 个数字的和，右边的子数组（不包括第 i 个）的数字之和就是从第 i+1 数字开始累加到最后一个数字的和，这个和也等于数组所有数字之和减去第 1 个数字累加到第 i 个数字的和。
+
+- 先得到整个数组的和；
+- 记录数组累加到第 i 个数字的和；
+- 遍历到第 i 个数字时，用整个数组的和减去累加到第 i 个数字，就是右边的子数组数字之和；
+
+```python
+def pivotIndex(nums: List[int]) -> int:
+    total = 0
+    for num in nums:
+        total += num
+    
+    sum_ = 0
+    for i in range(len(nums)):
+        sum_ += nums[i]
+        if sum_ - nums[i] == total - sum_:
+            return i
+    
+    return -1
+```
+
+时间复杂度：$\mathcal{O}(n)$；空间复杂度：$\mathcal{O}(1)$
+
+### 面试题 13：二维子矩阵的数字之和
+
+**题目**：输入一个二维矩阵，如何计算给定左上角坐标和右下角坐标的子矩阵的数字之和？对于同一个二维矩阵，计算子矩阵的数字之和的函数可能由于输入不同的坐标而被反复调用多次。例如，输入图 2.1 中的二维矩阵，以及左上角坐标为（2，1）和右下角坐标为（4，3）的子矩阵，该函数输出 8。
+
+```python
+# +---+---+---+---+---+
+# | 3 | 0 | 1 | 4 | 2 |
+# +---+---+---+---+---+
+# | 5 | 6 | 3 | 2 | 1 |
+# +---┌───┬───┬───┐---+
+# | 1 │ 2 │ 0 │ 1 │ 5 |
+# +---├───┼───┼───┤---+
+# | 4 │ 1 │ 0 │ 1 │ 7 |
+# +---├───┼───┼───┤---+
+# | 1 │ 0 │ 3 │ 0 │ 5 |
+# +---└───┴───┴───┘---+
+# 
+# 图 2.1 一个 5x5 的二维数组
+```
+
+左上角坐标为 (r1, c1)，右下角坐标为 (r2, c2) 的子矩阵的数字之和可以用左上角都为 (0, 0)，右下角为 (r2, c2) 的子矩阵减去右下角为 (r1-1, c2) 的子矩阵，减去右下角为 (r2, c1-1) 的子矩阵，再加上右下角为 (r1-1, c1-1) 的子矩阵。
+
+假设矩阵 `sums[i][j]` 是左上角 (0, 0) 到右下角 (i, j) 的子矩阵的数字之和，那么问题的答案就是 `sums[r2][c2] + sums[r1-1][c2] - sums[r2][c1-1] + sums[r1-1][c1-1]`
+
+```python
+class NumMatrix:
+    def __init__(self):
+        pass
+    
+    def NumMatrix(self, matrix: List[List[int]]) -> None:
+        m = len(matrix)
+        if m == 0: return
+        n = len(matrix[0])
+        if n == 0: return 
+        
+        sums = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
+        for i in range(n):
+            rowSum = 0
+            for j in range(m):
+                rowSum += matrix[i][j]
+                sums[i + 1][j + 1] = sums[i][j + 1] + rowSum
+        
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        return sums[row2 + 1][col2 + 1] - sums[row1][col2 + 1] - sums[row2 + 1][col1] + sums[row1][col1]
+```
+
+### 面试题 14：字符串中的变位词
+
+**题目**：输入字符串 s1 和 s2，如何判断字符串 s2 中是否包含字符串 s1 的某个变位词？如果字符串 s2 中包含字符串 s1 的某个变位词，则字符串 s1 至少有一个变位词是字符串 s2 的子字符串。**假设两个字符串中只包含英文小写字母。**例如，字符串 s1 为 "ac"，字符串 s2 为 "dgcaf"，由于字符串 s2 中包含字符串 s1 的变位词 "ca"，因此输出为 true。如果字符串 s1 为 "ab"，字符串 s2 为 "dgcaf"，则输出为 false。
+
+> 变位词：指组成各个单词的字母及每个字母出现的次数完全相同，只是字母排列的顺序不同。
+
+```python
+def checkInclusion(s1: str, s2: str) -> bool:
+    n1 = len(s1)
+    n2 = len(s2)
+    if len(s2) < len(s1): return False
+    
+    # 用哈希表来记录字符串中每个字母的出现次数
+    counts = [0 for _ in range(26)]
+
+    for i in range(n1):
+        counts[s1[i] - 'a'] += 1
+        counts[s2[i] - 'a'] -= 1
+    
+    if areAllZero(counts): return True
+	
+    for i in range(n1, n2):
+        counts[s2[i] - 'a'] -= 1
+        counts[s2[i - n1] - 'a'] += 1
+        if areAllZero(counts): return True
+    
+    return False
+
+def areAllZero(counts: List[int]) -> bool:
+    for count in counts:
+        if count != 0: return False
+    
+    return True
+```
+
+### 面试题 15：字符串中的所有变位词
+
+**题目**：输入字符串 s1 和 s2，如何找出字符串 s2 的所有变位词在字符串 s1 中的起始下标？假设两个字符串中只包含英文小写字母。例如，字符串 s1 为 "cbadabacg"，字符串 s2 为 "abc"，字符串 s2 的两个变位词 "cba" 和 "bac" 是字符串 s1 中的子字符串，输出它们在字符串 s1 中的起始下标 0 和 5。
+
+```python
+def findAnagrams(s1: str, s2: str) -> List[int]:
+    indices = list()
+    n1, n2 = len(s1), len(s2)
+    if n1 < n2: return indices
+    
+    counts = [0 for _ in range(26)]
+    i = 0
+    while i < n2:
+        counts[s2[i] - 'a'] += 1
+        counts[s1[i] - 'a'] -= 1
+        i += 1
+    
+    if areAllZero(counts):
+        indices.append(0)
+    
+    while i < n1:
+        counts[s1[i] - 'a'] -= 1
+        counts[s1[i - n2] - 'a'] += 1
+        if areAllZero(counts):
+            indices.append(i - n2 + 1)
+        i += 1
+        
+    return indices
+```
+
+### 面试题 16： 不含重复字符的最长子字符串
+
+题目：输入一个字符串，求该字符串中不含重复字符的最长子字符串的长度。例如，输入字符串 "babcca"，其最长的不含重复字符的子字符串是 "abc"，长度为 3。
+
+用一个哈希表记录字符串出现的次数、如果子字符串中不含重复字符，那么它对应的哈希表中没有比 1 大的值。
+
+```python
+def lengthOfLongestSubstring(s: str) -> int:
+    n = len(s)
+    if n == 0: return 0
+    
+    # ASCII 码总共有 256 个字符
+    counts = [0 for _ in range(256)]
+    
+    i, j = 0, -1  # i 是右指针，j 是左指针
+    longest = 1
+    while i < n:
+        counts[s[i]] += 1
+        while hasGreaterThan1(counts):
+            j += 1
+            counts[s[j]] -= 1
+        
+        longest = max(i - j, longest)
+    
+    return longest
+
+def hasGreaterThan1(counts: int) -> bool:
+    for count in counts:
+        if count > 1:
+            return True
+    
+    return False
+```
+
+**优化**：定义一个变量 countDup 来存储哈希表中大于 1 的数字的个数。当一个字符对应的数字从 1 变成 2 时，countDup 加 1；当一个字符对应的数字由 2 变成 1 时，countDup 减 1.
+
+```python
+def lengthOfLongestSubstring(s: str) -> int:
+    n = len(s)
+    if n == 0: return 0
+    
+    counts = [0 for _ in range(256)]
+    i, j = 0, -1
+    longest = 1
+    countDup = 0
+    while i < n:
+        counts[s[i]] += 1
+        if counts[s[i]] == 2:
+            countDup += 1
+        
+        while countDup > 0:
+            j += 1
+            counts[s[j]] -= 1
+            if counts[s[j]] == 1:
+                countDup -= 1
+        
+        longest = max(i - j, longest)
+    
+    return longest
+```
+
+### 面试题 17：包含所有字符的最短字符串
+
+**题目**：输入两个字符串 s 和 t，请找出字符串 s 中包含字符串 t 的所有字符的最短子字符串。例如，输入的字符串 s 为 "ADDBANCAD"，字符串 t 为 "ABC"，则字符串 s 中包含字符 'A'、'B' 和 'C' 的最短子字符串是 "BANC"。如果不存在符合条件的子字符串，则返回空字符串 ""。如果存在多个符合条件的子字符串，则返回任意一个。
+
+如果一个字符串 s 中包含另一个字符串 t 的所有字符，那么字符串 t 的所有字符在字符串 s 中都出现，并且同一个字符在字符串 s 中出现的次数不少于在字符串 t 中出现的次数。
+
+```python
+from collections import defaultdict
+def minWindow(s: str, t: str):
+    charToCount = defarltdict(int)
+    for ch in t:
+        charToCount[ch] = charToCount[ch] + 1
+    
+    count = len(charToCount)
+    start, end = 0, 0
+    minStart, minEnd = 0, 0
+    minLength = float('inf')
+    while end < len(s) or (count == 0 and end == len(s)):
+        if count > 0:
+            endCh = s[end]
+            if endCh in charToCount:
+                charToCount[endCh] -= 1
+                if charToCound[endCh] == 0:
+                    count -= 1
+            
+            end += 1
+        else:
+            if end - start < minLength:
+                minLength = end - start
+                minStart = start
+                minEnd = end
+            
+            startCh = s[start]
+            if startCh in charToCount:
+                charToCount[startCh] += 1
+                if charToCount[startCh] == 1:
+                    count += 1
+            
+            start += 1
+
+    return s[minStart, minEnd] if minLength < float('inf') else ""
+```
+
+### LeetCode 微软模拟笔试 1
+
+给定两个字符串 `a` 和 `b`，寻找重复叠加字符串 `a` 的最小次数，使得字符串 `b` 成为叠加后的字符串 `a` 的子串，如果不存在则返回 `-1`。
+
+**注意：**字符串 `"abc"` 重复叠加 0 次是 `""`，重复叠加 1 次是 `"abc"`，重复叠加 2 次是 `"abcabc"`。
+
+```python
+class Solution:
+    def repeatedStringMatch(self, a: str, b: str) -> int:
+        # 看看 b 中的字母是不是 a 都有
+        if not set(b).issubset(set(a)): return -1
+        start = -1
+        n = len(a)
+        for i in range(n):
+            if a[i] == b[0]:
+                start = i
+                cnt = 1
+                for j in range(len(b)):
+                    if start == n:
+                        start = 0
+                        cnt += 1
+                    if a[start] == b[j]:
+                        if j == len(b) - 1:
+                            return cnt
+                        start += 1
+                    else: break
+
+        return -1
+```
+
+给定一个二叉树的 **根节点** `root`，请找出该二叉树的 **最底层 最左边** 节点的值。
+
+假设二叉树中至少有一个节点。
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def __init__(self):
+        self.leftistDepth = 0  # 当前最左的节点的深度
+        self.ans = -1  # 最深最左的节点的值
+
+    def pretrack(self, root, depth):
+        if not root: return
+        if not root.left and depth > self.leftistDepth:  # 当前的节点是最左的 并且是 目前为止最深的
+            self.ans = root.val
+            self.leftistDepth = depth
+        self.pretrack(root.left, depth + 1)
+        self.pretrack(root.right, depth + 1)
+
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        self.pretrack(root, 1)
+        return self.ans
+```
+
+### 下一个排列
+
+给你一个整数数组 `nums` ，找出 `nums` 在字典序中的下一个排列。必须 `原地` 修改，只允许使用额外常数空间。
+
+需要找到一个左边的「较小数」和右边的「较大数」，同时要求「较小数」尽量靠右，「较大数」尽可能小。具体做法如下：
+
+- 从后向前查找第一个顺序对 `(i, i + 1)`，满足 `a[i] < a[i + 1]`，`a[i]` 即为想要的「较小数」，此时 `(i + 1, n)` 必然是下降序列；
+- 在区间 `[i + 1, n - 1]` 中从后向前查找第一个元素 `j` 满足 `a[i] < a[j]`，`a[j]` 即为想要找的「较大数」；
+- 交换 `a[i]` 与 `a[j]`，可以证明区间 `[i + 1, n - 1]` 必为降序，我们可以直接使用双指针反转区间 `[i + 1, n - 1]` 使其变为升序；
+
+如果步骤 1 找不到满足条件的顺序对，说明当前序列已经是一个降序序列，是最大的序列，可以直接跳过步骤 2 执行步骤 3。

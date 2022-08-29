@@ -2,6 +2,30 @@
 
 ## 目标检测
 
+目标检测学习路径：
+
+理论：要求能够复现经典论文的代码
+
+- 图像分类：VGG、Inception、ResNet、MobileNet、SENet
+- 图像分割：UNet、DeepLab 系列、FCN、SegNet、BiSeNet
+- 目标检测：YOLOv3、Faster R-CNN
+- GAN：GAN、DCGAN、Pix2Pix
+
+实践：
+
+- 数据增强技巧：MixUp、Label Smoothing
+- 长尾分布（Long-Tail）、渐进式采样（PB-sampling, Progressively-balanced Sampling）
+- 数据爬取与筛选：常规筛选方法（经典图像处理和分析方法）、高阶筛选方法（model-base，基于内容的筛选）
+- 语义分割：
+  - 自动驾驶语义分割：CamVid 数据集，训练 UNet、SegNet；deeplabv3+ 进行模型评估和推理
+  - 人像分割：Portrait 数据集；训练 BiseNet；Dice-Loss、CE Dice Loss、Focal Loss
+  - 数据增强工具：Albumentations
+- 目标检测：
+  - YOLOX：Neck、Head、正负样本分配方式
+  - COCO 数据集：Mosaic、Mixup、Affine 变化等数据增强方法
+  - 轻量级目标检测器：NanoDetPlus
+  - 算法终端部署：OpenVINO
+
 ### 基础概念
 
 **目标检测（Object Detection）**是计算机视觉中极为重要的基础问题，是实例分割（Instance Segmentation)、场景理解（Secne Understanding）、目标跟踪（Object Tracking）、图像标注（Image Captioning）等问题的基础。

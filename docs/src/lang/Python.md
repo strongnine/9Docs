@@ -1,12 +1,98 @@
 ## 基础知识
 
-py 文件执行完保持交互界面：在终端用命令行 `python file.py` 执行 py 文件的时候，有时候想要继续测试代码，那么可以在文件的最后添加上下面的两行代码，这样在执行完 py 文件之后就会保持命令行交互界面不退出。
+关于 `__name__`：一个模块中，
+
+- 如果直接运行文件 `__name__` 为 `__main__`；
+- 如果该模块被调用，`__name__` 为被调用模块的模块名；
+
+```python
+# print_func.py 的代码如下
+print('Hello World!')
+print('__name__ value: ', __name__)
+ 
+def main():
+	print('This message is from main function')
+ 
+if __name__ == '__main__':
+   main()
+
+
+# print_module.py 的代码如下
+import print_func
+print("Done!")
+
+
+# 运行 print_module.py 的结果
+>>> Hello World! __name__ value: print_func  Done! 
+```
+
+**py 文件执行完保持交互界面**：在终端用命令行 `python file.py` 执行 py 文件的时候，有时候想要继续测试代码，那么可以在文件的最后添加上下面的两行代码，这样在执行完 py 文件之后就会保持命令行交互界面不退出。
 
 ```python
 # 执行完不退出 Python 交互
 import code
 code(banner="", local=locals())
 ```
+
+`strs.find(str, beg=0, end=len(strs))`：表示在 strs 中返回第一次出现 str 的位置下标，beg 表示在 strs 中的开始索引，默认为 0，end 为结束索引，默认为 strs 的长度。
+
+为了提高内存利用效率，对于一些简单的对象，如一些数值较小的 int 对象（范围在 `[-5, 257)`），字符串对象等，Python 采用重用对象内容的方法。在 Python 3.6 中小整数对象池的范围会更大。
+
+```python
+a = [1, 2, 3]
+b = [1, 2, 4]
+id(a[1]) == id(b[1])  # 结果为 True
+
+a[1] is b[1]  # 结果也为 True
+# 1. is 比较两个对象的 id 值是否相等，是否指向同一个内存地址；
+# 2. == 比较两个对象的内容是否相等，值是否相等
+```
+
+```python
+# 对于以下代码
+# 1. 两个整数相除，结果为整数
+# 2. 操作数之一是浮点，则两个数都转化为浮点计算
+print type(1/2)  # Python 2.x
+>>> <type 'int'>
+
+# 无论是什么类型，都是按照正常的除法进行
+print(type(1/2)) # Python 3.x
+>>> <type 'float'>
+```
+
+### 字符串
+
+```python
+str.upper()  # 把所有字符中的小写字母转化成大写字母
+str.lower()  # 把所有字符中的大写字母转化成小写字母
+str.capitalize()  # 把第一个字母转化为大写字母，其余小写
+str.title()  # 把每个单词的第一个字母转化为大写，其余小写
+```
+
+
+
+### 集合
+
+集合（set）是一个无序的不重复元素序列
+
+```python
+# 集合 set 用大括号 {} 或者 set() 来创建
+# 注意：空集合的创建只能用 set(), {} 是创建空字典
+s.add(x)  # 添加元素
+s.update(x)  # 添加的元素可以是列表、元祖、字典等
+s.remove(x)  # 移除元素, 如果元素不存在会报错
+s.discard(x)  # 移除元素，不存在不会报错
+s.pop()  # 随机删除集合中的一个元素
+len(s)  # 计算集合元素的个数
+s.clear()  # 清空集合
+x in s  # 判断 x 是不是在集合中
+
+# 如果集合 A 是集合 B 的自己，方法 issubset() 返回 True
+# The issubset() method returns True if set A is the subset of B
+A.issubset(B)
+```
+
+
 
 ### defaultdict
 
@@ -201,4 +287,15 @@ pip, virtualenv, fabric 统称为 Python 的三大神器。其中 `virtualenv` �
 **将当前环境输出为文件**：`pip freeze > requirements.txt`，会创建一个 requirements.txt 文件，其中包含当前环境所有包以及对应版本的简单列表。
 
 **安装环境文件**：`pip install -r requirements.txt`
+
+## 文件操作
+
+### 读取文件
+
+```python
+# 读取文件的不同方法
+read(size)  # 从文件当前位置起读取 size 个字节，若不给定参数则读取至文件末尾
+readline()  # 每次读出一行内容，占用内存小，适合读取大文件
+readlines()  # 读取文件所有行，保存在一个 list 中
+```
 
