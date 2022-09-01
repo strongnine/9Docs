@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Python · 9Docs</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">9Docs</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">人工智能</span><ul><li><a class="tocitem" href="../../AI/FE/">特征工程</a></li><li><a class="tocitem" href="../../AI/ML/">机器学习</a></li><li><a class="tocitem" href="../../AI/NN/">神经网络</a></li><li><a class="tocitem" href="../../AI/CNN/">卷积神经网络</a></li><li><a class="tocitem" href="../../AI/RNN/">循环神经网络</a></li><li><a class="tocitem" href="../../AI/GNN/">图神经网络</a></li><li><a class="tocitem" href="../../AI/GAN/">生成对抗网络</a></li><li><a class="tocitem" href="../../AI/CV/">计算机视觉</a></li><li><a class="tocitem" href="../../AI/NLP/">自然语言处理</a></li></ul></li><li><span class="tocitem">编程语言</span><ul><li class="is-active"><a class="tocitem" href>Python</a><ul class="internal"><li><a class="tocitem" href="#基础知识"><span>基础知识</span></a></li><li><a class="tocitem" href="#迭代器"><span>迭代器</span></a></li><li><a class="tocitem" href="#生成器"><span>生成器</span></a></li><li><a class="tocitem" href="#虚拟环境-virtualenv"><span>虚拟环境 virtualenv</span></a></li><li><a class="tocitem" href="#文件操作"><span>文件操作</span></a></li></ul></li><li><a class="tocitem" href="../Cpp/">C++</a></li><li><a class="tocitem" href="../Julia/">Julia</a></li></ul></li><li><a class="tocitem" href="../../interview/">面试笔试</a></li><li><a class="tocitem" href="../../git/">Git</a></li><li><a class="tocitem" href="../../docker/">Docker</a></li><li><a class="tocitem" href="../../Linux/">Linux</a></li><li><a class="tocitem" href="../../vim/">Vim</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">编程语言</a></li><li class="is-active"><a href>Python</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Python</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/strongnine/9Docs/blob/main/docs/src/lang/Python.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h2 id="基础知识"><a class="docs-heading-anchor" href="#基础知识">基础知识</a><a id="基础知识-1"></a><a class="docs-heading-anchor-permalink" href="#基础知识" title="Permalink"></a></h2><p>关于 <code>__name__</code>：一个模块中，</p><ul><li>如果直接运行文件 <code>__name__</code> 为 <code>__main__</code>；</li><li>如果该模块被调用，<code>__name__</code> 为被调用模块的模块名；</li></ul><pre><code class="language-python hljs"># print_func.py 的代码如下
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Python · 9Docs</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">9Docs</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">人工智能</span><ul><li><a class="tocitem" href="../../AI/FE/">特征工程</a></li><li><a class="tocitem" href="../../AI/ML/">机器学习</a></li><li><a class="tocitem" href="../../AI/NN/">神经网络</a></li><li><a class="tocitem" href="../../AI/CNN/">卷积神经网络</a></li><li><a class="tocitem" href="../../AI/RNN/">循环神经网络</a></li><li><a class="tocitem" href="../../AI/GNN/">图神经网络</a></li><li><a class="tocitem" href="../../AI/GAN/">生成对抗网络</a></li><li><a class="tocitem" href="../../AI/CV/">计算机视觉</a></li><li><a class="tocitem" href="../../AI/NLP/">自然语言处理</a></li><li><a class="tocitem" href="../../AI/Transformer/">Transformer</a></li></ul></li><li><span class="tocitem">编程语言</span><ul><li class="is-active"><a class="tocitem" href>Python</a><ul class="internal"><li><a class="tocitem" href="#基础知识"><span>基础知识</span></a></li><li><a class="tocitem" href="#迭代器"><span>迭代器</span></a></li><li><a class="tocitem" href="#生成器"><span>生成器</span></a></li><li><a class="tocitem" href="#虚拟环境-virtualenv"><span>虚拟环境 virtualenv</span></a></li><li><a class="tocitem" href="#文件操作"><span>文件操作</span></a></li></ul></li><li><a class="tocitem" href="../Cpp/">C++</a></li><li><a class="tocitem" href="../Julia/">Julia</a></li></ul></li><li><a class="tocitem" href="../../interview/">面试笔试</a></li><li><a class="tocitem" href="../../git/">Git</a></li><li><a class="tocitem" href="../../docker/">Docker</a></li><li><a class="tocitem" href="../../Linux/">Linux</a></li><li><a class="tocitem" href="../../vim/">Vim</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">编程语言</a></li><li class="is-active"><a href>Python</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Python</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/strongnine/9Docs/blob/main/docs/src/lang/Python.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h2 id="基础知识"><a class="docs-heading-anchor" href="#基础知识">基础知识</a><a id="基础知识-1"></a><a class="docs-heading-anchor-permalink" href="#基础知识" title="Permalink"></a></h2><p>关于 <code>__name__</code>：一个模块中，</p><ul><li>如果直接运行文件 <code>__name__</code> 为 <code>__main__</code>；</li><li>如果该模块被调用，<code>__name__</code> 为被调用模块的模块名；</li></ul><pre><code class="language-python hljs"># print_func.py 的代码如下
 print(&#39;Hello World!&#39;)
 print(&#39;__name__ value: &#39;, __name__)
  
 def main():
-	print(&#39;This message is from main function&#39;)
+    print(&#39;This message is from main function&#39;)
  
 if __name__ == &#39;__main__&#39;:
    main()
@@ -18,7 +18,7 @@ print(&quot;Done!&quot;)
 # 运行 print_module.py 的结果
 &gt;&gt;&gt; Hello World! __name__ value: print_func  Done! </code></pre><p><strong>py 文件执行完保持交互界面</strong>：在终端用命令行 <code>python file.py</code> 执行 py 文件的时候，有时候想要继续测试代码，那么可以在文件的最后添加上下面的两行代码，这样在执行完 py 文件之后就会保持命令行交互界面不退出。</p><pre><code class="language-python hljs"># 执行完不退出 Python 交互
 import code
-code(banner=&quot;&quot;, local=locals())</code></pre><p><code>strs.find(str, beg=0, end=len(strs))</code>：表示在 strs 中返回第一次出现 str 的位置下标，beg 表示在 strs 中的开始索引，默认为 0，end 为结束索引，默认为 strs 的长度。</p><p>为了提高内存利用效率，对于一些简单的对象，如一些数值较小的 int 对象（范围在 <code>[-5, 257)</code>），字符串对象等，Python 采用重用对象内容的方法。在 Python 3.6 中小整数对象池的范围会更大。</p><pre><code class="language-python hljs">a = [1, 2, 3]
+code(banner=&quot;&quot;, local=locals())</code></pre><p>为了提高内存利用效率，对于一些简单的对象，如一些数值较小的 int 对象（范围在 <code>[-5, 257)</code>），字符串对象等，Python 采用重用对象内容的方法。在 Python 3.6 中小整数对象池的范围会更大。</p><pre><code class="language-python hljs">a = [1, 2, 3]
 b = [1, 2, 4]
 id(a[1]) == id(b[1])  # 结果为 True
 
@@ -32,10 +32,87 @@ print type(1/2)  # Python 2.x
 
 # 无论是什么类型，都是按照正常的除法进行
 print(type(1/2)) # Python 3.x
-&gt;&gt;&gt; &lt;type &#39;float&#39;&gt;</code></pre><h3 id="字符串"><a class="docs-heading-anchor" href="#字符串">字符串</a><a id="字符串-1"></a><a class="docs-heading-anchor-permalink" href="#字符串" title="Permalink"></a></h3><pre><code class="language-python hljs">str.upper()  # 把所有字符中的小写字母转化成大写字母
+&gt;&gt;&gt; &lt;type &#39;float&#39;&gt;</code></pre><p><code>filter(object)</code>：将迭代器的数据代入函数中，返回使函数返回值为 True 的值</p><h3 id="函数"><a class="docs-heading-anchor" href="#函数">函数</a><a id="函数-1"></a><a class="docs-heading-anchor-permalink" href="#函数" title="Permalink"></a></h3><p><strong>Python 函数的闭包</strong>：如果在函数中定义的 lambda 或者 def 嵌套在一个循环之中，而这个内嵌函数又引用了一个外层作用域的变量，该变量被循环所改变，那么所有在这个循环中产生的函数会有相同的值 —— 也就是在最后一次循环中完成时被引用变量的值。</p><pre><code class="language-python hljs">def fn():
+    t = []
+    i = 0  # 外层作用域
+    while i &lt; 2:
+        t.append(lambda x: print(i * x, end=&quot;,&quot;))
+        i += 1
+    return t
+
+for f in fn():  # fn() 执行完之后 i = 2
+    f(2)  # t = [lambda x: print(2 * x, end=&quot;,&quot;), lambda x: print(2 * x, end=&quot;,&quot;)]
+&gt;&gt;&gt; 4,4,</code></pre><p><code>*args</code> 和 <code>**kwargs</code> 是 Python 中方法的可变参数。<code>*args</code> 表示任何多个无名参数，是一个 Tuple；<code>**kwargs</code> 表示多个关键字参数，是一个 Dict。同时使用时 <code>*args</code> 参数要在 <code>**kwargs</code> 前面。当方法的参数不确定时，可以使用 <code>*args</code> 和 <code>**kwargs</code>.</p><pre><code class="language-python hljs">a, *b, c = range(5)  # *b: 剩下的参数会分配给 b
+print(a, b, c)
+&gt;&gt;&gt; 0 [1, 2, 3] 4
+
+*a, *b, c = range(5)  # 这种表达会报错
+&gt;&gt;&gt; SyntaxError: two starred expressions in assignment</code></pre><p>Python 参数传递采用的是「传对象引用」的方式，这种方式相当于传值和传引用的一种综合。</p><ul><li>如果函数收到的是一个可变对象（比如 <code>字典</code> 或者 <code>列表</code>）的引用，就能修改对象的原始值 —— 相当于通过「传引用」来传递对象。</li><li>如果函数收到的是一个不可变对象（比如 <code>数字</code>、<code>字符</code> 或者 <code>元组</code>）的引用，就不能直接修改原始对象 —— 相当于通过「传值」来传递对象。</li></ul><pre><code class="language-python hljs">def changeList(nums):
+    nums.append(&#39;c&#39;)
+    print(&quot;nums&quot;, nums)
+
+str1 = [&#39;a&#39;, &#39;b&#39;]
+# 调用函数
+changeList(str1)
+print(&quot;str1&quot;, str1)
+&gt;&gt;&gt; nums [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;], str1 [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</code></pre><p>Python 的默认参数只在函数定义时被赋值一次，而不会每次调用函数时又创建新的引用，函数定义完成后，默认参数已经存在固定的内存地址。</p><ul><li><p>如果使用一个可变的默认参数并对其进行改变，那么以后对该函数的调用都会改变这个可变对象</p></li><li><p>默认参数如果是不可变对象，不存在该问题，每次调用都会将其变为默认值</p></li></ul><pre><code class="language-python hljs">def fun(a = (), b = []):
+    a += (1,)
+    b.append(1)
+    return a, b
+
+fun()
+print(fun())
+&gt;&gt;&gt; ((1,), [1, 1])
+# !!! 注意 a == (1,)，而 b = [1, 1]</code></pre><p><strong>函数修饰符 <code>@</code></strong>：可以理解为引用、调用它修饰的函数</p><pre><code class="language-python hljs">def test(f):
+    print(&quot;before ...&quot;)
+    f()
+    print(&quot;after ...&quot;)
+    
+@test
+def func():
+    print(&quot;func was called&quot;)
+
+# 运行之后的输出结果为
+&gt;&gt;&gt; before ...
+&gt;&gt;&gt; func was called
+&gt;&gt;&gt; after ...</code></pre><p>当 Python 解释器读到函数修饰符 <code>@</code> 的时候，执行的步骤为：</p><ul><li>调用 test 函数，test 函数的入口参数就是 func 函数；</li><li>test 函数被执行，入口参数的函数（func 函数）也会被调用；</li></ul><pre><code class="language-python hljs">def dec(f):
+    n = 3
+    
+    def wrapper(*args, **kw):
+        return f(*args, **kw) * n
+    
+    return wrapper
+
+@dec
+def foo(n):
+    return n * 2
+
+foo(2) == 12  # True
+foo(3) == 18  # True
+
+# *args, **kw 是参数，用的是我们调用函数 foo(n) 时候的参数 n，
+# 注意与 dec(f) 里的 n = 3 作区分
+# 当我们利用了修饰符之后，就相当于
+foo = dec(foo)</code></pre><h3 id="列表"><a class="docs-heading-anchor" href="#列表">列表</a><a id="列表-1"></a><a class="docs-heading-anchor-permalink" href="#列表" title="Permalink"></a></h3><p>列表的切片一般指创造新的对象，是浅拷贝，不会有索引越界的情况，如果超出了列表的索引范围不会报错，会输出空列表。</p><pre><code class="language-python hljs">lists = [1, 2, 3, 4, 5, 6]
+print(lists[6:])
+&gt;&gt;&gt; []</code></pre><h3 id="字符串"><a class="docs-heading-anchor" href="#字符串">字符串</a><a id="字符串-1"></a><a class="docs-heading-anchor-permalink" href="#字符串" title="Permalink"></a></h3><pre><code class="language-python hljs">str.upper()  # 把所有字符中的小写字母转化成大写字母
 str.lower()  # 把所有字符中的大写字母转化成小写字母
 str.capitalize()  # 把第一个字母转化为大写字母，其余小写
-str.title()  # 把每个单词的第一个字母转化为大写，其余小写</code></pre><h3 id="集合"><a class="docs-heading-anchor" href="#集合">集合</a><a id="集合-1"></a><a class="docs-heading-anchor-permalink" href="#集合" title="Permalink"></a></h3><p>集合（set）是一个无序的不重复元素序列</p><pre><code class="language-python hljs"># 集合 set 用大括号 {} 或者 set() 来创建
+str.title()  # 把每个单词的第一个字母转化为大写，其余小写
+
+str.find(str, beg=0, end=len(strs))  # 表示在 strs 中返回第一次出现 str 的位置下标
+# beg 表示在 strs 中的开始索引，默认为 0，end 为结束索引，默认为 strs 的长度。
+
+str.rfind()  # 与 find 不同的在于它返回最后一次匹配的位置，如果匹配不到返回 -1
+
+str.endswith(suffix[, start[, end]]) # 用于判断字符串是否以指定后缀结尾
+# 如果以指定后缀结尾返回 True，否则返回 False
+# start 与 end 为可选参数，代表检索字符串的开始和结束位置
+
+str = &quot;Hello, Python&quot;
+suffix = &quot;Python&quot;
+print(str.endswith(suffix, 2))  # 从位置 2（&#39;l&#39;）开始判断字符串 str 是否以 suffix 结尾
+&gt;&gt;&gt; True</code></pre><h3 id="集合"><a class="docs-heading-anchor" href="#集合">集合</a><a id="集合-1"></a><a class="docs-heading-anchor-permalink" href="#集合" title="Permalink"></a></h3><p>集合（set）是一个无序的不重复元素序列</p><pre><code class="language-python hljs"># 集合 set 用大括号 {x, y,...} 或者 set() 来创建
 # 注意：空集合的创建只能用 set(), {} 是创建空字典
 s.add(x)  # 添加元素
 s.update(x)  # 添加的元素可以是列表、元祖、字典等
@@ -46,9 +123,10 @@ len(s)  # 计算集合元素的个数
 s.clear()  # 清空集合
 x in s  # 判断 x 是不是在集合中
 
-# 如果集合 A 是集合 B 的自己，方法 issubset() 返回 True
+# 如果集合 A 是集合 B 的子集，方法 issubset() 返回 True
 # The issubset() method returns True if set A is the subset of B
-A.issubset(B)</code></pre><h3 id="defaultdict"><a class="docs-heading-anchor" href="#defaultdict">defaultdict</a><a id="defaultdict-1"></a><a class="docs-heading-anchor-permalink" href="#defaultdict" title="Permalink"></a></h3><p>defaultdict 的作用是在于，当字典里的 key 不存在但被查找时，返回的不是 keyError 而是一个默认值。</p><pre><code class="language-python hljs">from collections import defaultdict  # 需要先导入
+A.issubset(B)</code></pre><h3 id="字典"><a class="docs-heading-anchor" href="#字典">字典</a><a id="字典-1"></a><a class="docs-heading-anchor-permalink" href="#字典" title="Permalink"></a></h3><p>字典是 Python里唯一的映射类型，它存储了键值对的关联，是由键到键值的映射关系。</p><pre><code class="language-python hljs"># 字典里面有一个 get 方法
+dict.get(key, default)  # 当 key 对应的值存在时返回其本身，当 key 对应的值不存在时返回给定的 default 作为替代</code></pre><h4 id="默认字典"><a class="docs-heading-anchor" href="#默认字典">默认字典</a><a id="默认字典-1"></a><a class="docs-heading-anchor-permalink" href="#默认字典" title="Permalink"></a></h4><p>defaultdict 中，当字典里的 key 不存在但被查找时，返回的不是 keyError 而是一个默认值。</p><pre><code class="language-python hljs">from collections import defaultdict  # 需要先导入
 # 用法 dict_type = defaultdict( factory_function)
 dict_int  = defaultdict(int)  # 不存在时返回 整数 0
 dict_set  = defaultdict(set)  # 不存在时返回 空集 {}
@@ -67,7 +145,7 @@ b = a
 b[0] = 1
 # a = [1, 0, 0]
 # b = [1, 0, 0]</code></pre><p>要想避免这样的情况，就应该这样写 <code>b = list(a)</code>. </p><p>回到一开始的问题，如果用第一种方法 <code>a = [[0] * n] * m</code>，那么 <code>a</code> 中的 <code>m</code> 个列表存储的地址都是一样的，那么你改变其中的一个列表，其他的列表都会跟着改变，就会出现上面的情况。</p><pre><code class="language-python hljs">c = [[0] * n for _ in range(m)]  # 没问题
-d = [[0 for _ in range(n)]] * m  # 有问题</code></pre><p>所以，以后要生成的列表时候，一律用 <code>[0 for _ in range(n)]</code> 会更好。</p><h2 id="迭代器"><a class="docs-heading-anchor" href="#迭代器">迭代器</a><a id="迭代器-1"></a><a class="docs-heading-anchor-permalink" href="#迭代器" title="Permalink"></a></h2><blockquote><p>推荐阅读：</p><ul><li><p><a href="https://docs.python.org/3.8/library/stdtypes.html#iterator-types">Python: Built-in Types – Iterator Types</a>;</p></li><li><p><a href="https://blog.csdn.net/qq_41554005/article/details/119971444">Python：可迭代对象、迭代器、生成器函数、生成器的解析举例代码说明</a>；</p></li></ul></blockquote><p>迭代时 Python 范围集合元素的一种方法。</p><p><strong>可迭代对象（Iterable）</strong>：Python 中某对象实现 <code>__iter__()</code> 方法或者 <code>__getitem__()</code> 方法，且其参数从 0 开始索引，那么该对象就是可迭代对象。可以用 for 循环的对象，或者说<strong>序列（Sequence）</strong>都是可迭代对象，比如列表（list）、字典（dict）、元祖（tuple）、集合（set)、字符串（string）这些序列都是可迭代对象。</p><p>使用 <code>iter()</code> 方法可以将可迭代对象变成迭代器，如果可迭代对象实现了 <code>__iter__()</code> 方法，那么调用该方法会返回一个迭代器对象。调用迭代器的 <code>__next__()</code> 方法返回每一次迭代的内容，直到迭代完成后抛出 <code>StopIteration</code> 异常。</p><ul><li>当使用 for 循环的时候，解释器会检查对象是否有 <code>__iter__()</code> 方法，有的话就调用它来获取一个迭代器；</li><li>如果没有 <code>__iter__()</code> 方法但是实现了 <code>__getitem__()</code>，解释器会创建一个迭代器，尝试从 0 开始按顺序遍历元素；</li><li>如果尝试失败，就会抛出一个 <code>TypeError</code>；</li><li>字符串、列表、元祖、字典、集合等均不是迭代器，但是他们是可迭代对象，在迭代中本质上就是对调用 <code>__iter__()</code> 后得到的迭代器通过不断使用 <code>next()</code> 函数来实现的；</li><li>使用  <code>isinstance()</code> 函数可以判断某个对象是否为某一类型，因此可以使用 <code>isinstance(nums, Iterable)</code> 来判断对象 <code>nums</code> 是否为可迭代对象；</li></ul><p><strong>迭代器（Iterator）</strong>：可以记住遍历对象的位置，其内部有一个状态用于记录迭代所在的位置，以便下次迭代时能够取出正确的元素。</p><ul><li>迭代器有两个基本方法 <code>iter()</code> 和 <code>next()</code>，前者可以将可迭代对象变成迭代器，后者可以返回下一个值；</li><li>要定义一个迭代器必须实现 <code>__iter__()</code>  和 <code>__next__()</code> 方法。在 Python 2 中则要求类内包含有 <code>next()</code> 方法；</li><li>迭代器只能往前不能后退，从集合的第一个元素开始访问，直到所有的元素被访问完之后结束；</li><li>迭代器一定是可迭代对象，但是可迭代对象不一定是迭代器，例如字符串、字典、元祖、集合等；</li></ul><pre><code class="language-python hljs">&gt;&gt;&gt; nums = [1, 2, 3]   # 创建一个列表
+d = [[0 for _ in range(n)]] * m  # 有问题</code></pre><p>所以，以后要生成的列表时候，一律用 <code>[0 for _ in range(n)]</code> 会更好。</p><h2 id="迭代器"><a class="docs-heading-anchor" href="#迭代器">迭代器</a><a id="迭代器-1"></a><a class="docs-heading-anchor-permalink" href="#迭代器" title="Permalink"></a></h2><blockquote><p>推荐阅读：</p><ul><li><p><a href="https://docs.python.org/3.8/library/stdtypes.html#iterator-types">Python: Built-in Types – Iterator Types</a>;</p></li><li><p><a href="https://blog.csdn.net/qq_41554005/article/details/119971444">Python：可迭代对象、迭代器、生成器函数、生成器的解析举例代码说明</a>；</p></li></ul></blockquote><p>迭代是 Python 范围集合元素的一种方法。</p><p><strong>可迭代对象（Iterable）</strong>：Python 中某对象实现 <code>__iter__()</code> 方法或者 <code>__getitem__()</code> 方法，且其参数从 0 开始索引，那么该对象就是可迭代对象。可以用 for 循环的对象，或者说<strong>序列（Sequence）</strong>都是可迭代对象，比如列表（list）、字典（dict）、元祖（tuple）、集合（set)、字符串（string）这些序列都是可迭代对象。</p><p>使用 <code>iter()</code> 方法可以将可迭代对象变成迭代器，如果可迭代对象实现了 <code>__iter__()</code> 方法，那么调用该方法会返回一个迭代器对象。调用迭代器的 <code>__next__()</code> 方法返回每一次迭代的内容，直到迭代完成后抛出 <code>StopIteration</code> 异常。</p><ul><li>当使用 for 循环的时候，解释器会检查对象是否有 <code>__iter__()</code> 方法，有的话就调用它来获取一个迭代器；</li><li>如果没有 <code>__iter__()</code> 方法但是实现了 <code>__getitem__()</code>，解释器会创建一个迭代器，尝试从 0 开始按顺序遍历元素；</li><li>如果尝试失败，就会抛出一个 <code>TypeError</code>；</li><li>字符串、列表、元祖、字典、集合等均不是迭代器，但是他们是可迭代对象，在迭代中本质上就是对调用 <code>__iter__()</code> 后得到的迭代器通过不断使用 <code>next()</code> 函数来实现的；</li><li>使用  <code>isinstance()</code> 函数可以判断某个对象是否为某一类型，因此可以使用 <code>isinstance(nums, Iterable)</code> 来判断对象 <code>nums</code> 是否为可迭代对象；</li></ul><p><strong>迭代器（Iterator）</strong>：可以记住遍历对象的位置，其内部有一个状态用于记录迭代所在的位置，以便下次迭代时能够取出正确的元素。</p><ul><li>迭代器有两个基本方法 <code>iter()</code> 和 <code>next()</code>，前者可以将可迭代对象变成迭代器，后者可以返回下一个值；</li><li>要定义一个迭代器必须实现 <code>__iter__()</code>  和 <code>__next__()</code> 方法。在 Python 2 中则要求类内包含有 <code>next()</code> 方法；</li><li>迭代器只能往前不能后退，从集合的第一个元素开始访问，直到所有的元素被访问完之后结束；</li><li>迭代器一定是可迭代对象，但是可迭代对象不一定是迭代器，例如字符串、字典、元祖、集合等；</li></ul><pre><code class="language-python hljs">&gt;&gt;&gt; nums = [1, 2, 3]   # 创建一个列表
 &gt;&gt;&gt; nums_iterator = iter(nums)  # 得到一个迭代器
 &gt;&gt;&gt; print(nums_iterator)
 &lt;list_iterator object at 0x7fe1a014e250&gt;
@@ -130,4 +208,4 @@ print(&quot;下一个迭代值：{}&quot;.format(addOneGenera.__next__()))
 &gt;&gt;&gt; 下一个迭代值：4</code></pre><h2 id="虚拟环境-virtualenv"><a class="docs-heading-anchor" href="#虚拟环境-virtualenv">虚拟环境 virtualenv</a><a id="虚拟环境-virtualenv-1"></a><a class="docs-heading-anchor-permalink" href="#虚拟环境-virtualenv" title="Permalink"></a></h2><p>pip, virtualenv, fabric 统称为 Python 的三大神器。其中 <code>virtualenv</code> 的作用是建立一个虚拟的 Python 环境。</p><p>通过 pip 安装 virtualenv：<code>pip install virtualenv</code>，如果输入 <code>virtualenv --version</code> 能够输出版本号就代表安装成功了。</p><p><strong>为项目搭建新的虚拟环境</strong>：<code>virtualenv nine-py</code>，执行完之后会在当前的目录中创建一个相对应名字的文件夹，是独立的 Python 运行环境，包含了 Python 可执行文件，以及 pip 库的一份拷贝，在这个环境中安装的库都是独立的，不会影响到其他的环境。</p><blockquote><p>如果想要指定 Python 解释器：<code>virtualenv -p /usr/bin/python2.7 nine-py</code></p></blockquote><p><strong>激活虚拟环境</strong>：<code>source nine-py/bin/activate</code></p><p><strong>停用虚拟环境</strong>：<code>deactivate</code>（停用之后会回到系统默认的 Python 解释器）</p><p><strong>查看当前安装版本</strong>：<code>pip freeze</code></p><p><strong>将当前环境输出为文件</strong>：<code>pip freeze &gt; requirements.txt</code>，会创建一个 requirements.txt 文件，其中包含当前环境所有包以及对应版本的简单列表。</p><p><strong>安装环境文件</strong>：<code>pip install -r requirements.txt</code></p><h2 id="文件操作"><a class="docs-heading-anchor" href="#文件操作">文件操作</a><a id="文件操作-1"></a><a class="docs-heading-anchor-permalink" href="#文件操作" title="Permalink"></a></h2><h3 id="读取文件"><a class="docs-heading-anchor" href="#读取文件">读取文件</a><a id="读取文件-1"></a><a class="docs-heading-anchor-permalink" href="#读取文件" title="Permalink"></a></h3><pre><code class="language-python hljs"># 读取文件的不同方法
 read(size)  # 从文件当前位置起读取 size 个字节，若不给定参数则读取至文件末尾
 readline()  # 每次读出一行内容，占用内存小，适合读取大文件
-readlines()  # 读取文件所有行，保存在一个 list 中</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../AI/NLP/">« 自然语言处理</a><a class="docs-footer-nextpage" href="../Cpp/">C++ »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 29 August 2022 02:41">Monday 29 August 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+readlines()  # 读取文件所有行，保存在一个 list 中</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../AI/Transformer/">« Transformer</a><a class="docs-footer-nextpage" href="../Cpp/">C++ »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 1 September 2022 01:43">Thursday 1 September 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
