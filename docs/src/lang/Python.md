@@ -11,7 +11,7 @@ print('Hello World!')
 print('__name__ value: ', __name__)
  
 def main():
-	print('This message is from main function')
+    print('This message is from main function')
  
 if __name__ == '__main__':
    main()
@@ -34,7 +34,7 @@ import code
 code(banner="", local=locals())
 ```
 
-`strs.find(str, beg=0, end=len(strs))`：表示在 strs 中返回第一次出现 str 的位置下标，beg 表示在 strs 中的开始索引，默认为 0，end 为结束索引，默认为 strs 的长度。
+
 
 为了提高内存利用效率，对于一些简单的对象，如一些数值较小的 int 对象（范围在 `[-5, 257)`），字符串对象等，Python 采用重用对象内容的方法。在 Python 3.6 中小整数对象池的范围会更大。
 
@@ -60,6 +60,147 @@ print(type(1/2)) # Python 3.x
 >>> <type 'float'>
 ```
 
+
+
+`filter(object)`：将迭代器的数据代入函数中，返回使函数返回值为 True 的值
+
+
+
+### 函数
+
+**Python 函数的闭包**：如果在函数中定义的 lambda 或者 def 嵌套在一个循环之中，而这个内嵌函数又引用了一个外层作用域的变量，该变量被循环所改变，那么所有在这个循环中产生的函数会有相同的值 —— 也就是在最后一次循环中完成时被引用变量的值。
+
+```python
+def fn():
+    t = []
+    i = 0  # 外层作用域
+    while i < 2:
+        t.append(lambda x: print(i * x, end=","))
+        i += 1
+    return t
+
+for f in fn():  # fn() 执行完之后 i = 2
+    f(2)  # t = [lambda x: print(2 * x, end=","), lambda x: print(2 * x, end=",")]
+>>> 4,4,
+```
+
+
+
+
+
+`*args` 和 `**kwargs` 是 Python 中方法的可变参数。`*args` 表示任何多个无名参数，是一个 Tuple；`**kwargs` 表示多个关键字参数，是一个 Dict。同时使用时 `*args` 参数要在 `**kwargs` 前面。当方法的参数不确定时，可以使用 `*args` 和 `**kwargs`.
+
+```python
+a, *b, c = range(5)  # *b: 剩下的参数会分配给 b
+print(a, b, c)
+>>> 0 [1, 2, 3] 4
+
+*a, *b, c = range(5)  # 这种表达会报错
+>>> SyntaxError: two starred expressions in assignment
+```
+
+
+
+Python 参数传递采用的是「传对象引用」的方式，这种方式相当于传值和传引用的一种综合。
+
+- 如果函数收到的是一个可变对象（比如 `字典` 或者 `列表`）的引用，就能修改对象的原始值 —— 相当于通过「传引用」来传递对象。
+- 如果函数收到的是一个不可变对象（比如 `数字`、`字符` 或者 `元组`）的引用，就不能直接修改原始对象 —— 相当于通过「传值」来传递对象。
+
+```python
+def changeList(nums):
+    nums.append('c')
+    print("nums", nums)
+
+str1 = ['a', 'b']
+# 调用函数
+changeList(str1)
+print("str1", str1)
+>>> nums ['a', 'b', 'c'], str1 ['a', 'b', 'c']
+```
+
+Python 的默认参数只在函数定义时被赋值一次，而不会每次调用函数时又创建新的引用，函数定义完成后，默认参数已经存在固定的内存地址。
+
+- 如果使用一个可变的默认参数并对其进行改变，那么以后对该函数的调用都会改变这个可变对象
+
+- 默认参数如果是不可变对象，不存在该问题，每次调用都会将其变为默认值
+
+```python
+def fun(a = (), b = []):
+    a += (1,)
+    b.append(1)
+    return a, b
+
+fun()
+print(fun())
+>>> ((1,), [1, 1])
+# !!! 注意 a == (1,)，而 b = [1, 1]
+```
+
+
+
+**函数修饰符 `@`**：可以理解为引用、调用它修饰的函数
+
+```python
+def test(f):
+    print("before ...")
+    f()
+    print("after ...")
+    
+@test
+def func():
+    print("func was called")
+
+# 运行之后的输出结果为
+>>> before ...
+>>> func was called
+>>> after ...
+```
+
+当 Python 解释器读到函数修饰符 `@` 的时候，执行的步骤为：
+
+- 调用 test 函数，test 函数的入口参数就是 func 函数；
+- test 函数被执行，入口参数的函数（func 函数）也会被调用；
+
+
+
+```python
+def dec(f):
+    n = 3
+    
+    def wrapper(*args, **kw):
+        return f(*args, **kw) * n
+    
+    return wrapper
+
+@dec
+def foo(n):
+    return n * 2
+
+foo(2) == 12  # True
+foo(3) == 18  # True
+
+# *args, **kw 是参数，用的是我们调用函数 foo(n) 时候的参数 n，
+# 注意与 dec(f) 里的 n = 3 作区分
+# 当我们利用了修饰符之后，就相当于
+foo = dec(foo)
+```
+
+
+
+### 列表
+
+列表的切片一般指创造新的对象，是浅拷贝，不会有索引越界的情况，如果超出了列表的索引范围不会报错，会输出空列表。
+
+```python
+lists = [1, 2, 3, 4, 5, 6]
+print(lists[6:])
+>>> []
+```
+
+
+
+
+
 ### 字符串
 
 ```python
@@ -67,6 +208,20 @@ str.upper()  # 把所有字符中的小写字母转化成大写字母
 str.lower()  # 把所有字符中的大写字母转化成小写字母
 str.capitalize()  # 把第一个字母转化为大写字母，其余小写
 str.title()  # 把每个单词的第一个字母转化为大写，其余小写
+
+str.find(str, beg=0, end=len(strs))  # 表示在 strs 中返回第一次出现 str 的位置下标
+# beg 表示在 strs 中的开始索引，默认为 0，end 为结束索引，默认为 strs 的长度。
+
+str.rfind()  # 与 find 不同的在于它返回最后一次匹配的位置，如果匹配不到返回 -1
+
+str.endswith(suffix[, start[, end]]) # 用于判断字符串是否以指定后缀结尾
+# 如果以指定后缀结尾返回 True，否则返回 False
+# start 与 end 为可选参数，代表检索字符串的开始和结束位置
+
+str = "Hello, Python"
+suffix = "Python"
+print(str.endswith(suffix, 2))  # 从位置 2（'l'）开始判断字符串 str 是否以 suffix 结尾
+>>> True
 ```
 
 
@@ -76,7 +231,7 @@ str.title()  # 把每个单词的第一个字母转化为大写，其余小写
 集合（set）是一个无序的不重复元素序列
 
 ```python
-# 集合 set 用大括号 {} 或者 set() 来创建
+# 集合 set 用大括号 {x, y,...} 或者 set() 来创建
 # 注意：空集合的创建只能用 set(), {} 是创建空字典
 s.add(x)  # 添加元素
 s.update(x)  # 添加的元素可以是列表、元祖、字典等
@@ -87,16 +242,27 @@ len(s)  # 计算集合元素的个数
 s.clear()  # 清空集合
 x in s  # 判断 x 是不是在集合中
 
-# 如果集合 A 是集合 B 的自己，方法 issubset() 返回 True
+# 如果集合 A 是集合 B 的子集，方法 issubset() 返回 True
 # The issubset() method returns True if set A is the subset of B
 A.issubset(B)
 ```
 
 
 
-### defaultdict
+### 字典
 
-defaultdict 的作用是在于，当字典里的 key 不存在但被查找时，返回的不是 keyError 而是一个默认值。
+字典是 Python里唯一的映射类型，它存储了键值对的关联，是由键到键值的映射关系。
+
+```python
+# 字典里面有一个 get 方法
+dict.get(key, default)  # 当 key 对应的值存在时返回其本身，当 key 对应的值不存在时返回给定的 default 作为替代
+```
+
+
+
+#### 默认字典
+
+defaultdict 中，当字典里的 key 不存在但被查找时，返回的不是 keyError 而是一个默认值。
 
 ```python
 from collections import defaultdict  # 需要先导入
@@ -159,7 +325,7 @@ d = [[0 for _ in range(n)]] * m  # 有问题
 >
 > - [Python：可迭代对象、迭代器、生成器函数、生成器的解析举例代码说明](https://blog.csdn.net/qq_41554005/article/details/119971444)；
 
-迭代时 Python 范围集合元素的一种方法。
+迭代是 Python 范围集合元素的一种方法。
 
 **可迭代对象（Iterable）**：Python 中某对象实现 `__iter__()` 方法或者 `__getitem__()` 方法，且其参数从 0 开始索引，那么该对象就是可迭代对象。可以用 for 循环的对象，或者说**序列（Sequence）**都是可迭代对象，比如列表（list）、字典（dict）、元祖（tuple）、集合（set)、字符串（string）这些序列都是可迭代对象。
 

@@ -14,6 +14,16 @@ Transformer 通过以下方式来解决上面的问题：
 
 ### Encoder 和 Decoder 模块
 
+Encoder 模块将 Backbone 输出的 feature map 转换成一维表征，然后结合 positional encoding 作为 Encoder 的输入。每个 Encoder 都由 Multi-Head Self-Attention 和 FFN 组成。和 Transformer Encoder 不同的是，因为 Encoder 具有位置不变性，DETR 将 positional encoding 添加到每一个 Multi-Head Self-Attention 中，来保证目标检测的位置敏感性。
+
+Decoder 也具有位置不变性，Decoder 的 n 个 object query（可以理解为学习不同 object 的 positional embedding）必须是不同的，以便产生不同的结果，并且同时把它们添加到每一个 Multi-Head Attention 中。n 个 object queries 通过 Decoder 转换成一个 output embedding，然后 output embedding 通过 FFN 独立解码出 n 个预测结果，包含 box 和 class。对输入 embedding 同时使用 Self-Attention 和 Encoder-Decoder Attention，模型可以利用目标的相互关系来进行全局推理。
+
+和 Transformer Decoder 不同的是，DETR 的每个 Decoder 并行输出 n 个对象，Transformer Decoder 使用的是自回归模型，串行输出 n 个对象，每次只能预测一个输出序列的一个元素。
+
+### 多头注意力（Multi-Head Attention）
+
+多头注意力的提出是为了对同一 key、value、query，希望抽取不同的信息，例如短距离和长距离，类似于 CV 中的感受野（field）。
+
 ## 参考
 
 [1] [知乎专栏：计算机视觉面试题 - Transformer 相关问题总结，作者：爱者之贻](https://zhuanlan.zhihu.com/p/554814230)

@@ -14,6 +14,7 @@ makedocs(
             "生成对抗网络" => "AI/GAN.md",
             "计算机视觉" => "AI/CV.md",
             "自然语言处理" => "AI/NLP.md",
+            "Transformer" => "AI/Transformer.md",
         ],
         "编程语言" => Any[
             "Python" => "lang/Python.md",

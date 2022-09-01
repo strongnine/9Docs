@@ -28,6 +28,22 @@
 
 ### 基础概念
 
+**计算特征图大小**：计算经过卷积、池化等操作之后的特征图大小，这是一个十分常见的考题。假设特征图的输入尺寸为 $l_i$，Padding 大小为 $p$，卷积核或者池化核大小为 $k$，步长为 $s$，那么特征图的输出尺寸 $l_o$ 计算公式为：
+
+$l_o=\lfloor\frac{l_i+2p-k}{s}\rfloor+1,$
+
+其中 $\lfloor\cdot\rfloor$ 代表向下取整。很多深度学习框架会采取向下取整的方式，放弃输入特征图的一部分边界数据。
+
+
+
+**计算感受野**：假设网络的原始输入特征图的尺寸为 $L$，第 i 层卷积核（池化核）尺寸 $k_i$，第 j 层的步长为 $s_j$，则第 i 层的感受野大小 $R_i$ 计算如下
+
+$R_i=\min\left( R_{i-1} + (k_i-1)\prod_{j=0}^{i-1}s_j, L \right)$
+
+其中对于原始输入层 $R_0=1, s_0=1$. 
+
+
+
 **目标检测（Object Detection）**是计算机视觉中极为重要的基础问题，是实例分割（Instance Segmentation)、场景理解（Secne Understanding）、目标跟踪（Object Tracking）、图像标注（Image Captioning）等问题的基础。
 
 **目标检测任务：**给定一张图片，将图片中的每个物体识别出来并且提出一个置信度，用矩形方框（Bounding Box）或者不规则的区域标识出来。
@@ -50,6 +66,13 @@ ixmax = min(pred_bbox[2], gt_bbox[2])
 iymax = min(pred_bbox[3], gt_bbox[3])
 iw = np.maximum(ixmax - ixmin + 1., 0.)
 ih = np.maximum(iymax - iymin + 1., 0.)
+
+inters = iw * ih  # 交集
+uni = ((pred_bbox[2] - pred_bbox[0] + 1.) * (pred_bbox[3] - pred_bbox[1] + 1.) +
+           (gt_bbox[2] - gt_bbox[0] + 1.) * (gt_bbox[3] - gt_bbox[1] + 1.) -
+           inters)  # 并集 union = S1 + S2 - inters
+
+overlaps = inters / uni  # IoU
 ```
 
 **均交并比（Mean Intersection over Union, MIoU）**：MIoU 是语义分割的标准度量，其计算两个集合的交集和并集之比。
@@ -110,7 +133,7 @@ for	j in range(1, num_classes):  # 对每一个类 j 的 pred bbox 单独做 NMS
 
 **True Positive (TP)**：$\text{IoU} > 0.5$ 的检测框数量（同一个 Ground Truth 只计算一次）
 
-**False Positive (FP）**：$\text{IoU}\le 0.5$ 的检测框（检测到同一个 Ground Truth 的多余检测框的数量
+**False Positive (FP)**：$\text{IoU}\le 0.5$ 的检测框（检测到同一个 Ground Truth 的多余检测框的数量
 
 **False Negative (FN)**：没有检测到的 Ground Truth 的数量
 
@@ -152,6 +175,8 @@ $\text{Recall} = \frac{\text{TP}}{(\text{TP}+\text{FN})}=\frac{\text{TP}}{\text{
 
 在一开始的 CNNs 上，把一张图片划分成为固定的区域，然后识别这些区域中是否有某个物体，有的话就把这个区域标识出来。但是在实际中，图片上的物体大小是不固定的，用这种固定大小的区域去识别物体显然是不合理的。人们想到，如果想要让框更加合适，可以增加框的数量，然后让每个区域都变得尽可能地小。但是这样框太多的时候，又会导致计算量的增加。
 
+
+
 #### R-CNN
 
 **基于区域的卷积神经网络（Region-based CNN，R-CNN）**出现于 2014 年，是第一个将 CNN 用于目标检测的深度学习模型。它是是解决这种缺点的更好方法，它使用生成区域建议的方式来选择区域。R-CNN 的选框方式是根据选择性搜索来进行的，选框也叫做区域（regions）。
@@ -171,9 +196,13 @@ R-CNN 的不足：
 
 **选择性搜索（Selective Serch，SS）**：一个物体会包括四种信息：不同的尺度、颜色、纹理和边界，选择性搜索目标就是识别这些模式，提出不同的区域。首先，先生成最初的分割得很细的子分割，然后再将这些很细的小区域按照颜色相似度、纹理相似度、大小相似度和形状相似兼容性来合并成更大的感兴趣区域 RoI。
 
+
+
 #### SPPNet
 
 SPPNet 出现于 2015 年，
+
+
 
 #### Fast R-CNN
 
@@ -197,17 +226,25 @@ Fast R-CNN 的优势和不足：
 
 - 依然在使用选择性搜索来作为寻找 RoI 的方法，虽然速度提高了，但是一张图片依旧需要花费 2 秒的时间。
 
+
+
 #### R-FCN
 
 R-FCN 出现于 2016 年
+
+
 
 #### SSD
 
 SSD 出现于 2016 年
 
+
+
 #### YOLO
 
 YOLO 出现于 2016 年
+
+
 
 #### Faster R-CNN
 
@@ -224,6 +261,8 @@ YOLO 出现于 2016 年
 4. 最后，放到含有 softmax 层和线性回归层的全连接层上，来分类和输出 bounding boxes。
 
 RPN 被集成在了网络里面，等于从区域建议到最后的分类回归都在同一个网络，实现了端到端。即我们给这个网络输入一张图片，网络就会输出 bounding boxes 和分数。
+
+
 
 **区域建议网络（Region Proposal Network，RPN）**：可以输入任何大小的图片（或者特征映射图），然后输出一系列目标建议矩形框，每个矩形框都会有一个对应的分数，代表这个框里面有多大的概率是一个物体。在 Faster R-CNN 中 RPN 是一个全卷积网络（Fully-Convolutional Network，FCN）
 
@@ -243,6 +282,17 @@ RPN 实际上可以看成是一个小型的 CNN，原文说的是它在 feature 
 
 
 
+Faster RCNN 的损失函数由 4 个部分组成：
+
+- RPN 分类损失：anchor 是否为 Ground Truth，二类交叉熵损失；
+- RPN 位置回归损失：anchor 位置微调，bbox 的第一次修正；
+- RoI 分类损失：RoI 所属类别，分类损失；
+- RoI 位置回归损失：继续对 RoI 位置微调，第二次对 bbox 的修正；
+
+最终的损失是这 4 个损失相加。
+
+
+
 对于每一个图片，损失函数为：
 
 $L\left( \{p_i\},\{t_i\} \right) = \frac{1}{N_{cls}}\sum_iL_{cls}(p_i,p_i^*) + \lambda\frac{1}{N_{reg}}\sum_ip_i^*L_{reg}(t_i,t_i^*).$
@@ -253,13 +303,19 @@ Faster R-CNN 的优势和不足：
 
 - 通过使用端到端的方式去进行，并且也不会考虑所有的 RoI，处理一张图片只需要 0.2 秒。
 
+
+
 #### Light-Head R-CNN
 
 Light-Head R-CNN 出现于 2017 年
 
+
+
 #### Mask R-CNN
 
 Mask R-CNN 出现于 2017 年
+
+
 
 #### FPN
 
@@ -288,6 +344,8 @@ Mask R-CNN 出现于 2017 年
 - 在融合过后会使用 $3\times 3$ 卷积对每个融合结果进行卷积，以消除上采样的混叠效应（Aliasing Effect）。
 
 将 FPN 用于 RPN 网络中生成 Region Proposal，在每一个 stage 都定义了不同大小的 anchor，对于 $\{P_2, P_3, P_4, P_5, P_6\}$ 分别为 $\{32^2, 64^2, 128^2, 256^2, 512^2\}$，每种尺度的 anchor 有不同的比例 $1:2, 1:1, 2:1$，整个特征金字塔有 15 种 anchors。
+
+
 
 #### RetinaNet (Focal Loss)
 
@@ -334,9 +392,13 @@ Focal Loss 存在的问题：
 
 - 模型过多地关注那些特别难分的样本 —— 离群点（outliers），即便是模型已经收敛了，但是这些离群点依旧是
 
+
+
 #### SENet
 
 目标检测中的注意力机制
+
+
 
 #### FCOS
 
@@ -352,6 +414,8 @@ $\text{centerness}^*=\sqrt{\frac{\min(l^*,r^*)}{\max(l^*,r^*)}\times \frac{\min(
 
 其中 
 
+
+
 #### CenterNet
 
 
@@ -361,6 +425,8 @@ $\text{centerness}^*=\sqrt{\frac{\min(l^*,r^*)}{\max(l^*,r^*)}\times \frac{\min(
 论文 Bridging the Gap Between Anchor-based and Anchor-free Detection via Adaptive Training Sample Selection 中提出了一种根据目标的统计信息自动选择正负样本的**自适应样本选择机制（Adaptive Training Sample Selection，ATSS）**。
 
 论文里提到无论是 anchor-based 方法还是 anchor-free 方法，
+
+
 
 #### GFL
 
@@ -405,6 +471,8 @@ $\text{DFL}(S_i,S_{i+1})=-\left((y_{i+1}-y)\log(S_i)+(y-y_i\log(S_{i+1})) \right
 
 如果将 QFL 和 DFL 统一起来，就可以表示为 GFL。
 
+
+
 ## 人脸识别
 
 **人脸识别中的模型 ArcFace……**
@@ -425,13 +493,155 @@ $\mathcal{L}_{\text{softmax}}=-\frac{1}{N_b}\sum_{i=1}^{N_b}\log \frac{\exp({\bo
 
 **L-Softmax Loss**：
 
+
+
 **SphereFace（A-Softmax）**：
+
+
 
 **Focal Loss**：
 
+
+
 **Triplet Loss**：
 
+Triplet Loss 是在谷歌 2015 年的 FaceNet 论文中的提出来的，用于解决人脸识别相关的问题，原文为：《FaceNet: A Unified Embedding for Face Recognition and Clustering》。
+
+Triplet 三元组指的是 anchor, negative, positive 三个部分，每一部分都是一个 embedding 向量，其中
+
+- anchor 指的是基准图片；
+- positive 指的是与 anchor 同一分类下的一张图片；
+- negative 指的是与 anchor 不同分类的一张图片；
+
+Triplet Loss 的目的是让 anchor 和 positive 的距离变得越来越小，而与 negative 的距离变得越来越大，损失函数定义如下：
+
+$\mathcal{L}=\max(d(a, p) - d(a, n) + \text{margin}, 0),$
+
+其中 $a, p, n$ 分别代表 anchor，positive 和 negative。如果 negative example 很好识别时，anchor 与 negative 的距离会相对较大，即 $d(a,n)$ 相比之下偏大，那么损失为 $\mathcal{L}=0$；否则通过最小化损失函数，可以让 anchor 与 positive 的距离 $d(a,p)$ 更加接近 0，而与 negative 的距离 $d(a,n)$ 更加接近给定的 margin。
+
+基于 triplet loss 的定义，可以将 triplet（三元组）分为三类：
+
+- easy triplets（简单三元组）：triplet 对应的损失为 0 的三元组：$d(a,n)>d(a,p) + \text{margin}$；
+- hard triplets（困难三元组）：negative example 与 anchor 距离小于 anchor 与 positive example 的距离，形式化定义为：$d(a,n)<d(a,p)$；
+- semi-hard triplets（一般三元组）：negative example 与 anchor 距离大于 anchor 与 positive example 的距离，但还不至于使得 $\mathcal{L}oss$ 为 0，即 $d(a,p)<d(a,n)<d(a,p)+\text{margin}$；
+
+PyTorch 实现：
+
+```python
+class TripletLoss(nn.Module):
+    """Triplet loss with hard positive/negative mining.
+    
+    Reference:
+        Hermans et al. In Defense of the Triplet Loss for Person Re-Identification. arXiv:1703.07737.
+    
+    Imported from `<https://github.com/Cysu/open-reid/blob/master/reid/loss/triplet.py>`_.
+    
+    Args:
+        margin (float, optional): margin for triplet. Default is 0.3.
+    """
+    
+    def __init__(self, margin=0.3,global_feat, labels):
+        super(TripletLoss, self).__init__()
+        self.margin = margin
+        self.ranking_loss = nn.MarginRankingLoss(margin=margin)
+ 
+    def forward(self, inputs, targets):
+        """
+        Args:
+            inputs (torch.Tensor): feature matrix with shape (batch_size, feat_dim).
+            targets (torch.LongTensor): ground truth labels with shape (num_classes).
+        """
+        n = inputs.size(0)
+        
+        # Compute pairwise distance, replace by the official when merged
+        dist = torch.pow(inputs, 2).sum(dim=1, keepdim=True).expand(n, n)
+        dist = dist + dist.t()
+        dist.addmm_(1, -2, inputs, inputs.t())
+        dist = dist.clamp(min=1e-12).sqrt()  # for numerical stability
+        
+        # For each anchor, find the hardest positive and negative
+        mask = targets.expand(n, n).eq(targets.expand(n, n).t())
+        dist_ap, dist_an = [], []
+        for i in range(n):
+            dist_ap.append(dist[i][mask[i]].max().unsqueeze(0))
+            dist_an.append(dist[i][mask[i] == 0].min().unsqueeze(0))
+        dist_ap = torch.cat(dist_ap)
+        dist_an = torch.cat(dist_an)
+        
+        # Compute ranking hinge loss
+        y = torch.ones_like(dist_an)
+        return self.ranking_loss(dist_an, dist_ap, y)
+```
+
+
+
 **Center Loss**：
+
+在 Triplet Loss 之后又提出了一个 Center Loss。Triplet 学习的是样本间的相对距离，没有学习绝对距离，尽管考虑了类间的离散性，但没有考虑类内的紧凑性。Center Loss 希望可以通过学习每个类的类中心，使得类内的距离变得更加紧凑，其公式如下：
+
+$\mathcal{L}_C=\frac{1}{2}\sum_{i=1}^m\| x_i -c_{y_i} \|_2^2,$
+
+$c_{y_i}\in\mathbb{R}^d$ 表示深度特征的第 $y_i$ 类中心。理想情况下，$c_{y_i}$ 应该随着深度特性的变化而更新。
+
+训练时：第一是基于mini-batch执行更新。在每次迭代中，计算中心的方法是平均相应类的特征（一些中心可能不会更新）。第二，避免大扰动引起的误标记样本，用一个标量 $\alpha$ 控制中心的学习速率，一般这个 $\alpha$ 很小（如 0.005）。
+
+计算 $\mathcal{L}_C$ 相对于 $x_i$ 的梯度和 $c_{y_i}$ 的更新方程为：
+
+$\frac{\partial \mathcal{L}_C}{\partial x_i}=x_i-c_{y_i},$
+
+$\Delta c_j = \frac{\sum_{i=1}^m \delta(y_i=j)\cdot(c_j-x_i)}{1+\sum_{i=1}^m \delta(y_i=j)}.$
+
+```python
+class CenterLoss(nn.Module):
+    """Center loss.
+    Reference:
+    Wen et al. A Discriminative Feature Learning Approach for Deep Face Recognition. ECCV 2016.
+    Args:
+        num_classes (int): number of classes.
+        feat_dim (int): feature dimension.
+    """
+ 
+    def __init__(self, num_classes=751, feat_dim=2048, use_gpu=True):
+        super(CenterLoss, self).__init__()
+        self.num_classes = num_classes
+        self.feat_dim = feat_dim
+        self.use_gpu = use_gpu
+ 
+        if self.use_gpu:
+            self.centers = nn.Parameter(torch.randn(self.num_classes, self.feat_dim).cuda())
+        else:
+            self.centers = nn.Parameter(torch.randn(self.num_classes, self.feat_dim))
+ 
+    def forward(self, x, labels):
+        """
+        Args:
+            x: feature matrix with shape (batch_size, feat_dim).
+            labels: ground truth labels with shape (num_classes).
+        """
+        assert x.size(0) == labels.size(0), "features.size(0) is not equal to labels.size(0)"
+ 
+        batch_size = x.size(0)
+        distmat = torch.pow(x, 2).sum(dim=1, keepdim=True).expand(batch_size, self.num_classes) + torch.pow(self.centers, 2).sum(dim=1, keepdim=True).expand(self.num_classes, batch_size).t()
+        distmat.addmm_(1, -2, x, self.centers.t())
+ 
+        classes = torch.arange(self.num_classes).long()
+        if self.use_gpu: classes = classes.cuda()
+        labels = labels.unsqueeze(1).expand(batch_size, self.num_classes)
+        mask = labels.eq(classes.expand(batch_size, self.num_classes))
+        print(mask)
+ 
+        dist = []
+        for i in range(batch_size):
+            print(mask[i])
+            value = distmat[i][mask[i]]
+            value = value.clamp(min=1e-12, max=1e+12)  # for numerical stability
+            dist.append(value)
+        dist = torch.cat(dist)
+        loss = dist.mean()
+        return loss
+```
+
+
 
 ## 光学字符识别
 
