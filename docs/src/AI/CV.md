@@ -475,7 +475,145 @@ $\text{DFL}(S_i,S_{i+1})=-\left((y_{i+1}-y)\log(S_i)+(y-y_i\log(S_{i+1})) \right
 
 ## 人脸识别
 
-**人脸识别中的模型 ArcFace……**
+人脸识别中的模型 ArcFace……
+
+### SphereFace
+
+> 推荐阅读：
+>
+> [人脸识别合集｜8 SphereFace 解析，作者：Mengcius](https://zhuanlan.zhihu.com/p/76539587)：这篇文章写得十分好，十分详细地介绍了 SphereFace 以及介绍了 Softmax Loss 的进化路线。
+
+SphereFace（超球面），是佐治亚理工学院 Weiyang Liu 等在 CVPR 2017 年的论文 SphereFace: Deep Hypersphere Embedding for Face Recognition. 提出了将 Softmax Loss 从欧几里得距离转换到角度间隔，增加决策余量 m，限制 $\|W\|=1$ 和 $b=0$. 
+
+主要思想：
+
+- 开集人脸识别（Open-set face recognition）：通常，人脸识别可分为人脸识别和人脸验证。前者将一个人脸分类为一个特定的标识，而后者确定一对图片是否属于同一人。闭集（open-set）是测试图像在训练集中可能出现过；开集（close-set）是测试图像没有在训练集中出现过。开集人脸识别比闭集人脸识别需要更强的泛化能力。过拟合会降低性能。
+  - 闭集的人脸识别：相当于分类问题，学习可分离的特征就可以了，人脸验证或识别时提取出标签。所有测试标识都在训练集中预先定义。很自然地将测试人脸图像分类为给定的身份。在这种情况下，人脸验证相当于分别对一对人脸图像进行识别。
+  - 开集的人脸识别：测试集通常与训练集分离，因为不可能将所有人脸图像归纳在一个训练集中，我们需要将人脸映射到一个可辨别的本地特征空间。在这种情况下，人脸识别被视为在输入人脸图片和数据库中的每个身份之间执行人脸验证。它是度量学习问题，关键是学习有判别力的大间隔特征（discriminative large-margin features），人脸验证或识别时都要比较特征间的距离。
+  - Open-set FR 对特征要求的准则：在特定的度量空间内， 需要类内的最大距离小于类间的最小距离。
+- A-Softmax Loss (Angular Softmax Loss)：使得 CNN 能够学习角度识别特征，引入了角度间隔 m，以使人脸特征的最大类内距离要小于最小类间距离，使学习的特征将更具有判别力；
+  - L-Softmax Loss、A-Softmax Loss、CosFace、ArcFace、COCO Loss、Angular Triplet Loss等都是 angular margin learning 系列；
+- 预处理（人脸对齐）：人脸关键点由 MTCNN 检测，再通过相似变换得到了被裁剪的对齐人脸。RGB 图像中的每个像素范围在 [0, 255]，通过减去 127.5 然后除以 128 进行标准化；
+- 训练（人脸分类器）：CNN + A-Softmax Loss，CNN 使用 ResNet 中的残差单元；
+  - CNN 框架与传统的方法相同，可以兼容不同的网络架构（VGG/GoogLeNet/ResNet 等）；
+  - 使用 $m=4$ 的 Angular Softmax Loss，使得学习的特征更具有判别力；
+- 测试：
+  - 从人脸分类器 FC1 层的输出中提取表示特征 SphereFace，拼接了原始人脸特征和其水平翻转特征获得测试人脸的最终表示；
+  - 对输入的两个特征计算余弦距离（Cosine Similarity），得到角度度量（Angular Metric）；
+  - 人脸验证：用阈值判断余弦距离；
+  - 人脸识别：用最近邻分类器；
+- LFW 上 99.42%，YTF 上 95.0%，训练集使用 CASIA-WebFace。2017 年在 MegaFace上 识别率在排名第一。
+
+
+
+### 度量学习
+
+度量学习（metric learning）：旨在学习一个相似的距离函数。传统的度量学习常常会学习一个距离度量矩阵 A ，在给定的特征 $x_1,x_2$ 上距离度量为：
+
+$\|x_1 - x_2\|_A=\sqrt{(x_1 - x_2)^\top A (x_1 - x_2)}.$
+
+最近流行的深度度量学习通常使用神经网络自动学习具有可区分性的特征 $x_1,x_2$，然后是简单的进行距离度量，如欧几里得距离。用于深度度量学习的最广泛的损失函数是对比损失和三元组损失，两者都对特征施加了欧几里得距离。
+
+不同算分的度量学习：
+
+- DeepFace、DeepID：通过 SoftMax Loss 学习面部特征，但只具有可分离性而不具有明显的可判别性。
+- DeepID2：结合了 Softmax Loss 和 Contrastive Loss 以增强特征的判别能力。但它们产生不同的特征分布，Softmax 损失会产生一个角度的特征分布，对比损失是在欧几里得空间学习到的特征分布，所以特征结合时可能不是一个自然的选择。
+- FaceNet：使用 Triplet Loss 来监督嵌入学习。但它需要非常大量数据（2 亿张人脸图像），计算成本很高。对比损失和三元组损失都不能限制在单个样本上，因此需要精心设计的双/三重挖掘过程，这既耗时又对性能敏感。
+- VGGFace：先训练 CNN+Softmax Loss，再用 Triplet Loss 度量学习。
+- A discriminative feature learning approach for deep face recognition. In ECCV2016：将 Softmax loss 与 Center loss 结合以增强特征的判别能力，但中心损失只起到缩小类间距离的作用，不具有增大类间距离的效果。
+- L-Softmax Loss：作者和 A-Softmax Loss 是同一批人。L-Softmax Loss 也隐含了角度的概念。利用改进的 Softmax Loss 进行具有角度距离的度量学习。作为一种正则化方法，它在闭集分类问题上显示了很大的进步。A-Softmax Loss 简单讲就是在 Large-Margin Softmax Loss 的基础上添加了两个限制条件 $\|W\|=1$ 归一化和 $b=0$，使得预测仅取决于 $W$ 和 $x$ 之间的角度。
+- 人脸识别的 DCNNs 有两个主要的研究方向：分类学习（对应 Softmax Loss）、度量学习（对应 Triplet Loss 等）。Contrastive Loss、Triplet Loss 等都将开集人脸识别问题视为度量学习问题，对比损失和三元组损失都是基于欧几里得距离的度量学习。
+
+
+
+### Softmax Loss 的进化
+
+**Softmax 损失学习按角度分布的特征**：
+
+- Softmax 损失可以自然地学习按角度分布的特征，如在训练集和测试集不同类别的特征只在角度上分离开，因此不会自然地促使包含任何欧几里德损失。
+
+- 从某种意义上说，基于欧几里德距离的损失与 Softmax 损失是不相容的，因此将这两种类型的损失结合起来并不是很好。
+
+- 学习特征时增大欧几里得距离，似乎是广泛认可的选择，但问题出现了：欧几里得距离是否总是适合于学习具有可判别性的面部特征？不适合，在 SphereFace 的文章中建议用角度距离代替。
+
+- 为什么用角度间隔？
+
+- - 首先角度间隔直接与流形上的区别性联系在一起，流形上的区别性本质上与前面的一致，面也位于流形上。其次，由原始 Softmax Loss 获得的特征具有固有的角分布，将角度间隔与 Softmax Loss 结合起来实际上是更自然的选择。
+  - 首先，它们只将欧几里得距离强加于学习到的特征，而我们的则直接考虑角度间隔。第二，contrastive loss、 triplet loss 在训练集中构成成对/三重集时都会受到数据扩展的影响，而我们的则不需要样本挖掘，并且对整个小批量都施加了可判别性约束（相比之下，对比损失和三重损失只会影响几个具有代表性的成对/三重集）。
+
+
+
+从一张图讲起：
+
+![](../assets/Softmax Loss.png)
+
+
+
+（1）原始 Softmax Loss
+
+如图 a, b，$x$ 为学习到的特征向量，$W_i$ 和 $b_i$ 是最后一个全连接层对应类 $i$ 的权值和偏置。Softmax 计算两个类的概率为：
+
+$\hat{\boldsymbol{y}}=\text{softmax}(\boldsymbol{W}^\top \boldsymbol{x})=\frac{\exp(\boldsymbol{W}^\top \boldsymbol{x}+\boldsymbol{b})}{\boldsymbol{1}^\top_C\exp(\boldsymbol{W}^\top \boldsymbol{x}+\boldsymbol{b})},$
+
+如果以二分类为例：
+
+$p_1=\frac{\exp(W_1^\top x + b_1)}{\exp(W_1^\top x + b_1) + \exp(W_2^\top x + b_2)},$
+
+$p_2=\frac{\exp(W_2^\top x + b_2)}{\exp(W_1^\top x + b_1) + \exp(W_2^\top x + b_2)},$
+
+Softmax 损失的让两个类别分开来的决策边界（Decision Boundary）是：
+
+$(W_1 - W_2)x + b_1 - b_2 = 0,$
+
+如果将 Softmax 重写成 $W$ 和 $x$ 的内积形式，就有了 cos 夹角：
+
+$\mathcal{L}_i=-\log\left(\frac{\exp\left({W_{y_i}^\top x_i + b_{y_i}}\right)}{\sum_j \exp\left({W_{j}^\top x_i + b_{j}}\right)}\right)\\=-\log\left( \frac{\exp \left(\|W_{y_i}\| \| x_i\| \cos(\theta_{y_i,i}) + b_{y_i} \right)}{\sum_j \exp \left( \|W_j\|\|x_i\|\cos(\theta_{j, i}) + b_j \right)} \right)$
+
+学习到的特征分布投射到一个球体上，就可以看到两类别间不能简单地通过角度分类。两类别是可以分离开的，但还是有一些误差，Softmax 只学习到了可分离的特征，但内聚性不好，判别性不够。
+
+
+
+（2）Modified Softmax Loss
+
+如图 c, d，Modified softmax loss 能够直接优化角度，使 CNN 能够学习角度分布特征。为了实现角度决策边界，最终 FC 层的权重实际上是无用的。因此，首先对权重进行归一化并将偏置项归零（$\|W_i\|=1, b_i=0$），其公式为
+
+$\mathcal{L}_{\text{modified}}=\frac{1}{N}\sum_i-\log\left( \frac{\exp(\|x_i\|\cos(\theta_{y_i, i}))}{\sum_j \exp(\|x_i\|\cos(\theta_{j, i}))} \right),$
+
+后验概率为 $p_1 = \|x\|\cos(\theta_1), p_2=\|x\| \cos(\theta_2)$，决策边界变为
+
+$\|x\|(\cos\theta_1 - \cos\theta_2)=0,$
+
+结果仅取决于 $\theta_1$ 和 $\theta_2$. 这个改进的 Softmax Loss 可以学习带有角边界的特征，加强了角度可分性，但是这些特征还是没有判别性（discriminative）
+
+
+
+（3）A-Softmax Loss
+
+如图 e, f，进一步引入角度间隔（Angular Margin），让分类更加困难从而学习判别性。角度间隔更加大了，但分布的弧长变短了。A-Softmax loss（Angular Softmax Loss）针对不同的类别采用不同的决策边界（每个边界都比原边界更严格），从而产生角间隔。引入一个整数 m 来定量控制决策边界，二分类的类 1 和类 2 的决策边界分别变为：
+
+- 从类别 1 正确分类，需要 $\cos(m\theta_1)>\cos(\theta_2)$，决策边界就是 $\cos(m\theta_1)=\cos(\theta_2)$。从类别 2 则相反。
+- 从角度的观点来考虑，从标识 1 正确分类 $x$ 需要 $m\theta_1<\theta_2$，而从标识 2 正确分类 $x$ 则需要 $m\theta_2<\theta_1$。
+- 因为 m 是正整数，$\cos$ 函数在 0 到 $\pi$ 范围又是单调递减的，所以 $m\theta_1$ 要小于 $\theta_2$，m 值越大，$\theta_1$ 越聚合，则学习的难度也越大。因此通过这种方式定义损失会逼得模型学到类间距离更大的，类内距离更小的特征。
+
+$\|x\|(\cos(m\theta_1) - \cos(\theta_2)) = 0 \text{ for class 1},$
+
+$\|x\|(\cos(\theta_1) - \cos(m\theta_2)) = 0 \text{ for class 2}.$
+
+A-Softmax Loss 公式是将改进的 Softmax Loss 中 $\theta$ 乘以系数 m 整数间隔值。即以乘法的方式惩罚深度特征与其相应权重之间的角度。
+
+$\mathcal{L}_{\text{ang}} = \frac{1}{N}\sum_i-\log\left( \frac{\exp(\|x_i\|\cos(m\theta_{y_i,i}))}{\exp(\|x_i\|\cos(m\theta_{y_i,i}))+\sum_{j\neq y_i}\exp(\|x_i\|\cos(\theta_{j,i}))} \right).$
+
+上是中 $\theta$ 的范围是 $[0,\pi/m]$，为了摆脱这一限制，将 $\cos(m\theta,i)$ 推广到一个单调递减的角函数 $\psi(\theta,i)$. $m\ge1$ 是控制角度间隔大小的整数，当 $m=1$ 时它就是 Modified Softmax Loss。需要注意的是在每一次迭代中权重归一化为 1. A-Softmax Loss 的最终公式为：
+
+$\mathcal{L}_\text{ang}=\frac{1}{N}\sum_i-\log\left(\frac{\exp(\|x_i\|\psi(\theta_{y_i,i}))}{\exp(\|x_i\|\psi(\theta_{y_i,i}) + \sum_{j\neq y_i}\exp(\|x_i\|\cos(\theta_j,i)))} \right).$
+
+其中 $\psi(\theta_{y_i,i}) = (-1)^k\cos(m\theta_{y_i,i}) - 2k, \theta_{y_i,i}\in[\frac{k\pi}{m},\frac{(k+1)\pi}{m}]$，且 $k\in[0. m-1]$.
+
+
+
+
+
+
 
 ### 人脸识别中的损失函数
 
@@ -495,11 +633,17 @@ $\mathcal{L}_{\text{softmax}}=-\frac{1}{N_b}\sum_{i=1}^{N_b}\log \frac{\exp({\bo
 
 
 
+
+
 **SphereFace（A-Softmax）**：
 
 
 
+
+
 **Focal Loss**：
+
+
 
 
 
@@ -581,7 +725,7 @@ class TripletLoss(nn.Module):
 
 $\mathcal{L}_C=\frac{1}{2}\sum_{i=1}^m\| x_i -c_{y_i} \|_2^2,$
 
-$c_{y_i}\in\mathbb{R}^d$ 表示深度特征的第 $y_i$ 类中心。理想情况下，$c_{y_i}$ 应该随着深度特性的变化而更新。
+其中 $c_{y_i}\in\mathbb{R}^d$ 表示深度特征的第 $y_i$ 类中心。理想情况下，$c_{y_i}$ 应该随着深度特性的变化而更新。
 
 训练时：第一是基于mini-batch执行更新。在每次迭代中，计算中心的方法是平均相应类的特征（一些中心可能不会更新）。第二，避免大扰动引起的误标记样本，用一个标量 $\alpha$ 控制中心的学习速率，一般这个 $\alpha$ 很小（如 0.005）。
 
