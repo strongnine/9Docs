@@ -24,7 +24,19 @@ id(a[1]) == id(b[1])  # 结果为 True
 
 a[1] is b[1]  # 结果也为 True
 # 1. is 比较两个对象的 id 值是否相等，是否指向同一个内存地址；
-# 2. == 比较两个对象的内容是否相等，值是否相等</code></pre><pre><code class="language-python hljs"># 对于以下代码
+# 2. == 比较两个对象的内容是否相等，值是否相等</code></pre><p>对于 <code>+=</code> 操作，如果是可变对象，则操作前后序列的 id 值不变，如果是不可变对象，则操作前后序列的 id 值会改变。</p><pre><code class="language-python hljs"># 列表是可变对象
+lis = [1, 3, 2]
+a = id(lis)
+lis += [4, 5]
+b = id(lis)
+print(a == b)  # True
+
+# 元祖是不可变对象
+tup = (1, 3, 2)
+a = id(lis)
+tup += (4, 5)
+b = id(tup)
+print(a == b)  # False</code></pre><pre><code class="language-python hljs"># 对于以下代码
 # 1. 两个整数相除，结果为整数
 # 2. 操作数之一是浮点，则两个数都转化为浮点计算
 print type(1/2)  # Python 2.x
@@ -32,7 +44,32 @@ print type(1/2)  # Python 2.x
 
 # 无论是什么类型，都是按照正常的除法进行
 print(type(1/2)) # Python 3.x
-&gt;&gt;&gt; &lt;type &#39;float&#39;&gt;</code></pre><p><code>filter(object)</code>：将迭代器的数据代入函数中，返回使函数返回值为 True 的值</p><h3 id="函数"><a class="docs-heading-anchor" href="#函数">函数</a><a id="函数-1"></a><a class="docs-heading-anchor-permalink" href="#函数" title="Permalink"></a></h3><p><strong>Python 函数的闭包</strong>：如果在函数中定义的 lambda 或者 def 嵌套在一个循环之中，而这个内嵌函数又引用了一个外层作用域的变量，该变量被循环所改变，那么所有在这个循环中产生的函数会有相同的值 —— 也就是在最后一次循环中完成时被引用变量的值。</p><pre><code class="language-python hljs">def fn():
+&gt;&gt;&gt; &lt;type &#39;float&#39;&gt;</code></pre><p><code>filter(object)</code>：将迭代器的数据代入函数中，返回使函数返回值为 True 的值</p><pre><code class="language-python hljs">a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+def is_even(n):
+    return n % 2 == 0
+
+print(list(filter(is_even(), a)))  # 会报错
+
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: is_even() missing 1 required positional argument: &#39;n&#39;
+
+# 正确的表达
+print(list(filter(is_even, a)))  # 注意函数 is_even 后面不用加括号
+# 不严谨地说, 类似于
+[is_even(item) for item in a]</code></pre><h3 id="类"><a class="docs-heading-anchor" href="#类">类</a><a id="类-1"></a><a class="docs-heading-anchor-permalink" href="#类" title="Permalink"></a></h3><p>类变量：</p><ul><li>类和实例都能访问；</li><li>通过类名修改类变量，会作用到所有的实例化对象；</li><li>通过类对象无法改变类变量。通过类对象对类变量赋值，本质不再是修改类变量的值，而是在给该对象定义新的实例变量。</li></ul><pre><code class="language-python hljs">class Base(object):
+    count = 0
+    
+    def __init__(self):
+        pass
+    
+b1 = Base()
+b2 = Base()
+b1.count = b1.count + 1
+print(b1.count, end=&quot; &quot;)
+print(Base.count, end=&quot; &quot;)
+print(b2.count)
+&gt;&gt;&gt; 1 0 0</code></pre><h3 id="函数"><a class="docs-heading-anchor" href="#函数">函数</a><a id="函数-1"></a><a class="docs-heading-anchor-permalink" href="#函数" title="Permalink"></a></h3><p><strong>Python 函数的闭包</strong>：如果在函数中定义的 lambda 或者 def 嵌套在一个循环之中，而这个内嵌函数又引用了一个外层作用域的变量，该变量被循环所改变，那么所有在这个循环中产生的函数会有相同的值 —— 也就是在最后一次循环中完成时被引用变量的值。</p><pre><code class="language-python hljs">def fn():
     t = []
     i = 0  # 外层作用域
     while i &lt; 2:
@@ -42,7 +79,16 @@ print(type(1/2)) # Python 3.x
 
 for f in fn():  # fn() 执行完之后 i = 2
     f(2)  # t = [lambda x: print(2 * x, end=&quot;,&quot;), lambda x: print(2 * x, end=&quot;,&quot;)]
-&gt;&gt;&gt; 4,4,</code></pre><p><code>*args</code> 和 <code>**kwargs</code> 是 Python 中方法的可变参数。<code>*args</code> 表示任何多个无名参数，是一个 Tuple；<code>**kwargs</code> 表示多个关键字参数，是一个 Dict。同时使用时 <code>*args</code> 参数要在 <code>**kwargs</code> 前面。当方法的参数不确定时，可以使用 <code>*args</code> 和 <code>**kwargs</code>.</p><pre><code class="language-python hljs">a, *b, c = range(5)  # *b: 剩下的参数会分配给 b
+&gt;&gt;&gt; 4,4,</code></pre><p>若函数体内对一个变量重新赋值，会使得函数内部屏蔽了外面的全局变脸，导致报错</p><pre><code class="language-python hljs">&gt;&gt;&gt; num = 1
+&gt;&gt;&gt; def fn():
+...     num += 1
+...     return lambda: print(num)
+... 
+&gt;&gt;&gt; x = fn()
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;&lt;stdin&gt;&quot;, line 2, in fn
+UnboundLocalError: local variable &#39;num&#39; referenced before assignment</code></pre><p><code>*args</code> 和 <code>**kwargs</code> 是 Python 中方法的可变参数。<code>*args</code> 表示任何多个无名参数，是一个 Tuple；<code>**kwargs</code> 表示多个关键字参数，是一个 Dict。同时使用时 <code>*args</code> 参数要在 <code>**kwargs</code> 前面。当方法的参数不确定时，可以使用 <code>*args</code> 和 <code>**kwargs</code>.</p><pre><code class="language-python hljs">a, *b, c = range(5)  # *b: 剩下的参数会分配给 b
 print(a, b, c)
 &gt;&gt;&gt; 0 [1, 2, 3] 4
 
@@ -95,13 +141,17 @@ foo(3) == 18  # True
 # 当我们利用了修饰符之后，就相当于
 foo = dec(foo)</code></pre><h3 id="列表"><a class="docs-heading-anchor" href="#列表">列表</a><a id="列表-1"></a><a class="docs-heading-anchor-permalink" href="#列表" title="Permalink"></a></h3><p>列表的切片一般指创造新的对象，是浅拷贝，不会有索引越界的情况，如果超出了列表的索引范围不会报错，会输出空列表。</p><pre><code class="language-python hljs">lists = [1, 2, 3, 4, 5, 6]
 print(lists[6:])
-&gt;&gt;&gt; []</code></pre><h3 id="字符串"><a class="docs-heading-anchor" href="#字符串">字符串</a><a id="字符串-1"></a><a class="docs-heading-anchor-permalink" href="#字符串" title="Permalink"></a></h3><pre><code class="language-python hljs">str.upper()  # 把所有字符中的小写字母转化成大写字母
+&gt;&gt;&gt; []</code></pre><h3 id="字符串"><a class="docs-heading-anchor" href="#字符串">字符串</a><a id="字符串-1"></a><a class="docs-heading-anchor-permalink" href="#字符串" title="Permalink"></a></h3><pre><code class="language-python hljs">str.strip()  # 删除首尾的空格
+str.rstrip()  # 仅删除末尾的空格
+
+str.upper()  # 把所有字符中的小写字母转化成大写字母
 str.lower()  # 把所有字符中的大写字母转化成小写字母
 str.capitalize()  # 把第一个字母转化为大写字母，其余小写
 str.title()  # 把每个单词的第一个字母转化为大写，其余小写
 
-str.find(str, beg=0, end=len(strs))  # 表示在 strs 中返回第一次出现 str 的位置下标
+str.find(char, beg=0, end=len(strs))  # 表示在 str 中返回第一次出现 char 的位置下标, 找不到返回 -1
 # beg 表示在 strs 中的开始索引，默认为 0，end 为结束索引，默认为 strs 的长度。
+str.index(char)  # 表示在 str 中返回第一次出现 char 的位置下标, 找不到会报错
 
 str.rfind()  # 与 find 不同的在于它返回最后一次匹配的位置，如果匹配不到返回 -1
 
@@ -208,4 +258,4 @@ print(&quot;下一个迭代值：{}&quot;.format(addOneGenera.__next__()))
 &gt;&gt;&gt; 下一个迭代值：4</code></pre><h2 id="虚拟环境-virtualenv"><a class="docs-heading-anchor" href="#虚拟环境-virtualenv">虚拟环境 virtualenv</a><a id="虚拟环境-virtualenv-1"></a><a class="docs-heading-anchor-permalink" href="#虚拟环境-virtualenv" title="Permalink"></a></h2><p>pip, virtualenv, fabric 统称为 Python 的三大神器。其中 <code>virtualenv</code> 的作用是建立一个虚拟的 Python 环境。</p><p>通过 pip 安装 virtualenv：<code>pip install virtualenv</code>，如果输入 <code>virtualenv --version</code> 能够输出版本号就代表安装成功了。</p><p><strong>为项目搭建新的虚拟环境</strong>：<code>virtualenv nine-py</code>，执行完之后会在当前的目录中创建一个相对应名字的文件夹，是独立的 Python 运行环境，包含了 Python 可执行文件，以及 pip 库的一份拷贝，在这个环境中安装的库都是独立的，不会影响到其他的环境。</p><blockquote><p>如果想要指定 Python 解释器：<code>virtualenv -p /usr/bin/python2.7 nine-py</code></p></blockquote><p><strong>激活虚拟环境</strong>：<code>source nine-py/bin/activate</code></p><p><strong>停用虚拟环境</strong>：<code>deactivate</code>（停用之后会回到系统默认的 Python 解释器）</p><p><strong>查看当前安装版本</strong>：<code>pip freeze</code></p><p><strong>将当前环境输出为文件</strong>：<code>pip freeze &gt; requirements.txt</code>，会创建一个 requirements.txt 文件，其中包含当前环境所有包以及对应版本的简单列表。</p><p><strong>安装环境文件</strong>：<code>pip install -r requirements.txt</code></p><h2 id="文件操作"><a class="docs-heading-anchor" href="#文件操作">文件操作</a><a id="文件操作-1"></a><a class="docs-heading-anchor-permalink" href="#文件操作" title="Permalink"></a></h2><h3 id="读取文件"><a class="docs-heading-anchor" href="#读取文件">读取文件</a><a id="读取文件-1"></a><a class="docs-heading-anchor-permalink" href="#读取文件" title="Permalink"></a></h3><pre><code class="language-python hljs"># 读取文件的不同方法
 read(size)  # 从文件当前位置起读取 size 个字节，若不给定参数则读取至文件末尾
 readline()  # 每次读出一行内容，占用内存小，适合读取大文件
-readlines()  # 读取文件所有行，保存在一个 list 中</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../AI/Transformer/">« Transformer</a><a class="docs-footer-nextpage" href="../Cpp/">C++ »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 1 September 2022 09:16">Thursday 1 September 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+readlines()  # 读取文件所有行，保存在一个 list 中</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../AI/Transformer/">« Transformer</a><a class="docs-footer-nextpage" href="../Cpp/">C++ »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 6 September 2022 06:08">Tuesday 6 September 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
