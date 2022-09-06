@@ -48,6 +48,26 @@ a[1] is b[1]  # 结果也为 True
 # 2. == 比较两个对象的内容是否相等，值是否相等
 ```
 
+对于 `+=` 操作，如果是可变对象，则操作前后序列的 id 值不变，如果是不可变对象，则操作前后序列的 id 值会改变。
+
+```python
+# 列表是可变对象
+lis = [1, 3, 2]
+a = id(lis)
+lis += [4, 5]
+b = id(lis)
+print(a == b)  # True
+
+# 元祖是不可变对象
+tup = (1, 3, 2)
+a = id(lis)
+tup += (4, 5)
+b = id(tup)
+print(a == b)  # False
+```
+
+
+
 ```python
 # 对于以下代码
 # 1. 两个整数相除，结果为整数
@@ -63,6 +83,51 @@ print(type(1/2)) # Python 3.x
 
 
 `filter(object)`：将迭代器的数据代入函数中，返回使函数返回值为 True 的值
+
+```python
+a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+def is_even(n):
+    return n % 2 == 0
+
+print(list(filter(is_even(), a)))  # 会报错
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: is_even() missing 1 required positional argument: 'n'
+
+# 正确的表达
+print(list(filter(is_even, a)))  # 注意函数 is_even 后面不用加括号
+# 不严谨地说, 类似于
+[is_even(item) for item in a]
+```
+
+
+
+### 类
+
+类变量：
+
+- 类和实例都能访问；
+- 通过类名修改类变量，会作用到所有的实例化对象；
+- 通过类对象无法改变类变量。通过类对象对类变量赋值，本质不再是修改类变量的值，而是在给该对象定义新的实例变量。
+
+```python
+class Base(object):
+    count = 0
+    
+    def __init__(self):
+        pass
+    
+b1 = Base()
+b2 = Base()
+b1.count = b1.count + 1
+print(b1.count, end=" ")
+print(Base.count, end=" ")
+print(b2.count)
+>>> 1 0 0
+```
+
+
 
 
 
@@ -82,6 +147,23 @@ def fn():
 for f in fn():  # fn() 执行完之后 i = 2
     f(2)  # t = [lambda x: print(2 * x, end=","), lambda x: print(2 * x, end=",")]
 >>> 4,4,
+```
+
+
+
+若函数体内对一个变量重新赋值，会使得函数内部屏蔽了外面的全局变脸，导致报错
+
+```python
+>>> num = 1
+>>> def fn():
+...     num += 1
+...     return lambda: print(num)
+... 
+>>> x = fn()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 2, in fn
+UnboundLocalError: local variable 'num' referenced before assignment
 ```
 
 
@@ -204,13 +286,17 @@ print(lists[6:])
 ### 字符串
 
 ```python
+str.strip()  # 删除首尾的空格
+str.rstrip()  # 仅删除末尾的空格
+
 str.upper()  # 把所有字符中的小写字母转化成大写字母
 str.lower()  # 把所有字符中的大写字母转化成小写字母
 str.capitalize()  # 把第一个字母转化为大写字母，其余小写
 str.title()  # 把每个单词的第一个字母转化为大写，其余小写
 
-str.find(str, beg=0, end=len(strs))  # 表示在 strs 中返回第一次出现 str 的位置下标
+str.find(char, beg=0, end=len(strs))  # 表示在 str 中返回第一次出现 char 的位置下标, 找不到返回 -1
 # beg 表示在 strs 中的开始索引，默认为 0，end 为结束索引，默认为 strs 的长度。
+str.index(char)  # 表示在 str 中返回第一次出现 char 的位置下标, 找不到会报错
 
 str.rfind()  # 与 find 不同的在于它返回最后一次匹配的位置，如果匹配不到返回 -1
 
