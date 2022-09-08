@@ -1,6 +1,6 @@
 ## 笔试
 
-### 面试：输入输出的处理
+### 笔试：输入输出的处理
 
 Python 的输出输出处理：
 
@@ -74,3 +74,73 @@ def sieve(size):
 - 交换 `a[i]` 与 `a[j]`，可以证明区间 `[i + 1, n - 1]` 必为降序，我们可以直接使用双指针反转区间 `[i + 1, n - 1]` 使其变为升序；
 
 如果步骤 1 找不到满足条件的顺序对，说明当前序列已经是一个降序序列，是最大的序列，可以直接跳过步骤 2 执行步骤 3。
+
+```python
+def nextPermutation(self, nums: List[int]) -> None:
+    """
+    Do not return anything, modify nums in-place instead.
+    """
+    i = len(nums) - 2
+    # Step 1. 找到满足 a[i] < a[i + 1] 的顺序对
+    while i >= 0 and nums[i] >= nums[i + 1]:
+        i -= 1
+    if i >= 0:  # 找不到顺序对，说明当前序列已经是一个降序序列
+        j = len(nums) - 1
+        # Step 2. 在区间 [i + 1, n) 中查找第一个满足 a[i] < a[j] 的 j
+        while j >= 0 and nums[i] >= nums[j]:
+            j -= 1
+        # 交换 a[i], a[j], 可以证明区间 [i + 1, n) 一定是降序的
+        nums[i], nums[j] = nums[j], nums[i]
+        
+    # Step 3. 用双指针的方式去反转区间 [i + 1, n) 使其变为升序
+    left, right = i + 1, len(nums) - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
+```
+
+
+
+### 双十一购物（动态规划）
+
+这个题目的基础是 0 - 1 背包：
+
+```python
+def double11advance(items: List[int], n: int, w: int, th: int) -> None:
+    # w 是预算, th 是满减的门槛
+    states = [[False for _ in range(w + 1)] for _ in range(n)]
+    states[0][0]  # True 不买立省 100%
+    if items[0] <= w:
+        states[0][items[0]] = True
+    
+    for i in range(1, n):
+        for j in range(w + 1):  # 不买第 i 个物品
+            if states[i - 1][j] == True:
+                states[i][j] = states[i - 1][j]
+        
+        for j in range(w - items[i] + 1):  # 购买第 i 个物品
+            if states[i - 1][j] = True:
+                states[i][j + items[i]] = True
+	
+    # 输出花费超过满减门槛又尽可能小的价格
+    j = th
+    while j < w:
+        if states[n - 1][j] == True:
+            print("薅羊毛最少花费： ", j)
+            break
+    	j += 1
+    if j == w:
+        print("选的这些东西薅不到羊毛呀！")
+    else:
+        print("可以薅到羊毛, 下面输出可以购买的物品清单.")
+        for i in range(n - 1, 0, -1):
+            if j - items[i] >= 0 and states[i - 1][j - items[i]] == True:
+                print(i, end=" ")
+                j = j - items[i]
+		if j != 0:
+            print(items[0], end=" ")
+        print("\n")
+```
+
+关于输出可以购买的物品清单，状态 `[i][j]` 只有可能从 `[i - 1][j]` 或者 `[i - 1][j - value[i]]` 两个状态推导过来。因此可以检查这两个状态是否可达，即 states 里面是否为 True。假如两个状态都为 True，那么就随便选择一个。
