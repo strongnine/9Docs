@@ -417,6 +417,10 @@ dict_list = defaultdict(list) # 不存在时返回 空列表 []
 
 
 
+## 全局解释器锁
+
+GIL 并不是 Python 的特性，是在实现 Python 解析器（CPython）时所引入的一个概念。例如 C++ 是一套语言标准，可以用不同的编译器来编译成可执行代码，例如 GCC、INTEL C++、Visual C++ 等。同一套 Python 代码可以用 CPython、PyPy、Psyco 等不同的执行环境来执行。而 JPython 就没有 GIL，只不过 CPython 是大部分环境下默认的执行环境。因此，Python 是可以不受到 GIL 的限制的。
+
 
 
 ## 迭代器

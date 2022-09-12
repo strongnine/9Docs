@@ -1,5 +1,7 @@
 计算机视觉的任务有：图像分类、物体检测、语义分割、文字识别、人脸识别等
 
+CV Baseline 数据：https://deepshare.feishu.cn/docx/doxcnDDF7Kmz7pGjfE7IY2Noppf
+
 ## 目标检测
 
 目标检测学习路径：

@@ -54,5 +54,15 @@ def knapsack3(weight: List[int], value: List[int], n: int, w: int) -> int:
     return maxvalue
 ```
 
+## 树的遍历
 
+### Morris 中序遍历
+
+Morris 遍历算法是另一种遍历二叉树的方法，它能将非递归的中序遍历空间复杂度降为 $\mathcal{O}(1)$，其步骤如下，记当前结点为 x：
+
+- 如果 x 无左孩子，先将 x 的值加入答案数组，再访问 x 的有孩子，即 `x = x.right`；
+- 如果 x 有左孩子，则找到左子树上最右的节点（即左子树中序遍历的最后一个节点，x 在中序遍历中的前驱节点），我们记为 predecessor：
+  - 如果 predecessor 的右孩子为空，则将右孩子指向 x，然后访问 x 的左孩子，即 `x = x.left`；
+  - 如果 predecessor 的右孩子不为空，则此时其右孩子指向 x，说明我们已经遍历完 x 的左子树，我们将 predecessor 的右孩子置空，将 x 的值加入答案数组，然后访问 x 的右孩子，即 `x = x.right`；
+- 重复上述操作，直到访问完整棵树。
 
