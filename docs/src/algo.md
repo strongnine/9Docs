@@ -27,7 +27,7 @@
 
 ```python
 def knapsack3(weight: List[int], value: List[int], n: int, w: int) -> int:
-    # states[i][j] 代表决策完前 i 个物品时背包重量为 j 时的所有物品价值只和的最大值
+    # states[i][j] 代表决策完前 i 个物品时背包重量为 j 时的所有物品价值之和的最大值
     states = [[-1 for _ in range(w + 1)] for _ in range(n)]
     
     states[0][0] = 0
