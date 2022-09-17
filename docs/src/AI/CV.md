@@ -1,3 +1,14 @@
+## 快速索引目录
+
+- 常见神经网络结构：
+  - [LeNet](https://strongnine.github.io/9Docs/dev/AI/CV/#LeNet)、[AlexNet](https://strongnine.github.io/9Docs/dev/AI/CV/#AlexNet)、[VGGNet](https://strongnine.github.io/9Docs/dev/AI/CV/#VGGNet)、[GoogLeNet](https://strongnine.github.io/9Docs/dev/AI/CV/#GoogLeNet)、[ResNet](https://strongnine.github.io/9Docs/dev/AI/CV/#ResNet)、[DenseNet](https://strongnine.github.io/9Docs/dev/AI/CV/#DenseNet)、[FPN](https://strongnine.github.io/9Docs/dev/AI/CV/#FPN)
+- 两阶段检测算法：
+  - R-CNN系列：[R-CNN](https://strongnine.github.io/9Docs/dev/AI/CV/#R-CNN)、[Fast R-CNN](https://strongnine.github.io/9Docs/dev/AI/CV/#Fast R-CNN)、[Faster R-CNN](https://strongnine.github.io/9Docs/dev/AI/CV/#Faster R-CNN)、Light-Hear R-CNN、Mask R-CNN
+  - SPPNet
+- 一阶段检测算法：
+  - YOLO、SSD、FCOS、RetinaNet、SENet
+  - ATSS、Focal Loss、GFL
+
 计算机视觉的任务有：图像分类、物体检测、语义分割、文字识别、人脸识别等
 
 CV Baseline 数据：https://deepshare.feishu.cn/docx/doxcnDDF7Kmz7pGjfE7IY2Noppf
@@ -177,17 +188,109 @@ $\text{Recall} = \frac{\text{TP}}{(\text{TP}+\text{FN})}=\frac{\text{TP}}{\text{
 
 在一开始的 CNNs 上，把一张图片划分成为固定的区域，然后识别这些区域中是否有某个物体，有的话就把这个区域标识出来。但是在实际中，图片上的物体大小是不固定的，用这种固定大小的区域去识别物体显然是不合理的。人们想到，如果想要让框更加合适，可以增加框的数量，然后让每个区域都变得尽可能地小。但是这样框太多的时候，又会导致计算量的增加。
 
+## 常见神经网络结构
+
+### LeNet
+
 
 
 ### AlexNet
 
-首次出现在 ImageNet LSVRC-2010 年上，在包含有 1000 种类别的 120 万张高分辨率图片分类任务中，在测试集上的 Top-1 和 Top-5 错误率为 37.5% 和 17.0%。AlexNet 有 6 亿个参数和 650, 000 个神经元，5 个卷积层，3 个全连接层，在全连接层使用 Dropout 减少过拟合。
+首次出现在 2012 年，由 神经网络的坚守者 Hinton 和他的学生 Alex Krizhevsky 设计，在 ImageNet LSVRC-2010 测试集上的 Top-1 和 Top-5 错误率为 37.5% 和 17.0%。AlexNet 有 6 亿个参数和 650, 000 个神经元，5 个卷积层，3 个全连接层，最后一个全连接层通过 Softmax 产生的结果作为输入图像在 1000 个类别上的得分，在全连接层使用 Dropout 减少过拟合。
 
 整个网络的结构：
 
-- 输入
+![](../assets/(2012 AlexNet) Netw. Struc.png)
 
-#### R-CNN
+- 输入为一个 $(227, 227, 3)$ 的图像；
+- 第一层卷积由 96 个大小为 $(11, 11, 3)$ 的卷积核组成，滑动步长 stride 为 4，无 padding，因此第一个卷积层输出层尺寸为 $(55, 55, 96)$；
+- 后接 Max Pooling，大小为 $3\times 3$，步长为 2，无 padding，输出特征图的尺寸为 $(27, 27, 96)$；
+- 第二层卷积由  256 个大小为 $(5, 5, 96)$ 的卷积核组成，步长为 1，padding 为 2，输出特征图尺寸为 $(27, 27, 256)$；
+- 后接 Max Pooling，大小为 $3\times 3$，步长为 2，无 padding，输出特征图的尺寸为 $(13, 13, 256)$；
+- 第三层卷积由 384 个大小为 $(3, 3, 256)$ 的卷积核组成，步长为 1，padding 为 1，输出特征图尺寸为 $(13, 13, 384)$；
+- 第四层卷积由 384 个大小为 $(3, 3, 384)$ 的卷积核组成，步长为 1，padding 为 1，输出特征图尺寸为 $(13, 13, 384)$；
+- 第五层卷积由 256 个大小为 $(3, 3, 384)$ 的卷积核组成，步长为 1，padding 为 1，输出特征图尺寸为 $(13, 13, 256)$；
+- 后接 Max Pooling，大小为 $3\times 3$，步长为 2，无 padding，输出特征图尺寸为 $(6,6,256)$；
+- 后面是三层全连接层，最后一层是 Softmax，有 1000 个类别；
+
+> 卷积输出层分辨率计算公式：$(W+2\times \text{padding} - \text{kernel})/\text{stride} + 1$
+
+
+
+AlexNet 的特点：
+
+- 是第一个使用卷积神经网络在 ILSVRC 比赛中获得冠军的网络结构；
+- 使用 ReLU 作为激活函数，替代传统神经网络神经元激活函数 Tanh 和 Sigmoid，提高了收敛速度；
+- 使用多种方法避免过拟合：
+  - 数据增强：每个 $(256, 256)$ 的样本被裁剪成 $(224, 224)$ 的大小（可以有 $(256-224)^2=1024$ 个），再做一次水平翻转，因此一个样本可以扩增为 2048 个；
+  - 在测试集上，对 $(256, 256)$ 的图像做四个角和中间部分的裁剪，再做水平翻转，每个测试样本有 10 个 Patches，最终对模型的输出结果取平均；
+  - 改变 RGB 图像的亮度；
+  - 在前两个全连接层上使用 Dropout：使用 0.5 随机失活的 Dropout；在测试时将神经元的输出结果乘以 0.5；
+- 使用双 GPU 并行训练（这个是因为当时的计算力限制）；
+- 局部响应归一化：在第 1、2 个卷积层之后使用了局部响应归一化；
+
+> 数据增强的方法有随机裁剪、随机上下左右翻转、平移、缩放、旋转、修改图像饱和度、颜色、亮度等
+
+局部响应归一化（Local Response Normalization，LRN）：是一种受生物学启发的归一化方法，通常用在基于卷积的图像处理上，LRN 对邻近的特征映射进行局部归一化。
+
+假设一个卷积层的输出特征映射 $\boldsymbol{Y}\in\mathbb{R}^{M^\prime\times N^\prime\times P}$ 为三维张量，其中每个切片矩阵 $\boldsymbol{Y}^p\in\mathbb{R}^{M^\prime\times N^\prime}$ 为一个输出特征映射，$1\le p\le P$，那么 LRN 计算如下：
+
+$\hat{\boldsymbol{Y}}^p=\boldsymbol{Y}^p/\left( k + \alpha\sum_{j=\max(1, p-\frac{n}{2})}^{\min(P, p+\frac{n}{2})}(\boldsymbol{Y}^j)^2\right)^\beta \triangleq \text{LRN}_{n,k,\alpha,\beta}(\boldsymbol{Y}^p).$
+
+其中除和幂运算都是按元素运算，$n,k,\alpha,\beta$ 为超参，$n$ 为局部归一化的特征窗口。在 AlexNet 中，$n=5,k=2, \alpha=10e^{-4},\beta=0.75.$
+
+局部响应归一化（LRN）和层归一化（Layer Normalization，LN）的异同：
+
+- 都是对同层的神经元进行归一化；
+- LRN 应用在激活函数之后，只是对邻近的神经元进行局部归一化，并且不减去均值；
+- LN 是对一个中间层的所有神经元进行归一化；
+- LRN 与生物神经元中的侧抑制（lateral inhibition）现象类似，即活跃神经元对相邻神经元具有抑制作用；当使用 ReLU 作为激活函数时，神经元的活性值是没有限制的，LRN 可以起到平衡和约束作用；
+- 如果一个神经元的活性值非常大，那么和它邻近的神经元就近似地归一化为 0，起到抑制作用，可以**增强模型的泛化能力**；
+- 最大汇聚（Max Pooling）也具有抑制作用，区别在于最大汇聚是对同一个特征映射中的邻近位置中的神经元进行抑制，LRN 是对同一个位置的邻近特征映射中的神经元进行抑制；
+
+
+
+### VGGNet
+
+### GoogLeNet
+
+### ResNet
+
+### DenseNet
+
+### FPN
+
+**特征金字塔网络（Feature Pyramid Networks，FPN）**：低层的特征语义信息比较少，但是目标位置准确；高层的特征语义信息比较丰富，但是目标位置比较粗略。有些算法采用多尺度特征融合的方法，但是一般是采用融合后的特征做预测。这篇文章创新的点在于预测是在不同特征层独立进行的。
+
+![](../assets/(2017 FPN) Fig 1.png)
+
+论文中的图 1 展示了 4 种利用特征的方式：
+
+- 图像金字塔（Featurized image pyramid）：将图像 reshape 为不同的尺度，不同尺度的图像生成对应不同尺度的特征。这种方式缺点在于增加了时间成本；
+- 单个特征图（Single feature map）：像 SPPNet、Fast R-CNN、Faster R-CNN 等模型采用的方式，只使用最后一层的特征图；
+- 金字塔特征层次结构（Pyramidal feature hierarchy）：像 SSD 模型采用多尺度特征融合的方式，没有上采样的过程，从网络不同层抽取不同尺度的特征做预测。优点在于不会增加额外的计算量；缺点在于 SSD 没有用到足够底层的特征（SSD 中最底层的特征是 VGG 网络的 Conv4\_3）；
+- 特征金字塔网络（Feature Pyramid Network）：顶层特征通过上采样和低层特征做融合，每层独立预测；
+
+![](../assets/(2017 FPN) Fig 2.png)
+
+论文的图 2 展示的是两种不同的金字塔结构，上面的结构将最顶部最小的特征图进行上采样之后与前面阶段的特征图相融合，最终只在最底层最大的特征图（自顶向下的最后一层也可以叫做 Finest Level）上进行预测。下面的结构预测是在每一层中独立进行的。
+
+论文的算法结构如图 3 所示，其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**，$1\times 1$ 卷积层的主要作用是减少卷积核的个数。
+
+![](../assets/(2017 FPN) Fig 3.png)
+
+- Bottom-Up Pathway 是网络的前向过程。论文将不改变 feature map 大小的层视为在同一个网络阶段（stage），每次抽取出来的 feature map 都是每个 stage 的最后一层输出，因为最后一层的特征是最强的，每个阶段的 feature map 记为 $\{C_2, C_3, C_4, C_5\}$。
+- Top-Down Pathway 过程采用上采样（Upsampling）进行，生成的 feature map 记为 $\{P_2, P_3, P_4, P_5\}$。
+- Lateral Connections 是将上采样的结果和自底向上生成的相同大小的 feature map 进行融合（merge）。
+- 在融合过后会使用 $3\times 3$ 卷积对每个融合结果进行卷积，以消除上采样的混叠效应（Aliasing Effect）。
+
+将 FPN 用于 RPN 网络中生成 Region Proposal，在每一个 stage 都定义了不同大小的 anchor，对于 $\{P_2, P_3, P_4, P_5, P_6\}$ 分别为 $\{32^2, 64^2, 128^2, 256^2, 512^2\}$，每种尺度的 anchor 有不同的比例 $1:2, 1:1, 2:1$，整个特征金字塔有 15 种 anchors。
+
+## 两阶段检测算法
+
+
+
+### R-CNN
 
 **基于区域的卷积神经网络（Region-based CNN，R-CNN）**出现于 2014 年，是第一个将 CNN 用于目标检测的深度学习模型。它是是解决这种缺点的更好方法，它使用生成区域建议的方式来选择区域。R-CNN 的选框方式是根据选择性搜索来进行的，选框也叫做区域（regions）。
 
@@ -208,13 +311,13 @@ R-CNN 的不足：
 
 
 
-#### SPPNet
+### SPPNet
 
 SPPNet 出现于 2015 年，
 
 
 
-#### Fast R-CNN
+### Fast R-CNN
 
 **Fast R-CNN** 出现于 2015 年，它添加了一个 **RoI 池化层（RoI Pooling Layer）**来把所有的建议区域转换成适合的尺寸，输入到后面的**全连接层（Fully Connection）**。Fast R-CNN 将 R-CNN 的三个独立的模型集合到一个模型中，因为减少了很多的计算量，Fast R-CNN 在时间花费大大地减少了。
 
@@ -238,25 +341,9 @@ Fast R-CNN 的优势和不足：
 
 
 
-#### R-FCN
-
-R-FCN 出现于 2016 年
 
 
-
-#### SSD
-
-SSD 出现于 2016 年
-
-
-
-#### YOLO
-
-YOLO 出现于 2016 年
-
-
-
-#### Faster R-CNN
+### Faster R-CNN
 
 **Faster R-CNN** 出现于 2017 年，它使用一个**区域建议网络（Region Proposal Network，RPN）**来获得比 Fast R-CNN 更高的效率。RPN 将图片特征 map 作为输入，生成一系列带目标分数的建议，也就是告诉网络给出的区域有物体的可能性有多大，分数越高代表包含了物体的可能性越高。
 
@@ -315,49 +402,47 @@ Faster R-CNN 的优势和不足：
 
 
 
-#### Light-Head R-CNN
+### Light-Head R-CNN
 
 Light-Head R-CNN 出现于 2017 年
 
 
 
-#### Mask R-CNN
+### Mask R-CNN
 
 Mask R-CNN 出现于 2017 年
 
+## 一阶段检测算法
 
+### YOLO
 
-#### FPN
+YOLO 出现于 2016 年
 
-**特征金字塔网络（Feature Pyramid Networks，FPN）**：低层的特征语义信息比较少，但是目标位置准确；高层的特征语义信息比较丰富，但是目标位置比较粗略。有些算法采用多尺度特征融合的方法，但是一般是采用融合后的特征做预测。这篇文章创新的点在于预测是在不同特征层独立进行的。
+### SSD
 
-![](../assets/(2017 FPN) Fig 1.png)
-
-论文中的图 1 展示了 4 种利用特征的方式：
-
-- 图像金字塔（Featurized image pyramid）：将图像 reshape 为不同的尺度，不同尺度的图像生成对应不同尺度的特征。这种方式缺点在于增加了时间成本；
-- 单个特征图（Single feature map）：像 SPPNet、Fast R-CNN、Faster R-CNN 等模型采用的方式，只使用最后一层的特征图；
-- 金字塔特征层次结构（Pyramidal feature hierarchy）：像 SSD 模型采用多尺度特征融合的方式，没有上采样的过程，从网络不同层抽取不同尺度的特征做预测。优点在于不会增加额外的计算量；缺点在于 SSD 没有用到足够底层的特征（SSD 中最底层的特征是 VGG 网络的 Conv4\_3）；
-- 特征金字塔网络（Feature Pyramid Network）：顶层特征通过上采样和低层特征做融合，每层独立预测；
-
-![](../assets/(2017 FPN) Fig 2.png)
-
-论文的图 2 展示的是两种不同的金字塔结构，上面的结构将最顶部最小的特征图进行上采样之后与前面阶段的特征图相融合，最终只在最底层最大的特征图（自顶向下的最后一层也可以叫做 Finest Level）上进行预测。下面的结构预测是在每一层中独立进行的。
-
-论文的算法结构如图 3 所示，其结构包括一个**自底向上的路径（bottom-up pathway）**、**自顶向下的路径（top-down pathway）**以及**横向连接（lateral connections）**，$1\times 1$ 卷积层的主要作用是减少卷积核的个数。
-
-![](../assets/(2017 FPN) Fig 3.png)
-
-- Bottom-Up Pathway 是网络的前向过程。论文将不改变 feature map 大小的层视为在同一个网络阶段（stage），每次抽取出来的 feature map 都是每个 stage 的最后一层输出，因为最后一层的特征是最强的，每个阶段的 feature map 记为 $\{C_2, C_3, C_4, C_5\}$。
-- Top-Down Pathway 过程采用上采样（Upsampling）进行，生成的 feature map 记为 $\{P_2, P_3, P_4, P_5\}$。
-- Lateral Connections 是将上采样的结果和自底向上生成的相同大小的 feature map 进行融合（merge）。
-- 在融合过后会使用 $3\times 3$ 卷积对每个融合结果进行卷积，以消除上采样的混叠效应（Aliasing Effect）。
-
-将 FPN 用于 RPN 网络中生成 Region Proposal，在每一个 stage 都定义了不同大小的 anchor，对于 $\{P_2, P_3, P_4, P_5, P_6\}$ 分别为 $\{32^2, 64^2, 128^2, 256^2, 512^2\}$，每种尺度的 anchor 有不同的比例 $1:2, 1:1, 2:1$，整个特征金字塔有 15 种 anchors。
+SSD 出现于 2016 年
 
 
 
-#### RetinaNet (Focal Loss)
+### FCOS
+
+发表于 ICCV2019 的论文：FCOS: Fully Convolutional One-Stage Object Detection 提出了 FCOS，与 YOLO 类似，它直接将 backbone 输出的 feature map 上的每一个像素当做预测起点，即把每一个位置都当做训练样本，只要该位置落入某个 Ground-Truth 框，就将其当做正样本进行训练。为了让一个目标在推理时不会在多个 feature map 上被重复输出，认为限制了每一层回归目标的尺度大小，超过该限制的目标，这一层就不检测。
+
+论文中图 2 展示了 FCOS 的具体结构：
+
+![](../assets/(2019 FCOS) Fig2.png)
+
+FCOS 在检测头增加一个**中心度（Centerness）**分支，保证回归框的中心和 GT 较为接近，同时和 FPN 结合，在每一层上只回归特定大小的目标，从而将不同尺度的目标分配到对应层级上
+
+$\text{centerness}^*=\sqrt{\frac{\min(l^*,r^*)}{\max(l^*,r^*)}\times \frac{\min(t^*,b^*)}{\max(t^*,b^*)}},$
+
+其中 
+
+
+
+
+
+### RetinaNet (Focal Loss)
 
 >  推荐阅读：
 >
@@ -404,33 +489,13 @@ Focal Loss 存在的问题：
 
 
 
-#### SENet
+### SENet
 
 目标检测中的注意力机制
 
 
 
-#### FCOS
-
-发表于 ICCV2019 的论文：FCOS: Fully Convolutional One-Stage Object Detection 提出了 FCOS，与 YOLO 类似，它直接将 backbone 输出的 feature map 上的每一个像素当做预测起点，即把每一个位置都当做训练样本，只要该位置落入某个 Ground-Truth 框，就将其当做正样本进行训练。为了让一个目标在推理时不会在多个 feature map 上被重复输出，认为限制了每一层回归目标的尺度大小，超过该限制的目标，这一层就不检测。
-
-论文中图 2 展示了 FCOS 的具体结构：
-
-![](../assets/(2019 FCOS) Fig2.png)
-
-FCOS 在检测头增加一个**中心度（Centerness）**分支，保证回归框的中心和 GT 较为接近，同时和 FPN 结合，在每一层上只回归特定大小的目标，从而将不同尺度的目标分配到对应层级上
-
-$\text{centerness}^*=\sqrt{\frac{\min(l^*,r^*)}{\max(l^*,r^*)}\times \frac{\min(t^*,b^*)}{\max(t^*,b^*)}},$
-
-其中 
-
-
-
-#### CenterNet
-
-
-
-#### ATSS
+### ATSS
 
 论文 Bridging the Gap Between Anchor-based and Anchor-free Detection via Adaptive Training Sample Selection 中提出了一种根据目标的统计信息自动选择正负样本的**自适应样本选择机制（Adaptive Training Sample Selection，ATSS）**。
 
@@ -438,7 +503,7 @@ $\text{centerness}^*=\sqrt{\frac{\min(l^*,r^*)}{\max(l^*,r^*)}\times \frac{\min(
 
 
 
-#### GFL
+### GFL
 
 > 推荐阅读：
 >

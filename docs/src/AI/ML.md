@@ -181,7 +181,7 @@ $\hat{\boldsymbol{z}}^{(l)} = \frac{\boldsymbol{z}^{(l)}-\mathbb{E}[\boldsymbol{
 
 ## 决策树与集成学习
 
-### 决策树（Decisiion Tree）
+### 决策树（Decision Tree）
 
 一颗决策树包含一个根结点、若干个内部结点和若干个叶结点；
 
