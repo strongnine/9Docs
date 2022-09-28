@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>笔试题目 · 9Docs</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">9Docs</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">人工智能</span><ul><li><a class="tocitem" href="../../AI/FE/">特征工程</a></li><li><a class="tocitem" href="../../AI/ML/">机器学习</a></li><li><a class="tocitem" href="../../AI/NN/">神经网络</a></li><li><a class="tocitem" href="../../AI/CNN/">卷积神经网络</a></li><li><a class="tocitem" href="../../AI/RNN/">循环神经网络</a></li><li><a class="tocitem" href="../../AI/GNN/">图神经网络</a></li><li><a class="tocitem" href="../../AI/GAN/">生成对抗网络</a></li><li><a class="tocitem" href="../../AI/CV/">计算机视觉</a></li><li><a class="tocitem" href="../../AI/NLP/">自然语言处理</a></li><li><a class="tocitem" href="../../AI/Transformer/">Transformer</a></li></ul></li><li><span class="tocitem">编程语言</span><ul><li><a class="tocitem" href="../../lang/Python/">Python</a></li><li><a class="tocitem" href="../../lang/Cpp/">C++</a></li><li><a class="tocitem" href="../../lang/Julia/">Julia</a></li></ul></li><li><span class="tocitem">数据结构与算法</span><ul><li><a class="tocitem" href="../dataStruc/">数据结构</a></li><li><a class="tocitem" href="../algo/">算法</a></li><li><a class="tocitem" href="../leetcode/">LeetCode</a></li><li class="is-active"><a class="tocitem" href>笔试题目</a><ul class="internal"><li><a class="tocitem" href="#笔试"><span>笔试</span></a></li></ul></li></ul></li><li><a class="tocitem" href="../../git/">Git</a></li><li><a class="tocitem" href="../../docker/">Docker</a></li><li><a class="tocitem" href="../../Linux/">Linux</a></li><li><a class="tocitem" href="../../vim/">Vim</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">数据结构与算法</a></li><li class="is-active"><a href>笔试题目</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>笔试题目</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/strongnine/9Docs/blob/main/docs/src/dataStruc&amp;algo/interview.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h2 id="笔试"><a class="docs-heading-anchor" href="#笔试">笔试</a><a id="笔试-1"></a><a class="docs-heading-anchor-permalink" href="#笔试" title="Permalink"></a></h2><h3 id="笔试：输入输出的处理"><a class="docs-heading-anchor" href="#笔试：输入输出的处理">笔试：输入输出的处理</a><a id="笔试：输入输出的处理-1"></a><a class="docs-heading-anchor-permalink" href="#笔试：输入输出的处理" title="Permalink"></a></h3><p>Python 的输出输出处理：</p><p>在 Python 中调用 <code>print</code> 时，实际上是调用 <code>sys.stdout.write(obj + &#39;\n&#39;)</code>。<code>sys.stdin.readline()</code> 会将标准输入全部获取，包括末尾的换行符 <code>\n</code>，因此用 <code>len</code> 计算长度是包含了换行符的，用这种方法输入时可以用 <code>strip()</code> 来去掉换行符（或者用 <code>sys.stdin.readline()[:-1]</code>）。</p><p><code>sys.stdin.readline().trip()</code> 就等价于 <code>input()</code>。</p><blockquote><p>注意：Python 2 和 Python 3 的输入输出稍微有区别。在使用 Python 2 的时候最好用 <code>sys.stdin</code> 的方式读取，用 <code>input()</code> 对于字符串和数字相混合的输入会报错。</p><p>例如对于 <code>S 0</code> 这种数据，Python 2 要求对于字符串需要用引号，如 <code>“S” 0</code>，否则无法识别。</p></blockquote><pre><code class="language-python hljs">import sys
+# strip() 去掉两端的空白符，返回 str
+# split() 按照空白符分割，返回 List[str]
+# map(type, x) 把列表 x 中的元素映射成类型 type
+# 1. 题目没有告知多少组数据时，用 while True
+while True:
+    try:
+        # ...
+    except:
+        break
+        
+# 2. 题目告知有 T 组数据时，用 For loop
+T = int(input().strip())
+for _ in range(T):
+    # ...
+    
+    
+# 3. 不同的输入
+s = input().strip()  # 输入一个字符
+str_ = sys.stdin.readline().strip()  # 读取一行
+num = int(input().strip())  # 输入一个整数
+nums = list(map(int, input().strip().split()))  # 输入一个整数列表</code></pre><h3 id="通过排除法找质数个数"><a class="docs-heading-anchor" href="#通过排除法找质数个数">通过排除法找质数个数</a><a id="通过排除法找质数个数-1"></a><a class="docs-heading-anchor-permalink" href="#通过排除法找质数个数" title="Permalink"></a></h3><p>给定以下代码一个数，返回该数范围内的素数个数。</p><pre><code class="language-python hljs">import math
+def sieve(size):
+    sieve = [True] * size
+    sieve[0] = False
+    sieve[1] = False
+    for i in range(2, int(math.sqrt(size)) + 1):
+        k = i * 2
+        while k &lt; size:
+            sieve[k] = False
+            k += i
+    return sum(1 for x in sieve if x)</code></pre><blockquote><p>质数：又称素数，在大于 1 的自然数中，除了 1 和该数自身之外，无法被其他自然数整除的数，即只有 1 于其本身两个正因数。</p></blockquote><h3 id="下一个字典序"><a class="docs-heading-anchor" href="#下一个字典序">下一个字典序</a><a id="下一个字典序-1"></a><a class="docs-heading-anchor-permalink" href="#下一个字典序" title="Permalink"></a></h3><p>给你一个整数数组 <code>nums</code> ，找出 <code>nums</code> 在字典序中的下一个排列。必须 <code>原地</code> 修改，只允许使用额外常数空间。</p><p>需要找到一个左边的「较小数」和右边的「较大数」，同时要求「较小数」尽量靠右，「较大数」尽可能小。具体做法如下：</p><ul><li>从后向前查找第一个顺序对 <code>(i, i + 1)</code>，满足 <code>a[i] &lt; a[i + 1]</code>，<code>a[i]</code> 即为想要的「较小数」，此时 <code>(i + 1, n)</code> 必然是下降序列；</li><li>在区间 <code>[i + 1, n - 1]</code> 中从后向前查找第一个元素 <code>j</code> 满足 <code>a[i] &lt; a[j]</code>，<code>a[j]</code> 即为想要找的「较大数」；</li><li>交换 <code>a[i]</code> 与 <code>a[j]</code>，可以证明区间 <code>[i + 1, n - 1]</code> 必为降序，我们可以直接使用双指针反转区间 <code>[i + 1, n - 1]</code> 使其变为升序；</li></ul><p>如果步骤 1 找不到满足条件的顺序对，说明当前序列已经是一个降序序列，是最大的序列，可以直接跳过步骤 2 执行步骤 3。</p><pre><code class="language-python hljs">def nextPermutation(self, nums: List[int]) -&gt; None:
+    &quot;&quot;&quot;
+    Do not return anything, modify nums in-place instead.
+    &quot;&quot;&quot;
+    i = len(nums) - 2
+    # Step 1. 找到满足 a[i] &lt; a[i + 1] 的顺序对
+    while i &gt;= 0 and nums[i] &gt;= nums[i + 1]:
+        i -= 1
+    if i &gt;= 0:  # 找不到顺序对，说明当前序列已经是一个降序序列
+        j = len(nums) - 1
+        # Step 2. 在区间 [i + 1, n) 中查找第一个满足 a[i] &lt; a[j] 的 j
+        while j &gt;= 0 and nums[i] &gt;= nums[j]:
+            j -= 1
+        # 交换 a[i], a[j], 可以证明区间 [i + 1, n) 一定是降序的
+        nums[i], nums[j] = nums[j], nums[i]
+        
+    # Step 3. 用双指针的方式去反转区间 [i + 1, n) 使其变为升序
+    left, right = i + 1, len(nums) - 1
+    while left &lt; right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1</code></pre><h3 id="双十一购物（动态规划）"><a class="docs-heading-anchor" href="#双十一购物（动态规划）">双十一购物（动态规划）</a><a id="双十一购物（动态规划）-1"></a><a class="docs-heading-anchor-permalink" href="#双十一购物（动态规划）" title="Permalink"></a></h3><p>这个题目的基础是 0 - 1 背包：</p><pre><code class="language-python hljs">def double11advance(items: List[int], n: int, w: int, th: int) -&gt; None:
+    # w 是预算, th 是满减的门槛
+    states = [[False for _ in range(w + 1)] for _ in range(n)]
+    states[0][0]  # True 不买立省 100%
+    if items[0] &lt;= w:
+        states[0][items[0]] = True
+    
+    for i in range(1, n):
+        for j in range(w + 1):  # 不买第 i 个物品
+            if states[i - 1][j] == True:
+                states[i][j] = states[i - 1][j]
+        
+        for j in range(w - items[i] + 1):  # 购买第 i 个物品
+            if states[i - 1][j] = True:
+                states[i][j + items[i]] = True
+	
+    # 输出花费超过满减门槛又尽可能小的价格
+    j = th
+    while j &lt; w:
+        if states[n - 1][j] == True:
+            print(&quot;薅羊毛最少花费： &quot;, j)
+            break
+    	j += 1
+    if j == w:
+        print(&quot;选的这些东西薅不到羊毛呀！&quot;)
+    else:
+        print(&quot;可以薅到羊毛, 下面输出可以购买的物品清单.&quot;)
+        for i in range(n - 1, 0, -1):
+            if j - items[i] &gt;= 0 and states[i - 1][j - items[i]] == True:
+                print(i, end=&quot; &quot;)
+                j = j - items[i]
+		if j != 0:
+            print(items[0], end=&quot; &quot;)
+        print(&quot;\n&quot;)</code></pre><p>关于输出可以购买的物品清单，状态 <code>[i][j]</code> 只有可能从 <code>[i - 1][j]</code> 或者 <code>[i - 1][j - value[i]]</code> 两个状态推导过来。因此可以检查这两个状态是否可达，即 states 里面是否为 True。假如两个状态都为 True，那么就随便选择一个。</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../leetcode/">« LeetCode</a><a class="docs-footer-nextpage" href="../../git/">Git »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 28 September 2022 08:41">Wednesday 28 September 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
