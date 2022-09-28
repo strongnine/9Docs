@@ -1,5 +1,15 @@
 ## 概率论与数理统计
 
+### 各种分布
+
+正态分布
+
+Gamma 分布
+
+Gibbs 采样
+
+MCMC 采样
+
 Pearson 要求连续性，Spearman 只要求单调就可以了，不一定要连续性。
 
 Pearson 线性相关系数：

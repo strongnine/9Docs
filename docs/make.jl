@@ -21,10 +21,11 @@ makedocs(
             "C++" => "lang/Cpp.md",
             "Julia" => "lang/Julia.md",
         ],
-        "面试笔试" => Any[
-            "数据结构" => "dataStruc.md",
-            "算法" => "algo.md",
-            "笔试题目" => "interview.md",
+        "数据结构与算法" => Any[
+            "数据结构" => "dataStruc&algo/dataStruc.md",
+            "算法" => "dataStruc&algo/algo.md",
+            "LeetCode" => "dataStruc&algo/leetcode.md",
+            "笔试题目" => "dataStruc&algo/interview.md",
         ],
         "Git" => "git.md",
         "Docker" => "docker.md",
