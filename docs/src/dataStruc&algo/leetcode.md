@@ -122,7 +122,7 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 ### 排列、组合、子集问题
 
-排列、组合、子集问题是学习回溯算法的一系列很好的问题。回溯算法就是在一棵树上的深度优先遍历（DFS）
+排列、组合、子集问题是学习回溯算法的一系列很好的问题。回溯算法就是在一棵树上的深度优先遍历（DFS）。
 
 [46. 全排列](https://leetcode.cn/problems/permutations/)【中等】
 
@@ -130,11 +130,11 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 【输出】返回所有不重复的全排列（不考虑顺序）
 
-递归函数 `backtrack(first, output)` 表示从左往右填到第 `first` 个位置，当前排列为 `output`：
+递归函数 `dfs(nums, temp, used)`，`temp` 是当前已经决策的路径，`used` 记录对应数字是否已使用：
 
-- `first == n` 时，将 `output` 放入答案数组中，递归结束；
-- 定义一个标记数组 `vis`，递归时遍历 `nums` 找到没被选择的数字填入 `output`，继续调用 `backtrack(...)` 函数；
-- 回溯的时候要撤销对应位置的数以及标志，继续尝试其他没被标记过的数；
+- 如果 `len(temp) == len(nums)`，将 `temp` 放入答案数组中，找到其中一个答案；
+- 定义一个标记数组 `used`，递归时遍历 `nums` 找到没被选择的数字填入 `temp`，继续递归；
+- 回溯的时候要撤销 `temp` 中的数的数以及标志，继续尝试其他没被标记过的数；
 
 [47. 全排列 II](https://leetcode.cn/problems/permutations-ii/)【中等】
 
@@ -142,10 +142,14 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 【输出】返回所有不重复的全排列（不考虑顺序）
 
-递归函数 `backtrack(idx, perm)` 表示当前排列为 `perm`，下一个待填入的位置是 `idx`；
+递归函数 `dfs(nums, temp, used)`，`temp` 是当前已经决策的路径，`used` 记录对应数字是否已使用：
 
-- 如果 `idx == n` 将 `perm` 放入答案数组中；
-- 保证填第 `idx` 个数的时候重复数字只会被填入一次：对原数组排序，保证相同的数字都相邻，每次填入的数字一定是这个数所在重复数集合中「从左往右第一个未被填过的数字」；
+- 首先对数组 `nums` 排序，再开始递归；
+- 如果 `len(temp) == len(nums)`，将 `temp` 放入答案数组中，找到其中一个答案；
+- 定义一个标记数组 `used`，递归时遍历 `nums` 找到没被选择的数字填入 `temp`，继续递归；
+  - 避免重复：将 `nums` 进行排序之后，相同的数字会在一起，如果当前数字与前一个数字相同，并且前一个数字没有被使用 `i > 0 and nums[i] == nums[i - 1] and not used[i - 1]`，则跳过当前的数字；
+
+- 回溯的时候要撤销 `temp` 中的数以及标志，继续尝试其他没被标记过的数；
 
 > 注意：组合与排列的不同，排列问题是关注顺序的，而组合问题不关注。具体而言，对于数组 `[1, 2, 3]` 和 `[1, 3, 2]` 在组合问题中是一样的，而在排列问题中则不一样。
 
@@ -153,31 +157,34 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 【输入】一个无重复元素的整数数组 `candidates` 和目标整数 `target`
 
-【输出】返回 `candidates` 中可以使得数字和为 `target` 的所有不同组合所组成的列表（不考虑顺序）
+【输出】返回 `candidates` 中可以使得数字和为 `target` 的所有不同组合所组成的列表（不考虑顺序），同一个数字可以重复使用
 
-递归函数 `dfs(target, combine, idx)` 表示当前在 `candidates` 数组的第 `idx` 位，还剩 `target` 要组合，已经组合的列表为 `combine`：
+递归函数 `dfs(candidates, target, combine, begin)` 表示还剩 `target` 要组合，已经组合的列表为 `combine`，从 `begin` 位置去遍历：
+
+- 剪枝：首先对 `candidates` 进行排序，然后开始递归；
 
 - 当 `target == 0` 时将当前组合 `combine` 加入到答案列表中；
 
-- 当 `target < 0` 或者 `candidates` 全部遍历完，递归终止；
-- 选择使用第 `idx` 个数 `dfs(target - candidates[idx], combine, idx)`；选择跳过不使用 `idx` 个数 `dfs(target, combine, idx + 1)`；
+- 遍历 `candidates` 的 `i = [begin, ..., n]` 位置：
+  - 当 `target - candidates[i] < 0` 则停止遍历【剪枝】；
+  - 否则将当前数字加入 `combine` 中，将当前位置 `i` 作为 `begin` （因为数字可以重复使用）继续递归 `dfs(candidates, target - candidates[i], combine, i)`；
+
 
 [40. 组合总和 II](https://leetcode.cn/problems/combination-sum-ii/)【中等】
 
 【输入】一个含重复元素的整数数组 `candidates` 和目标整数 `target`
 
-【输出】返回 `candidates` 中使得数字和为 `target` 的所有不同组合所组成的列表（不考虑顺序）
+【输出】返回 `candidates` 中使得数字和为 `target` 的所有不同组合所组成的列表（不考虑顺序），同一个数字只能使用一次
 
-递归函数 `dfs(pos, rest)`，`pos` 表示我们当前递归到了数组 `candidates` 中的第 `pos` 个数，`rest` 表示我们还需要选择和为 `rest` 的数放入列表作为一个组合：
+递归函数 `dfs(candidates, target, combine, begin)`，表示还剩 `target` 要组合，已经组合的列表为 `combine`，从 `begin` 位置去遍历：
 
-- 当 `rest == 0` 时将当前组合 `combine` 加入到答案列表中；
-- 当 `target < 0` 或者 `candidates` 全部遍历完，递归终止；
-- 选择使用第 `idx` 个数 `dfs(target - candidates[idx], combine, idx)`；选择跳过不使用 `idx` 个数 `dfs(target, combine, idx + 1)`；
+- 剪枝：首先对 `candidates` 进行排序，然后开始递归；
 
-为了避免出现重复的组合：
-
-- 使用一个 `HashMap` 统计数组 `candidates` 中每个数出现的次数，将结果放入一个列表 `freq` 中，方便后续的递归使用。列表 `freq` 的长度即为数组 `candidates` 中不同数的个数，其中每一项对应着哈希映射中的一个键值对，即某个数以及它出现的次数；
-- 递归时，对于当前的第 `pos` 个数，它的值为 `freq[pos][0]`，出现的次数为 `freq[pos][1]` 那么我们可以调用 `dfs(pos + 1, rest - i * freq[pos][0])`。即我们选择了这个数 `i` 次，并且 `i` 不能大于这个数出现的次数，`i * freq[pos][0]` 也不能大于 `rest`，同时需要将 `i` 个 `freq[pos][0]` 放入列表中；
+- 当 `target == 0` 时将当前组合 `combine` 加入到答案列表中；
+- 遍历 `candidates` 的 `i = [begin, ..., n]` 位置：
+  - 当 `target - candidates[i] < 0` 则停止遍历【剪枝】；
+  - 如果 `i > begin and candidates[i - 1] == candidates[i]` 则跳过当前的数；
+  - 否则将当前数字加入 `combine` 中，将下一个位置 `i + 1` 作为 `begin` （因为数字不可以重复使用）继续递归 `dfs(candidates, target - candidates[i], combine, i + 1)`；
 
 [77. 组合](https://leetcode.cn/problems/combinations/)【中等】
 
@@ -185,11 +192,13 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 【输出】返回范围 `[1, n]` 中所有的可能的 `k` 个数的组合
 
-递归函数 `dfs(cur, n, k)` 表示当前在位置 `cur`，数组范围为 `n` 要选择 `k` 个数字进行组合，`temp` 数组用于记录当前已经选择的数字：
+递归函数 `dfs(cur, n, k, temp)` 表示当前在位置 `cur`，数组范围为 `n` 要选择 `k` 个数字进行组合，`temp` 数组用于记录当前已经选择的数字：
 
-- 剪枝：如果 `temp` 的长度加上区间 `[cur, n]` 的长度小于 `k`，那么不可能构造出长度为 `k` 的 `temp`；
 - 如果 `temp`  的长度已经等于 `k`，那么记录当前的组合；
-- 考虑当前位置，则 `temp.append(cur)`；不考虑当前位置，则直接对下一个位置进行决策 `dfs(cur + 1, n, k)`；
+- 对区间 `i in [cur, ..., n]` 进行遍历：
+  - 剪枝：如果 `temp` 的长度加上区间 `[cur, n]` 的长度小于 `k`，那么不可能构造出长度为 `k` 的 `temp`，直接结束遍历；
+  - 考虑当前位置，则 `temp.append(i)`；
+  - 不考虑当前位置，则直接对下一个位置进行决策 `dfs(i + 1, n, k, temp)`；
 
 [78. 子集](https://leetcode.cn/problems/subsets/)【中等】
 
@@ -197,10 +206,11 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 【输出】返回该数组所有可能的子集（不考虑顺序）
 
-递归函数 `dfs(cur, nums, temp)` 代表当前决策数组 `nums` 中的第 `cur` 个位置，临时数组 `temp` 中为决定放进子集的数字：
+递归函数 `dfs(nums, idx, temp)` 代表当前决策数组 `nums` 中的第 `idx` 个位置，临时数组 `temp` 中为决定放进子集的数字：
 
-- 如果当前已经决策完所有的数字 `cur == len(nums)`，则把 `temp` 作为答案放进答案数组 `self.ans.append(temp.copy())`；
-- 将当前位置加入临时数组 `temp`，则 `temp.append(nums[cur])`，再对下一个位置进行决策；否则不加入，直接对下一个位置进行决策 `dfs(cur + 1, nums, temp)`；
+- 如果当前已经决策完所有的数字 `idx == len(nums)`，则把 `temp` 作为答案放进答案数组 `self.ans.append(temp.copy())`；
+- 考虑添加当前位置的数字：将当前位置加入临时数组 `temp`，则 `temp.append(nums[cur])`，再对下一个位置进行决策；
+- 考虑不添加当前位置的数字：直接对下一个位置进行决策 `dfs(nums, idx + 1, temp)`；
 
 [90. 子集 II](https://leetcode.cn/problems/subsets-ii/)【中等】
 
@@ -210,12 +220,16 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 避免重复的方法：先对数组 `nums` 进行排序，保证相同的数字都在一起。如果没有选择上一个数，并且当前数字与上一个数相同，则跳过当前生成的子集。
 
-递归函数 `dfs(choosePre, cur, nums, temp)` 代表当前决策数组 `nums` 中的第 `cur` 个位置，临时数组 `temp` 中为决定放进子集的数字，`choosePre` 表示前一个数字是否被选择：
+递归函数 `dfs(nums, idx, temp, used)` 代表当前决策数组 `nums` 中的第 `idx` 个位置，临时数组 `temp` 中为决定放进子集的数字，`used` 有哪些数字被选择：
 
-- 如果当前已经决策完所有的数字 `cur == len(nums)`，则把 `temp` 作为答案放进答案数组 `self.ans.append(temp.copy())`；
-- 对于当前的位置 `cur`：
-  - 如果 `!choosePre and cur > 0 and nums[cur - 1] == nums[cur]`，则直接 `return`
-  - 否则，将当前位置加入临时数组 `temp`，则 `temp.append(nums[cur])`，再对下一个位置进行决策；否则不加入，直接对下一个位置进行决策 `dfs(False, cur + 1, nums, temp)`；
+- 先对 `nums` 进行排序，再开始递归；
+- 如果 `idx == len(nums)`，则将数组加入到答案中；
+- 对于当前的位置 `idx`：
+  - 首先考虑不添加当前位置的数字 `dfs(nums, idx + 1, temp, used)`；
+  - 如果 `cur > 0 and nums[cur - 1] == nums[cur] and not used[idx]`，则直接 `return`；
+  - 否则，将当前位置加入临时数组 `temp`，即 `temp.append(nums[idx])`，再对下一个位置进行决策；
+
+> 注意：考虑不添加当前位置的情况要放在判断是否重复前面，否则答案数组中会没有「空集」
 
 [60. 排列序列](https://leetcode.cn/problems/permutation-sequence/)【困难】
 
@@ -225,19 +239,24 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 这个题目可以很好地学习剪枝的思想，基本的思路是 [46. 全排列](https://leetcode.cn/problems/permutations/) 再加上剪枝。
 
-剪枝：在每个分支里，根据还未选定的个数计算阶乘 $(n - 1 - index)!$ 来得到当前分支有多少个叶子结点：
+剪枝：在每个分支里，根据还未选定的个数计算阶乘 $(n - index)!$ 来得到当前分支有多少个叶子结点：
 
 - 如果 `k` 大于这个分支的叶子结点数，代表答案肯定不在这个分支里，直接跳过当前分支；
 - 如果 `k` 小于这个分支的叶子结点数，代表答案肯定在这个分支里，继续递归进行剪枝；
 
-递归函数 `dfs(index, path, used)` 表示当前决策第 `index` 个数，`path` 保存已经决策完的 `index - 1` 个数，`used` 用于标记已经使用过的数字。
+递归函数 `dfs(n, k, index, temp, used)` 表示当前决策第 `index` 个数，`temp` 保存已经决策完的 `index - 1` 个数，`used` 用于标记已经使用过的数字。
 
-- 如果 `index == self.n` 则代表 `path` 为要返回的第 `k` 个序列；
-- 每一次 DFS 都要判断 `i = [1, 2,..., n]` 哪个数可以用：
-  - 如果 `used[i] == False`
-  - 计算 `cnt = factorial[n - 1 - index]`，多减一个 1 是因为当前已经在决策其中一个数；
-    - 如果 `cnt < k` 则要对这个分支进行剪枝，令 `k -= cnt` 然后寻找下一个未被使用的数字，即 `used[i] == False` 的；
-  - 否则 `cnt >= k` 代表答案在当前分支里，选择当前数字 `path.append(i)`，标记为已使用 `used[i] = Ture`，继续递归决策下一个数 `dfs(index + 1, path, used)`；
+- 如果 `index == n` 则代表 `temp` 为要返回的第 `k` 个序列，即为答案；
+- 每一次 DFS 都要在 `i = [1, 2,..., n]` 中找到没有使用的数字 `used[i] == False`：
+  - 计算 `cnt = factorial[n - index]`；
+  - 如果 `cnt < k` 则要对这个分支进行剪枝，令 `k -= cnt` 然后寻找下一个未被使用的数字；
+  - 否则 `cnt >= k` 代表答案在当前分支里，选择当前数字 `temp.append(i)`，标记为已使用 `used[i] = Ture`，继续递归决策下一个数 `dfs(n, k, index + 1, temp, used)`；
+
+> 由于题目中 $n\in[1, 9]$，因此可以弄一个数组存放不同数字对应的阶乘：`[1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]`
+
+
+
+> 以下未整理
 
 [93. 复原 IP 地址](https://leetcode.cn/problems/restore-ip-addresses/)【中等】
 
