@@ -254,10 +254,6 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 > 由于题目中 $n\in[1, 9]$，因此可以弄一个数组存放不同数字对应的阶乘：`[1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]`
 
-
-
-> 以下未整理
-
 [93. 复原 IP 地址](https://leetcode.cn/problems/restore-ip-addresses/)【中等】
 
 【输入】只包含数字的字符串 `s`
@@ -266,11 +262,20 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 > 有效 IP 地址：由四个 `[0, 255]` 之间的整数组成，例如 `0.1.2.201`, `192.168.1.1`, `255.255.255.255`
 
-递归函数 `dfs(segId, segStart)` 表示从 `s[segStart]` 开始，搜索 IP 地址中的第 `segId` 段，其中 $\text{segId}\in\{1,2,3,4\}$：
+递归函数 `dfs(s, segId, segStart, temp)` 表示从 `s[segStart]` 开始，已经搜索完前 `segId` 个字段，其中 $\text{segId}\in\{0,1,2,3,4\}$，`temp` 数组保存全部 4 个字段：
 
-- 从小到大依次枚举当前这一段 IP 地址的结束位置 `segEnd`，如果满足要求，递归进行下一段 `dfs(segId + 1, segEnd + 1)`；
-- 由于不能包含前导零，如果 `s[segStart] == '0'` 那么第 `segId` 段只能为 0；
-- 如果已经得到全部 4 段地址，并且遍历完整个字符串 `segId = 4 and segStart = len(s)`，则将其加入答案；
+- 如果当前已经到字符串的末尾 `segStart == len(s)`：
+  - 如果已经找到了 4 个字段 `segId == 4`，那么将 `temp` 转化成符合格式的 IP 地址放到答案数组中；
+  - 否则代表当前找的不是一个满足要求的，那么递归返回；
+
+- 【剪枝 1】如果剩余的字符串长度 `restChar` 小于剩余要找的字段 `segId` 或者大于 `restId * 3` 那么进行剪枝（直接递归返回）；
+- 遍历当前位置往后的 3 个长度的字符串 `segEnd in range(segStart, min(len(s), segStart + 3))`：
+  - 由于不能含有前导零：如果字段长度为 1 并且当前字段为 0，那么只能单独成为一个字段，进行剪枝；
+  - 如果字段的范围在 `(0, 255]` 区间内，那么继续递归；
+  - 【剪枝 2】否则进行剪枝；
+
+
+具体的代码可以参考我的题解：[【回溯 + 剪枝】回溯实际上就是对一棵树的深度优先遍历](https://leetcode.cn/problems/restore-ip-addresses/solution/by-strongnine-9-yl4g/)
 
 [733. 图像渲染](https://leetcode.cn/problems/flood-fill/)【简单】
 
@@ -278,12 +283,12 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 【输出】返回经过上色渲染之后的图像
 
-> 上色渲染：将所有上下左右颜色相同的位置都变成 `newColor`
+> 上色渲染：将上下左右所有颜色相同的位置都变成 `newColor`
 
 递归函数 `dfs(image, x, y, preColor, newColor)`：
 
-- 先记录 `image[sr][sc]` 的颜色 `preColor`，如果 `preColor` 与 `newColor` 一样，那么直接返回，那不用递归；
-- 不断地看当前位置的上下左右四个方向，如果 `image[x][y]` 的颜色与 `preColor` 一样，就递归修改；
+- 先记录 `image[sr][sc]` 的颜色 `preColor`，如果 `preColor` 和要修改的颜色 `newColor` 一样，那么不用递归；
+- 先把当前颜色改成新颜色 `image[x][y] = newColor`，然后分别搜索上下左右 4 个方向，如果颜色是 `preColor` 则继续递归修改；
 
 [130. 被围绕的区域](https://leetcode.cn/problems/surrounded-regions/)【中等】
 
@@ -298,19 +303,21 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 - 将与边界相连的 `O` 都标记为 `A`；
 - 递归完成之后，如果 `board[x][y] == 'A'` 代表与边界相连，那么重新标记为 `O`；如果 `board[x][y] == 'O'` 代表没有与边界相连，那么重新标记为 `X`；
 
+> **字符串的回溯算法**：字符串问题的特殊之处在于，字符串的拼接是产生新对象，而 `list` 对象是直接修改对象。
+
 [79. 单词搜索](https://leetcode.cn/problems/word-search/)【中等】
 
 【输入】大小为 `(m, n)`  的数组 `board`，一个字符串 `word`
 
 【输出】返回 `word` 是否存在于 `board` 中，存在返回 `True` 否则 `False`
 
-**字符串的回溯算法**：字符串问题的特殊之处在于，字符串的拼接是产生新对象，而 `list` 对象是直接修改对象。
+递归函数 `dfs(board, word, x, y, k, used)` 代表以网格的位置 `(x, y)` 出发，能否搜索到单词 `word[k:]`：
 
-递归函数 `dfs(x, y, k)` 代表以网格的位置 `(x, y)` 出发，能否搜索到单词 `word[k:]`：
+- 如果 `board[x][y] != word[k]` 返回 `False`；否则如果当前到了字符串末尾 `k == len(word) - 1` 则返回 `True`；
+- 标记当前位置被使用 `used[x][y] = True`，遍历所有相邻位置，如果找到某一个位置有路径可以组成 `word`，则返回 `True`；
+- 否则把当前位置重新标记为未使用 `used[x][y] = False `，返回 `False`；
 
-- 如果 `board[x][y] != s[k]` 返回 `False`；
-- 如果 `k == len(s) - 1 and board[x][y] == s[k]` 返回 `True`；
-- 否则继续递归所有相邻位置 `dfs(x + dx, y + dy, k + 1)`；
+具体的代码，可以参考题解：[回溯算法：就是深度优先搜索](https://leetcode.cn/problems/word-search/solution/by-strongnine-9-xl74/)
 
 [17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)【中等】
 
@@ -320,10 +327,12 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 数字到字母的映射是电话九宫格的方式：`phoneMap = {'2': 'abc', '3': 'def', ..., '9': 'wxyz'}`
 
-递归函数 `dfs(index, temp)` 表示当前决策第 `index` 个字母，`temp` 数组存放已经决定加入的字母：
+递归函数 `dfs(digits, idx, temp)` 表示当前决策第 `idx` 个字母，`temp` 数组存放已经决定加入的字母：
 
-- 如果 `index == len(digits)`，那么将当前的数组 `temp` 转化成字符串加入到答案数组中；
-- 遍历当前位置对应的所有字母 `phoneMap[digits[index]]`，选择与不选择；
+- 如果 `idx == len(digits)`，那么将当前的数组 `temp` 转化成字符串加入到答案数组中；
+- 遍历当前位置对应的所有字母 `phoneMap[digits[index]]`，添加进 `temp` 里，继续递归；
+
+具体的代码，可以参考题解：[回溯算法：深度优先搜索](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/solution/by-strongnine-9-ihfc/)
 
 [784. 字母大小写全排列](https://leetcode.cn/problems/letter-case-permutation/)【中等】
 
@@ -331,12 +340,13 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 【输出】返回所有可能得到的字符串集合
 
-递归函数 `dfs(index, temp)` 表示当前决策第 `index` 个字符，`temp` 数组存放已经在的字母：
+递归函数 `dfs(s, index, temp)` 表示当前决策第 `index` 个字符，`temp` 数组存放已经在的字母：
 
 - 如果 `index == len(s)`，将当前数组 `temp` 转化成字符串加入到答案数组中；
-
 - 如果 `s[index].isalpha()` 是字母，那么分别添加大写和小写，再继续递归；
 - 如果不是字母，那么直接添加，再递归；
+
+> 字母转换成大小写的方式：`char.upper()` 和 `char.lower()`. 
 
 [22. 括号生成](https://leetcode.cn/problems/generate-parentheses/)【中等】
 
@@ -347,7 +357,8 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 递归函数 `dfs(temp, left, right)` 代表当前已决策的左右括号数量 `left`  和 `right`，以及数组 `temp`：
 
 - 如果 `len(temp) == 2 * n` 将 `temp` 转化成字符串加入到答案数组；
-- 如果左括号数量不大于 `n`，可以放一个左括号；如果右括号数量小于左括号数量，可以放一个右括号；
+- 如果左括号数量小于 `n`，可以放一个左括号；
+- 如果右括号数量小于左括号数量，可以放一个右括号；
 
 ### 游戏问题
 
