@@ -1,8 +1,271 @@
-## 经典系列问题
+## 二分问题
 
-### 背包问题
+[704. 二分查找](https://leetcode-cn.com/problems/binary-search/)【简单】
 
-### 股票问题
+【输入】升序整型数组 `nums` 和目标值 `target`
+
+【输出】返回 `target` 所在的下标，如果不存在返回 `-1`
+
+二分，向下取整计算中点 `mid = (right - left) // 2 + left`：：
+
+- 求中点 `mid = (right - left) // 2 + left`；
+- 判断：循环条件 `left <= right`
+  - 如果 `nums[mid] < target`，`left = mid + 1`；
+  - 如果 `nums[mid] > target`，`right = mid - 1`；
+  - 如果 `nums[mid] == target`，`return mid`；
+- 如果找不到，就会因不满足循环条件跳出循环，按照题意 `return -1`。
+
+[367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/)【简单】
+
+【输入】正整数 `num`
+
+【输出】判断 `num` 是否为一个完全平方数
+
+二分，以 `[1, num]` 作为区间，向下取整计算中点 `mid = (right - left) // 2 + left`：
+
+- 判断：循环条件 `left <= right`，`square = mid * mid`
+  - `square < num`，`left = mid + 1`；
+  - `square > num`，`right = mid - 1`；
+  - `square == num`，`return True`；
+
+[374. 猜数字大小](https://leetcode-cn.com/problems/guess-number-higher-or-lower/)【简单】
+
+【输入】数字 `n` 代表所选择的数字是在区间 `[1, n]` 中
+
+【输出】猜出所选的数字 `pick` 是多少
+
+有一个接口 `int guess(int num)`，向下取整计算中点 `mid = (right - left) // 2 + left`：：
+
+- 如果 `pick < num`，返回 `-1`；
+- 如果 `pick > num`，返回 `1`：
+- 如果 `pick == num`，返回 `0`；
+
+二分，以 `[1, n]` 作为区间：
+
+- 判断：循环条件 `left <= right`：
+  - `guess(mid) == 1`，`left = mid + 1`；
+  - `guess(mid) == -1`，`right = mid - 1`；
+  - `guess(mid) == 0`，`return mid`；
+
+[441. 排列硬币](https://leetcode-cn.com/problems/arranging-coins/)【简单】
+
+【输入】硬币数量 `n`
+
+【输出】可以形成完整阶梯行的总行数 `row`。换句话说，即小于 `n` 的最大数列和 $1+2+3+\cdots+\text{row}$
+
+二分，以 `[1, n]` 作为区间，向上取整计算中点 `mid = (right - left + 1) // 2 + left`
+
+判断：循环条件 `left < right`：
+
+- 如果 `mid * (mid + 1) <= 2 * n`，`left = mid`；
+- 否则 `right = mid - 1`
+
+[35. 搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)【简单】
+
+判断：循环条件 `left <= right`：
+
+- 如果 `nums[mid] < target`，`left = mid + 1`；
+- 否则有 `nums[mid] >= target`，`right = mid - 1`；
+
+根据 if 的判断条件，`left` 左边的值一直保持小于 `target`，`right` 右边的值一直保持大于等于 `target`，而且 `left` 最终一定等于 `right + 1`。在循环结束之后，`left` 左边的部分全部小于 `target`，结尾的位置为 `right`；`right` 右边的部分全部大于等于 `target`，并且开始的位置是 `left`。因此最终的答案一定是 `left`. 
+
+[278. 第一个错误的版本](https://leetcode-cn.com/problems/first-bad-version/)【简单】
+
+判断：循环条件 `left < right`，下取整求 `mid`
+
+- 如果 `isBadVersion(mid)`，`right = mid`；
+- 否则，`left = mid + 1`；
+
+[剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)【简单】
+
+【输入】非递减数组 `nums` 以及目标数 `target`
+
+【输出】返回 `target` 在 `nums` 中的出现次数
+
+通过设定 `lower` 为 `True` 或者 `False`，以下二分查找代码可以查找在数组 `nums` 中第一个 `target` 的位置，以及第一个大于 `target` 的位置：
+
+```python
+class Solution:
+    def binarySearch(self, nums, target, lower):
+        n = len(nums)
+        ans = n
+        left, right = 0, n - 1
+        while left <= right:
+            mid = (right - left) // 2 + left
+            if (nums[mid] > target) or (lower and nums[mid] >= target):
+                right = mid - 1
+                ans = mid
+            else:
+                left = mid + 1
+        return ans
+
+    
+    def search(self, nums: List[int], target: int) -> int:
+        leftIdx = self.binarySearch(nums, target, True)
+        rightIdx = self.binarySearch(nums, target, False) - 1
+        if (leftIdx <= rightIdx) and (rightIdx < len(nums)) and (nums[leftIdx] == target) and (nums[rightIdx] == target):
+            return rightIdx - leftIdx + 1
+        return 0
+```
+
+[1337. 矩阵中战斗力最弱的 K 行](https://leetcode-cn.com/problems/the-k-weakest-rows-in-a-matrix/)【简单】
+
+【输入】大小为 `m * n` 的矩阵 `mat` 以及一个 `k`，`mat` 中的每一行的都包含一定数量的 1 和 0，并且 1 总是在 0 前
+
+【输出】返回矩阵中包含 1 最少的 `k` 行的索引；如果两行包含 1 的数量一样那么行数小的排在前面
+
+对于每一行，使用二分去查找最后一个 1 的位置 `pos`，那么该行包括的 1 的数量为 `pos + 1`。
+
+然后把每一行包含 1 的数量以及该行的索引构成的元组建立小根堆，然后不断地弹出堆顶，将堆顶元素里的行索引放入答案数组。
+
+- 对于所有的行 `i`：
+  - 二分区间 `[0, n - 1]`，判断条件 `left <= right`，向下取整求 `mid`
+  - 如果 `mat[i][mid] == 0`，`right = mid - 1`；
+  - 否则 `mat[i][mid] == 1`，`left = mid + 1`， `pos = mid`；
+- 将计算得到的 `[pos + 1, i]` 加入到一个列表 `power` 中；
+- 小根堆：Python 中小根堆化为 `heapq.heapify(power)`，弹出堆顶为 `heapq.heappop(power)`；
+
+[剑指 Offer II 069. 山峰数组的顶部](https://leetcode-cn.com/problems/B1IidL/)【简单】[852. 山脉数组的峰顶索引](https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/)【中等】
+
+【输入】山峰数组 `arr`，长度 `arr.length >= 3`
+
+【输出】返回其中任何的一个山峰的位置
+
+二分区间 `[1, n - 2]`，判断条件 `left <= right`，向下取整求 `mid`
+
+- 如果 `arr[mid] > arr[mid + 1]`，`right = mid - 1`，`ans = mid`；
+- 否则 `arr[mid] <= arr[mid + 1]`，`left = mid + 1`
+
+[475. 供暖器](https://leetcode-cn.com/problems/heaters/)【中等】
+
+【输入】房屋 `houses` 和供暖器 `heaters` 的位置
+
+【输出】返回供暖器可以覆盖所有房屋的最小加热半径
+
+- 将供暖器 `heaters` 排序；
+- 对于每一个房屋 `house`：
+  - 找到满足 `heaters[i] <= house` 的最大下标 `i`：
+  - 假如 `heaters[0] > house` 时，`i = -1`，对应距离设为 `inf`；
+  - 令 `j = i + 1`，则 `j` 是满足 `heaters[j] > house` 的最小下标；
+  - 当 `heaters[n - 1] <= house` 时，`j = n`，对应距离设为 `inf`；
+  - 离 `house` 最近的供暖器为 `heaters[i]` 或者 `heaters[j]`，这两个供暖器与 `house` 距离的最小值，即为考虑当前 `house` 时的最小加热半径；
+  - 如果当前 `house` 的最小加热半径大于全局最小加热半径，更新全局最小加热半径；
+
+[528. 按权重随机选择](https://leetcode-cn.com/problems/random-pick-with-weight/)【中等】
+
+【输入】正整数数组 `w`
+
+【输出】实现函数 `pickIndex`，随机从范围 `[0, w.length - 1]` 内返回一个下标。选取下标 `i` 的概率为 `w[i] / sum(w)`
+
+- 构造前缀和数组 `sum`，长度为 `n + 1`，并且 `sum[i] = sum[i - 1] + w[i - 1]`；
+- 选取阈值 `t` 为 `[1, sum[n - 1]]` 的整数
+- 二分区间 `[1, n - 1]`，判断条件 `left < right`，向下取整求 `mid`；
+  - 如果 `sum[mid] >= t`，`right = mid`；
+  - 否则，`left = mid + 1`；
+- 最终的答案为 `right - 1`；
+
+[611. 有效三角形的个数](https://leetcode-cn.com/problems/valid-triangle-number/)【中等】
+
+【输入】包含非负整数数组 `nums`
+
+【输出】返回可以组成三角形的三元组的个数
+
+- 将数组 `nums` 进行升序排序；
+- `for i in range(n):`
+  - `for j in range(i + 1, n):`
+    - 二分区间 `[j + 1, n - 1]`，判断条件 `left <= right`，向下取整求 `mid`，`k = j`；
+    - 如果 `nums[mid] < nums[i] + nums[j]`，`left = mid + 1`，`k = mid`；
+    - 否则 `right = mid - 1`
+  - 把答案累加 `ans += k - j`
+
+[29. 两数相除](https://leetcode-cn.com/problems/divide-two-integers/)【中等】
+
+【输入】两个整数，被除数 `dividend` 和除数 `divisor`
+
+【输出】在不使用乘法、除法、mod 运算下，返回 `dividend / divisor` 所得到的商的整数部分
+
+> 注意：本题只能存储 32 位整数，如果结果溢出则返回 `2 ** 31 - 1`
+
+根据题意有 `ans * divisor >= dividend > (ans + 1) * divisor`，因此可以使用二分法找到最大的满足 `ans * divisor >= dividend` 的 `ans`。
+
+题目限制不能够使用乘法，可以使用「快速乘」来得到 `ans * divisor` 的值。
+
+> 「快速乘」与「快速幂」类似，前者通过加法实现乘法，后者通过乘法实现幂运算。「快速幂」题目：[50. Pow(x, n)](https://leetcode.cn/problems/powx-n/)，将里面的乘法运算改成加法运算就是「快速乘」
+
+- 定义最小值和最大值：`INT_MIN, INT_MAX = -2 ** 31, 2 ** 31 - 1`；
+
+- 判断特殊情况：
+
+  - 如果被除数为最小值 `dividend = INT_MIN`：如果被除数为 1 返回 `INT_MIN`，如果被除数为 -1 返回 `INT_MAX`；
+  - 如果被除数为 0，返回 0；
+
+  - 如果除数为最小值 `divisor = INT_MIN`，
+
+[33. 搜索旋转排序数组](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/)【中等】
+
+[34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/)【中等】
+
+[74. 搜索二维矩阵](https://leetcode-cn.com/problems/search-a-2d-matrix/)【中等】
+
+[81. 搜索旋转排序数组 II](https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/)【中等】
+
+[153. 寻找旋转排序数组中的最小值](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/)【中等】
+
+[154. 寻找旋转排序数组中的最小值 II](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/)【困难】
+
+[162. 寻找峰值](https://leetcode-cn.com/problems/find-peak-element/)【中等】
+
+[220. 存在重复元素 III](https://leetcode-cn.com/problems/contains-duplicate-iii/)【中等】
+
+[240. 搜索二维矩阵 II](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)【中等】
+
+[274. H 指数](https://leetcode-cn.com/problems/h-index/)【中等】
+
+[275. H 指数 II](https://leetcode-cn.com/problems/h-index-ii/)【中等】
+
+[1818. 绝对差值和](https://leetcode-cn.com/problems/minimum-absolute-sum-difference/)【中等】
+
+[1838. 最高频元素的频数](https://leetcode-cn.com/problems/frequency-of-the-most-frequent-element/)【中等】
+
+[1894. 找到需要补充粉笔的学生编号](https://leetcode-cn.com/problems/find-the-student-that-will-replace-the-chalk/)【中等】
+
+[786. 第 K 个最小的素数分数](https://leetcode-cn.com/problems/k-th-smallest-prime-fraction/)【中等】
+
+[911. 在线选举](https://leetcode-cn.com/problems/online-election/)【中等】
+
+[981. 基于时间的键值存储](https://leetcode-cn.com/problems/time-based-key-value-store/)【中等】
+
+[1004. 最大连续1的个数 III](https://leetcode-cn.com/problems/max-consecutive-ones-iii/)【中等】
+
+[1011. 在 D 天内送达包裹的能力](https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/)【中等】
+
+[1208. 尽可能使字符串相等](https://leetcode-cn.com/problems/get-equal-substrings-within-budget/)【中等】
+
+[1438. 绝对差不超过限制的最长连续子数组](https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)【中等】
+
+[1482. 制作 m 束花所需的最少天数](https://leetcode-cn.com/problems/minimum-number-of-days-to-make-m-bouquets/)【中等】
+
+[352. 将数据流变为多个不相交区间](https://leetcode-cn.com/problems/data-stream-as-disjoint-intervals/)【困难】
+
+[4. 寻找两个正序数组的中位数](https://leetcode-cn.com/problems/median-of-two-sorted-arrays/)【困难】
+
+[354. 俄罗斯套娃信封问题](https://leetcode-cn.com/problems/russian-doll-envelopes/)【困难】
+
+[363. 矩形区域不超过 K 的最大数值和](https://leetcode-cn.com/problems/max-sum-of-rectangle-no-larger-than-k/)【困难】
+
+[778. 水位上升的泳池中游泳](https://leetcode-cn.com/problems/swim-in-rising-water/)【困难】
+
+[1707. 与数组中元素的最大异或值](https://leetcode-cn.com/problems/maximum-xor-with-an-element-from-array/)【困难】
+
+[1713. 得到子序列的最少操作次数](https://leetcode-cn.com/problems/minimum-operations-to-make-a-subsequence/)【困难】
+
+[1751. 最多可以参加的会议数目 II](https://leetcode-cn.com/problems/maximum-number-of-events-that-can-be-attended-ii/)【困难】
+
+## 双指针问题
+
+## 背包问题
+
+## 股票问题
 
 股票问题是学习动态规划很好的系列，因此一下最先考虑的都是用动态规划怎么做。
 
@@ -70,7 +333,7 @@ $dp[i][2]=\max\{dp[i-1][1],dp[i-1][2]\}.$
 
 其中边界条件：`dp[0][0] = -prices[0]`，`dp[0][1] = 0`， `dp[0][2] = 0`. 最终答案为 `max(dp[n - 1][1], dp[n - 1][2])`. 
 
-### 岛屿问题
+## 岛屿问题
 
 岛屿问题是学习深度优先搜索（DFS）和广度优先搜索（BFS）的经典系列问题。
 
@@ -120,7 +383,7 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 
 
-### 排列、组合、子集问题
+## 排列、组合、子集问题
 
 排列、组合、子集问题是学习回溯算法的一系列很好的问题。回溯算法就是在一棵树上的深度优先遍历（DFS）。
 
@@ -270,7 +533,7 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 
 - 【剪枝 1】如果剩余的字符串长度 `restChar` 小于剩余要找的字段 `segId` 或者大于 `restId * 3` 那么进行剪枝（直接递归返回）；
 - 遍历当前位置往后的 3 个长度的字符串 `segEnd in range(segStart, min(len(s), segStart + 3))`：
-  - 由于不能含有前导零：如果字段长度为 1 并且当前字段为 0，那么只能单独成为一个字段，进行剪枝；
+  - 由于不能含有前导零：如果字段长度为 1 并且当前字段为 0，那么只能单独成为一个字段；
   - 如果字段的范围在 `(0, 255]` 区间内，那么继续递归；
   - 【剪枝 2】否则进行剪枝；
 
@@ -360,7 +623,7 @@ BFS：扫描网格 `grid2`，碰到某个位置为 1，加入队列开始搜索�
 - 如果左括号数量小于 `n`，可以放一个左括号；
 - 如果右括号数量小于左括号数量，可以放一个右括号；
 
-### 游戏问题
+## 游戏问题
 
 [51. N 皇后](https://leetcode.cn/problems/n-queens/)【困难】
 

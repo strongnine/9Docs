@@ -31,6 +31,7 @@ makedocs(
         "Docker" => "docker.md",
         "Linux" => "Linux.md",
         "Vim" => "vim.md",
+        "推荐书籍大全" => "books.md",
     ],
 )
 

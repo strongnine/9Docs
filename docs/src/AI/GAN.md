@@ -1,3 +1,12 @@
+## 变分自编码器
+
+变分自编码器（Variational Autoencoder，VAE）与自编码器（Autoencoder，AE）在建模方面存在着很大的区别，本质上讲，VAE 是一种基于变分推断（Variational Inference）又叫变分贝叶斯方法（Variational Bayesian Methods）的概率模型，它属于无监督的生成模型。
+
+在变分推断中，除了已知的数据（观测数据、训练数据）之外，还存在一个隐含变量。假设有一个数据集 $\mathbf{X}=\{x^{(i)}\}$，由 $N$ 个连续变量或者离散变量 $x$ 组成，还未观测的随机变量记为 $z$，那么数据产生包含两个过程：
+
+- 从一个先验分布 $p_{\theta}(z)$ 中采样一个 $z^{(i)}$；
+- 根据条件分布 $p_{\theta}(x\mid z)$，用 $z^{(i)}$ 生成 $x^{(i)}$；
+
 ## 生成对抗网络
 
 2014 年，加拿大蒙特利尔大学的 Ian Goodfellow 和他的导师 Yoshua Bengio 提出生成对抗网络（Generative Adversarial Networks, GANs）。在 GANs 被提出来之后，发展迅速，出现了各种变种网络，包括 WGAN、InfoGAN、f-GANs、BiGAN、DCGAN、IRGAN 等。

@@ -47,6 +47,29 @@ double * array [8];  // array 是一个数组, 数组的每一个元素是指向
 - 把分离后的每颗二叉树转换为树；
 - 整理第 2 步得到的树，得到森林；
 
+前缀树（Trie）：又称字典树，LeetCode 题目 [208. 实现 Trie (前缀树)](https://leetcode.cn/problems/implement-trie-prefix-tree/)【中等】
+
+实现 Trie 类：
+
+- `Trie()` 初始化前缀树对象。每个结点包括以下字段：
+  - 指向子结点的长度为 26 的指针数组 `children` 每个位置代表对应的小写字母，初始化时全为 `None`；
+  - 布尔字段 `isEnd` 表示该节点是否为字符串的结尾；
+- 插入字符串：`void insert(String word)` 向前缀树中插入字符串 `word` 。从 Trie 的根开始，对于当前字符：
+  - 首先指向 Trie 的根结点 `node = self`：
+  - 子结点存在，沿着指针移动到子结点，继续处理下一个字符；
+  - 子结点不存在，创建一个新的子结点，记录在 `children` 数组的对应位置上，移动到子结点，继续搜索下一个字符；
+- 查找单词：`boolean search(String word)` 如果字符串 `word` 在前缀树中，返回 `true`（即，在检索之前已经插入）；否则，返回 `false` 。从 Trie 的根开始，对于当前字符：
+- 查找前缀：`boolean startsWith(String prefix)` 如果之前已经插入的字符串 `word` 的前缀之一为 `prefix` ，返回 `true` ；否则，返回 `false` 。从 Trie 的根开始，对于当前字符：
+  - 子结点存在：沿着指针移动到子结点，继续搜索下一个字符；
+  - 子结点不存在：说明 Trie 中不包含该前缀，返回 `False`；
+
+> 「查找单词」和「查找前缀」的区别就是：
+>
+> - 对于查找单词，如果末尾字符对应结点的 `isEnd` 为真，那么就代表 Trie 中包含这个单词；
+> - 对于查找前缀，如果搜索到前缀的末尾，则说明字典树中存在该前缀；
+
+具体代码参考题解：[Python3：实现字典树（Trie）](https://leetcode.cn/problems/implement-trie-prefix-tree/solution/by-strongnine-9-2j0b/)
+
 ## 图
 
 拓扑排序：
