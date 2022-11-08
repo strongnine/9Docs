@@ -1,4 +1,4 @@
-[![ID](https://img.shields.io/badge/ID-strongnine-orange)](https://github.com/strongnine) [![ID](https://img.shields.io/badge/website-9Doc-orange)](https://strongnine.github.io/9Docs/dev/) [![ID](https://img.shields.io/badge/version-v0.4.1-orange)](https://strongnine.github.io/9Docs/dev/) 
+[![ID](https://img.shields.io/badge/ID-strongnine-orange)](https://github.com/strongnine) [![ID](https://img.shields.io/badge/website-9Doc-orange)](https://strongnine.github.io/9Docs/dev/) [![ID](https://img.shields.io/badge/version-v0.4.2-orange)](https://strongnine.github.io/9Docs/dev/) 
 
 # 9Docs
 
