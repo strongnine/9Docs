@@ -1,6 +1,6 @@
 ## 笔试
 
-### 笔试：输入输出的处理
+### 笔试：Python 输入输出的处理
 
 Python 的输出输出处理：
 
@@ -37,6 +37,40 @@ num = int(input().strip())  # 输入一个整数
 nums = list(map(int, input().strip().split()))  # 输入一个整数列表
 ```
 
+要是想要写完整一点可以：
+
+```python
+import sys
+
+if __name__ == "__main__":
+    # 读取一个整数
+    n = int(sys.stdin.readline().strip())
+    matrix = list()
+    # 读取多行保存到一个列表中, 组成一个矩阵
+    for _ in range(n):
+        line = sys.stdin.readline().strip()
+        row = list(map(int, line.split()))
+        matrix.append(row)
+```
+
+### C++：输入输出的处理
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a;  // 先声明一个数的类型
+    float b;
+    char c;
+    string s;
+    cin >> a;  // 输入一个数
+    cout << a << endl;  // 输出一个数
+    
+    return 0;
+}
+```
+
 
 
 ### 通过排除法找质数个数
@@ -58,6 +92,10 @@ def sieve(size):
 ```
 
 > 质数：又称素数，在大于 1 的自然数中，除了 1 和该数自身之外，无法被其他自然数整除的数，即只有 1 于其本身两个正因数。
+
+```c++
+
+```
 
 
 
@@ -144,3 +182,15 @@ def double11advance(items: List[int], n: int, w: int, th: int) -> None:
 ```
 
 关于输出可以购买的物品清单，状态 `[i][j]` 只有可能从 `[i - 1][j]` 或者 `[i - 1][j - value[i]]` 两个状态推导过来。因此可以检查这两个状态是否可达，即 states 里面是否为 True。假如两个状态都为 True，那么就随便选择一个。
+
+## 问题
+
+**❓海量数据处理：有一个十分大的数据库（例如是 1G），但是现有的内存很小（可能只有 1M），要怎么找到出现频数最高的 100 个词？**
+
+- 使用分治法，先用哈希映射把大文件分成很多个小文件。例如以此读取文件的每一个词，取 `hash(x) % 5000`，然后把该值存到 5000 个对应的小文件中，这样每个文件大概是 200k 左右。并且，每个相同的词一定被映射到了同一个文件中；
+- 对于每一个小文件，用 `hash_map` 对词和出现频率进行统计，取出频率大的前 100 个词（利用 Top-K 问题，建立一个 100 个节点的最小堆），把这 100 个词和出现频率再单独存入一个文件；
+- 上述处理完之后，得到 5000 个文件，归并文件取出 Top-100；
+
+> 如果不是用哈希映射将不同的单词分到同一个文件，而是随机分成多份小文件，相同的单词被分到了不同的文件中，后面的归并步骤就无法做了。
+>
+> 参考：[十道海量数据处理面试题与十个方法大总结](https://blog.csdn.net/v_JULY_v/article/details/6279498)

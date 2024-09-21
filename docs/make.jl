@@ -16,6 +16,9 @@ makedocs(
             "自然语言处理" => "AI/NLP.md",
             "Transformer" => "AI/Transformer.md",
         ],
+        "机器视觉" => Any[
+            "CV/ImageProcessing.md",
+        ],
         "编程语言" => Any[
             "Python" => "lang/Python.md",
             "C++" => "lang/Cpp.md",

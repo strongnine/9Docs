@@ -271,3 +271,11 @@
 ## 自动微分机制
 
 [Autograd Mechanics](https://pytorch.org/docs/1.12/notes/autograd.html)
+
+## 问题
+
+❓`item()` 和 `detach()` 的区别是什么？
+
+- `item()` 返回的是 Tensor 中的值，且只能返回单个值（即标量），不能返回向量；
+- `detach()` 是阻断反向传播，返回值仍然为 Tensor；
+

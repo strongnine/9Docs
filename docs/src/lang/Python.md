@@ -77,13 +77,15 @@ Python 自省是 Python 具有的一种能力，使得程序员面向对象的�
 - 尽量使用 Python 的内建函数；
 - 尽量使用局部变量；
 
-**❓问：如何在 Python 中管理内存？**
+**❓问：如何在 Python 中管理内存？Python 的内存管理机制是什么？**
 
 Python 中的内存管理由 Python 私有堆空间管理。所有 Python 对象和数据结构都位于私有堆中。程序员无权访问此私有堆，Python 解释器负责处理这个问题。
 
 Python 对象的对空间分配由 Python 的内存管理器完成，核心 API 提供了一些程序员编写代码的工具。
 
 Python 还有一个内置的垃圾收集器，可以回收所有未使用的内存，并使其可用于堆空间。
+
+
 
 关于 `__name__`：一个模块中，
 
@@ -218,6 +220,20 @@ print(list(filter(is_even, a)))  # 注意函数 is_even 后面不用加括号
 
 ## 类
 
+在默认情况下，Python 中的成员函数和成员变量都是公开的（Public），在 Python 中定义私有变量只需要在变量名或函数名前面加上双下划线 `__`，那么这个函数或者变量就变成私有的了。
+
+**❓什么是 Python 的 Name Mangling 技术？**
+
+对于私有变量（即名字前面有双下划线的 `__`），在内部 Python 实际上是将 `__membername` 替换成 `_classname__membername`。也就是说，类的内部定义中，所有以双下划线开始的名字，在前面都会加上单下划线和类名。
+
+这样一来 Python 实际上就没有实现真正的私有化，我们依旧可以通过 `实例._类名__变量名` 的方式来访问「伪私有变量」。
+
+Python 里面的变量分为四种（假设 `xxx` 为名字）：
+
+- 公开的（Public）：直接用名字来标识 `xxx`，用户和类都能够访问；
+- 保护的（Protected）：单下划线 `_xxx`，只有类实例和子类实例能够访问到。需要通过类提供的接口进行访问，不能用 `from module import *` 的方式导入；
+- 私有的（Private）：双下划线 `__xxx`，只有类对象自己能够访问，连子类对象也不能访问到这个
+
 类变量：
 
 - 类和实例都能访问；
@@ -290,7 +306,9 @@ b = id(tup)
 print(a == b)  # False
 ```
 
+**❓Python 模块的相互引用是怎么样的？**
 
+> 参考：https://zhuanlan.zhihu.com/p/349407590
 
 ## 函数
 
@@ -858,3 +876,6 @@ PEP 8 编码规范详细地给出了 Python 编码的指导，具体的格式可
 官方提供了命令行工具来检查 Python 代码是否违反了 PEP 8 规范，可以通过 `pip install pycodestyle` 来安装，用法是 `pycodestyle --show-source --show-pep8 main.py`，通过 `--show-source` 显示不符合规范的源码，以便修改。
 
 还有一个自动将 Python 代码格式化为 PEP 8 风格的工具是 `autopep8`，用 `pip install autopep8` 来安装，用法是 `autopep8 --in-place main.py`，如果不带参数 `–-in-place`，会将格式化之后的代码直接输出到控制台，带上这个参数会直接将结果保存到原文件中。
+
+**函数的注释：**
+
