@@ -4,6 +4,11 @@ makedocs(
     sitename = "9Docs", 
     pages = [
         "Home" => "index.md",
+        "机器视觉" => Any[
+            "直方图统计" => "CV/histogram_methods.md",
+            "对比度增强" => "CV/contrast.md",
+            "暗通道先验去雾" => "CV/dark_channel_prior.md",
+        ],
         "人工智能" => Any[
             "特征工程" => "AI/FE.md",
             "机器学习" => "AI/ML.md",
@@ -16,25 +21,26 @@ makedocs(
             "自然语言处理" => "AI/NLP.md",
             "Transformer" => "AI/Transformer.md",
         ],
-        "机器视觉" => Any[
-            "CV/ImageProcessing.md",
-        ],
         "编程语言" => Any[
             "Python" => "lang/Python.md",
             "C++" => "lang/Cpp.md",
             "Julia" => "lang/Julia.md",
         ],
-        "数据结构与算法" => Any[
-            "数据结构" => "dataStruc&algo/dataStruc.md",
-            "算法" => "dataStruc&algo/algo.md",
-            "LeetCode" => "dataStruc&algo/leetcode.md",
-            "笔试题目" => "dataStruc&algo/interview.md",
+        # "数据结构与算法" => Any[
+        #     "数据结构" => "dataStruc&algo/dataStruc.md",
+        #     "算法" => "dataStruc&algo/algo.md",
+        #     "LeetCode" => "dataStruc&algo/leetcode.md",
+        #     "笔试题目" => "dataStruc&algo/interview.md",
+        # ],
+        "工具使用" => Any[
+            "Git 使用" => "git.md",
+            "Docker 使用" => "docker.md",
+            "Vim 使用" => "vim.md",
         ],
-        "Git" => "git.md",
-        "Docker" => "docker.md",
-        "Linux" => "Linux.md",
-        "Vim" => "vim.md",
-        "推荐书籍大全" => "books.md",
+        "其他" => Any[
+            "推荐书籍大全" => "books.md",
+        ]
+        # "Linux" => "Linux.md",
     ],
 )
 
