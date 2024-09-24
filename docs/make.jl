@@ -5,7 +5,6 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "机器视觉" => Any[
-            "直方图统计" => "CV/histogram_methods.md",
             "对比度增强" => "CV/contrast.md",
             "暗通道先验去雾" => "CV/dark_channel_prior.md",
         ],
