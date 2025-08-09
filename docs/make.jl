@@ -20,26 +20,9 @@ makedocs(
             "自然语言处理" => "AI/NLP.md",
             "Transformer" => "AI/Transformer.md",
         ],
-        "编程语言" => Any[
-            "Python" => "lang/Python.md",
-            "C++" => "lang/Cpp.md",
-            "Julia" => "lang/Julia.md",
-        ],
-        # "数据结构与算法" => Any[
-        #     "数据结构" => "dataStruc&algo/dataStruc.md",
-        #     "算法" => "dataStruc&algo/algo.md",
-        #     "LeetCode" => "dataStruc&algo/leetcode.md",
-        #     "笔试题目" => "dataStruc&algo/interview.md",
-        # ],
-        "工具使用" => Any[
-            "Git 使用" => "git.md",
-            "Docker 使用" => "docker.md",
-            "Vim 使用" => "vim.md",
-        ],
         "其他" => Any[
             "推荐书籍大全" => "books.md",
         ]
-        # "Linux" => "Linux.md",
     ],
 )
 
