@@ -1,3 +1,21 @@
+## 各种卷积方式
+
+![Conv2D](../assets/images/Conv2D.png)
+
+![Conv3D](../assets/images/Conv3D.png)
+
+![GroupConv](../assets/images/GroupConv.png)
+
+![DepthWiseConv](../assets/images/DepthWiseConv.png)
+
+![PointWiseConv](../assets/images/PointWiseConv.png)
+
+![DepthWiseSeparableConv](../assets/images/DepthWiseSeparableConv.png)
+
+![TransposedConv](../assets/images/DilatedConv.png)
+
+![TransposedConv](../assets/images/TransposedConv.png)
+
 ## 网络结构
 
 ### ViT（Vision Transformer）
