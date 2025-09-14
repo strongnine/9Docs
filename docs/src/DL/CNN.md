@@ -2,6 +2,17 @@
 
 ![Conv2D](../assets/images/Conv2D.png)
 
+最基本的卷积，每个卷积核的大小为 `[channel_size, kernel_size, kernel_size]`，通过设定 `sride` 的大小可以缩小特征图的大小。在 PyTorch 上的实现如下：
+
+```python
+nn.Conv2d(in_channels=in_channel,    # 输入特征的通道数
+          out_channels=out_channel,  # 输出特征的通道数
+          kernel_size=kernel_size,   # 卷积核窗口的大小
+          stride=stride,             # stride 设置为 1 特征图不变，设置为 2 特征图变为 1/2
+          padding=padding)           # 卷积时候在特征图外部补充零的大小
+
+```
+
 ![Conv3D](../assets/images/Conv3D.png)
 
 ![GroupConv](../assets/images/GroupConv.png)
@@ -129,3 +140,8 @@ if __name__ == '__main__':
 
 ```
 
+## 经典网络
+
+### AlexNet
+
+![AlexNet](../assets/images/Networks/AlexNet.png)
