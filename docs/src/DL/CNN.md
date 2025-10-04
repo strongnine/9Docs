@@ -27,6 +27,26 @@ nn.Conv2d(in_channels=in_channel,    # 输入特征的通道数
 
 ![TransposedConv](../assets/images/TransposedConv.png)
 
+## 卷积组块（Block）
+
+### Inception
+
+2014 年由 Google 在论文中提出
+
+### 残差结构
+
+残差结构（Residual）由何恺明等人于 2015 年在微软研究院（Microft Research）在论文 [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) - CVPR 2016 上提出，在 ImageNet 图像分类竞赛（ILSVRC 2015）上获得冠军，证明了超深网络（例如 ResNet-152）的训练是有可能实现的。
+
+残差结构引入残差块和跳跃🔗（Skip Connection）让梯度可以直接反向传播，如果使用数学表达为：
+
+$y=F(x)+x$
+
+其中 $x$ 是输入，$F(x)$ 是卷积层提取的特征。
+
+### 倒残差结构
+
+倒残差结构（Inverted Residual）在 MobileNetV2 的论文中首次提出。
+
 ## 网络结构
 
 ### ViT（Vision Transformer）
