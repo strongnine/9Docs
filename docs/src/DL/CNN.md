@@ -1,6 +1,6 @@
 ## 各种卷积方式
 
-![Conv2D](../assets/images/Conv2D.png)
+![Conv2D](../assets/images/ConvTypes_1.png)
 
 最基本的卷积，每个卷积核的大小为 `[channel_size, kernel_size, kernel_size]`，通过设定 `sride` 的大小可以缩小特征图的大小。在 PyTorch 上的实现如下：
 
@@ -13,19 +13,9 @@ nn.Conv2d(in_channels=in_channel,    # 输入特征的通道数
 
 ```
 
-![Conv3D](../assets/images/Conv3D.png)
+![GroupConv](../assets/images/ConvTypes_2.png)
 
-![GroupConv](../assets/images/GroupConv.png)
 
-![DepthWiseConv](../assets/images/DepthWiseConv.png)
-
-![PointWiseConv](../assets/images/PointWiseConv.png)
-
-![DepthWiseSeparableConv](../assets/images/DepthWiseSeparableConv.png)
-
-![TransposedConv](../assets/images/DilatedConv.png)
-
-![TransposedConv](../assets/images/TransposedConv.png)
 
 ## 卷积组块（Block）
 
@@ -166,6 +156,10 @@ if __name__ == '__main__':
 
 ![AlexNet](../assets/images/Networks/AlexNet.png)
 
+### FCN 全卷积网络
+
+全卷积网络（Fully Convolutional Network, FCN）
+
 ### UNet
 
 大部分的卷积神经网络，输出的结果是整个图像的类标签，UNet 比较不一样，它的输出是每个像素点的类别，不同类别的像素会显示不同颜色。UNet 在 2015 年的论文 [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597) 中首次提出。
@@ -186,4 +180,6 @@ UNet 在医疗影像语义分割任务中有用的原因：
 3. 医学影像往往是多模态的，往往需要自己设计网络去提取不同的模态特征，轻量结构简单的 UNet 可以有更大的操作空间。
 
 ![UNet](../assets/images/Networks/UNet.png)
+
+### YOLOv8
 
