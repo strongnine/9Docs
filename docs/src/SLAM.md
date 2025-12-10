@@ -4,6 +4,87 @@
 
 ## 数学基础
 
+### 三维空间刚体运动
+
+#### 变换矩阵
+
+假设在一个线性空间内，有一组基 $(e_1, e_2, e_3)$，其中有两个向量 $a,b$，则有内积公式：$a\dot b = a ^T b =\sum_{i=3}^3 a_ib_i = |a||b|\cos\langle a,b\rangle$，又有外积公式：
+$$
+a\times b = \begin{Vmatrix} 
+ e_1 & e_2 & e_3 \\ 
+ a_1 & a_2 & a_3 \\ 
+ b_1 & b_2 & b_3
+\end{Vmatrix} = \begin{bmatrix} 
+ a_2b_3 - a_3b_2 \\ 
+ a_3b_1 - a_1b_3 \\
+ a_1b_2 - a_2b_1
+\end{bmatrix} = \begin{bmatrix} 
+ 0 & -a_3 & a_2 \\ 
+ a_3 & 0 & -a_1 \\
+ -a_2 & a_1 & 0
+\end{bmatrix}b \overset{def}{=} a^\land b
+$$
+外积的结果是一个向量，它的方向垂直于这两个向量，大小为 $|a||b|\sin\langle a,b\rangle$，是两个向量张成的四边形的有向面积。一个向量 $a$ 对应的反对称矩阵（Skew-aymmetric Matrix） $A$ 有如下关系：
+$$
+a^\land = A = \begin{bmatrix} 
+  0  & -a_3 &  a_2 \\ 
+ a_3 &   0  & -a_1 \\ 
+-a_2 &  a_1 &   0  \\ 
+\end{bmatrix}, 
+A^\lor = a
+$$
+任意向量都对应着唯一一个反对称矩阵，通过定义反对称矩阵，可以把外积表示成矩阵与向量的乘法。
+
+两个坐标系之间的运动由一个旋转加上一个平移组成，这种运动称为刚体运动。欧式变换由旋转和平移组成，设某个单位正交基 $(e_1, e_2, e_3)$，经过一次旋转变成了 $(e_1^\prime, e_2^\prime, e_3^\prime)$，那么对于同一个向量，它在两个坐标系下的坐标应该是相等的，即：
+$$
+[e_1, e_2, e_3][a_1, a_2, a_3]^T = [e_1^\prime, e_2^\prime, e_3^\prime] [a_1^\prime, a_2^\prime, a_3^\prime]^T
+$$
+对上述等式的左右两边同时左乘 $[e_1^T, e_2^T, e_3^T]$，可以得到：
+$$
+\begin{bmatrix} 
+ a_1 \\ a_2 \\ a_3
+\end{bmatrix} = \begin{bmatrix} 
+ e_1^Te_1^\prime & e_1^Te_2^\prime & e_1^Te_3^\prime \\ 
+ e_2^Te_1^\prime & e_2^Te_2^\prime & e_2^Te_3^\prime \\
+ e_3^Te_1^\prime & e_3^Te_2^\prime & e_3^Te_3^\prime
+\end{bmatrix} \begin{bmatrix} 
+ a_1^\prime \\ a_2^\prime \\ a_3^\prime
+\end{bmatrix} \overset{def}{=} R a^\prime
+$$
+旋转矩阵 $R$ 由两组基之间的内积组成，它是一个行列式为 1 的正交矩阵，在三维空间中，旋转矩阵的集合 $\text{SO}(3) = \{R\in \mathbb{R}^{3\times 3} \mid RR^T = I, \det(R) = 1 \}$ 是一个特殊正交群（Special Orthogonal Group）。旋转矩阵的逆（同时也是它的转置）描述了一个相反的旋转，即有 $a^\prime = R^{-1}a = R^T a$。
+
+在欧式变换中，除了旋转之外还要考虑平移 $t$，把旋转和平移合到一起有 $a^\prime = R a + t$。
+
+> 定义：$R_{12}$ 代表把坐标系 2 的向量变换到坐标系 1 中。平移 $t_{12}$ 实际对应的是坐标系 1 原点指向坐标系 2 原点的向量，在坐标系下取的坐标。需要注意的是 $t_{12} \not= -t_{12}$。
+
+为了让变换关系是线性关系，引入齐次坐标和变换矩阵，能够得到：
+$$
+\begin{bmatrix} a^\prime \\ 1 \end{bmatrix}=
+\begin{bmatrix} R & t \\ 0^T & 1 \end{bmatrix}
+\begin{bmatrix} a \\ 1 \end{bmatrix} \overset{def}{=}
+T\begin{bmatrix} a \\ 1 \end{bmatrix}
+$$
+
+>在一个三维向量的末尾添加 1，将其变成四维向量，称为齐次坐标。同时称 $T$ 为变换矩阵（Transform Matrix）。
+
+同样的，在三维空间中，变换矩阵的集合定义如下：
+$$
+\text{SE}(3) = \left\{T = \begin{bmatrix} R & t \\ 0^T & 1 \end{bmatrix} 
+\in \mathbb{R}^{4\times 4} \mid R\in \text{SO}(3), t\in\mathbb{R}^3
+\right\}
+$$
+ 该集合称为特殊欧式群（Special Euclidean Group），变换矩阵的逆计算如下：
+$$
+T^{-1} = \begin{bmatrix} R^T & -R^Tt \\ 0^T & 1 \end{bmatrix}
+$$
+
+
+#### 四元数
+
+#### 欧拉角
+
+
+
 ### 李群与李代数
 
 在 SLAM 中位姿是未知的，需要解决「什么样的相机位姿最符合当前观测数据」的问题。典型方法：构建成一个优化问题，求解最优的 $R, t$，使得误差最小化。但旋转矩阵自身带有约束，例如正交且行列式为 1，做为优化变量时，会引入额外的约束，使得优化变得困难。
@@ -296,3 +377,50 @@ $$
 + \sum_k\sum_j e_{z,j,k}^T Q_{k,j}^{-1}e_{z,k,j}
 $$
 据此得到一个最小二乘问题（Least Square Problem），其解等价于状态的最大似然估计。
+
+## 代码基础
+
+### 库的使用
+
+#### 用 Ceres 求解最小二乘问题
+
+Ceres 求解的最小二乘问题最一般的形式如下（带边界的核函数最小二乘）：
+$$
+\begin{aligned}
+\min_x &\quad \frac{1}{2}\sum_i \rho_i\left( \| f_i(x_i, \cdots, x_{i_n}) \|^2 \right) \\
+\text{s.t.} &\quad l_j \le x_j \le u_j
+\end{aligned}
+$$
+$x_i, \cdots, x_{i_n}$ 是优化变量，又称参数块（Parameter blocks），$f_i$  为代价函数（Cost function），也称为残差块（Residual blocks），在 SLAM 中也可理解为误差项。$l_j$ 和 $u_j$ 为第 $j$ 个优化变量的上限和下限，在不限制优化变量边界的情况下 $l_j=-\infty,u_j=\infty$。目标函数由许多平方项经过一个核函数 $\rho(\cdot)$ 之后求和组成。 
+
+#### 用 g2o 进行曲线拟合
+
+g2o（General Graphic Optimization，G^2^O），是一个基于图优化的库。图优化是一种将非线性优化与图论结合起来的理论。
+
+使用 `g2o` 进行图优化的时候，需要做的事情有：
+
+1. 定义顶点和边的类型；
+2. 构建图；
+3. 选择优化算法；
+4. 调用 `g2o` 进行优化，返回结果。
+
+### BA 优化
+
+Bundle Adjustment（BA）：从视觉图像中提炼出最优的 3D 模型和相机内外参数。从任意特征点发射出来的几术光线，会在几个相机的成像平面上变成像素或者是检测到的特征点。如果调整各相机姿态和各特征点的空间位置，使得这些光线最终收束到相机的光心，就称为 BA。本质上就是最小化重投影残差同时优化位姿和路标点，以便从每个特征点反射出的光线通过调整最后都能通过相机光心，因此也称捆集优化或光束平差法。
+
+从一个世界坐标系中的点 $p$ 出发，考虑相机内外参数和畸变，最后投影成像素坐标的步骤如下：
+
+把世界坐标转换到相机坐标：$P^\prime = Rp +t = [X^\prime, Y^\prime, Z^\prime]^T$，将 $P^\prime$ 投至归一化平面，得到归一化坐标 $P_c = [u_c,v_c,1]^T = [X^\prime / Z^\prime, Y^\prime / Z^\prime,1]^T$。得到去畸变前的原始像素坐标（只考虑径向畸变）：
+
+$$
+\begin{cases}u^\prime_c = u_c(1+k_1r^2_c+k_2r_c^4)\\ v_c^\prime = v_c(1+k_1r_c^2 + k_2r_c^4)\end{cases}
+$$
+根据内参模型，计算像素坐标：
+
+$$
+\begin{cases}u_s = f_xu_c^\prime + c_x \\ v_s = f_yv_c^\prime + c_y\end{cases}
+$$
+设 $z_{ij}$ 是在位姿 $T_i$ 处观察路标 $p_j$ 产生的数据，那么整体的代价函数为：
+$$
+\frac{1}{2}\sum_{i=1}^m\sum_{j=1}^n \| e_{ij} \|^2 = \frac{1}{2}\sum_{i=1}^m\sum_{j=1}^n\| z_{ij} - h(T_i, p_j) \|^2
+$$
